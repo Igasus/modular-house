@@ -1,0 +1,79 @@
+﻿.page {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    min-height: 100vh;
+}
+
+.page header {
+    width: calc(100% - 32px);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 16px 64px 16px;
+}
+
+.page main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Brand */
+
+.brand {
+    width: 256px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo {
+    width: 48px;
+    height: 48px;
+    background-color: #eee;
+    margin-right: 8px;
+}
+
+.brand span {
+    font-size: 24px;
+}
+
+/* Search */
+
+.search input {
+    width: 256px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 16px;
+    font-size: 14px;
+    border: 1px solid black;
+    transition: all 0.2s ease-in-out;
+}
+
+.search input:focus {
+    width: 512px;
+}
+
+/* Navigation */
+
+.navigation {
+    width: 256px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.notification {
+    height: 24px;
+}
+
+.profile {
+    height: 48px;
+    width: 48px;
+    background-color: #eee;
+    border-radius: 50%;
+    margin-left: 32px;
+}
