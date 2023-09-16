@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ModularHouse.Server.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Infrastructure;
+namespace ModularHouse.Server.Infrastructure.DataAccess.Database;
 
 public class ModularHouseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {

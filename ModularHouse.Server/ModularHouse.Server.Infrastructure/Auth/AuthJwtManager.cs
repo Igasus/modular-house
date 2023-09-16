@@ -13,11 +13,11 @@ namespace ModularHouse.Server.Infrastructure.Auth;
 
 public class AuthJwtManager : IAuthTokenManager
 {
-    private readonly AuthTokenOptions _authTokenOptions;
+    private readonly AuthOptions.TokenOptions _authTokenOptions;
 
-    public AuthJwtManager(IOptions<AuthTokenOptions> authTokenOptions)
+    public AuthJwtManager(IOptions<AuthOptions> authOptions)
     {
-        _authTokenOptions = authTokenOptions.Value;
+        _authTokenOptions = authOptions.Value.Token;
     }
 
     public AuthTokenDto GenerateToken(User user)

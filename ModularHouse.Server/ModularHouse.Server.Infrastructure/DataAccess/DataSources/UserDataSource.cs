@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ModularHouse.Server.Domain.UserAggregate;
+using ModularHouse.Server.Infrastructure.DataAccess.Database;
 
-namespace ModularHouse.Server.Infrastructure.DataSources;
+namespace ModularHouse.Server.Infrastructure.DataAccess.DataSources;
 
 public class UserDataSource : IUserDataSource
 {
