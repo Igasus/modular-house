@@ -1,8 +1,8 @@
-﻿namespace ModularHouse.Server.Domain.UserAggregate;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace ModularHouse.Server.Domain.UserAggregate;
+
+public class User : IdentityUser<Guid>
 {
-    public Guid Id { get; set; }
-    public string UserName { get; set; }
-    public string Email { get; set; }
+    
 }

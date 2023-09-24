@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
+    <UserSecretsId>cdb0c6c2-eb91-481a-b2a6-0a38d046af47</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,5 +26,6 @@
       <DependentUpon>appsettings.json</DependentUpon>
     </Content>
   </ItemGroup>
+
 
 </Project>
