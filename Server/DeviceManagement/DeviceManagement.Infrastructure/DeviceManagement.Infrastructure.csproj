@@ -4,10 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <RootNamespace>ModularHouse.Server.DeviceManagement.Infrastructure</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DeviceManagement.Application\DeviceManagement.Application.csproj" />
+        <ProjectReference Include="..\DeviceManagement.Application\DeviceManagement.Application.csproj" />
     </ItemGroup>
 
 </Project>

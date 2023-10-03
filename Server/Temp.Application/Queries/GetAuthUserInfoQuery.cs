@@ -1,6 +1,6 @@
-﻿using ModularHouse.Server.Application.Abstractions;
-using ModularHouse.Server.Application.Auth.Dto;
+﻿using ModularHouse.Server.Temp.Application.Abstractions;
+using ModularHouse.Server.Temp.Application.Auth.Dto;
 
-namespace ModularHouse.Server.Application.Queries;
+namespace ModularHouse.Server.Temp.Application.Queries;
 
 public record GetAuthUserInfoQuery(string UserNameOrEmail, string Password) : IQuery<AuthUserInfoDto>;

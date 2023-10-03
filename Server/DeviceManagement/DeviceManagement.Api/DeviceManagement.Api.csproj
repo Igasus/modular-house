@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
+        <RootNamespace>ModularHouse.Server.DeviceManagement.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,7 +12,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DeviceManagement.Application\DeviceManagement.Application.csproj" />
+        <ProjectReference Include="..\DeviceManagement.Application\DeviceManagement.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="appsettings.Development.json">
+        <DependentUpon>appsettings.json</DependentUpon>
+      </Content>
     </ItemGroup>
 
 </Project>

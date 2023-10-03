@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModularHouse.Server.Application.Auth;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Application.Options;
+using ModularHouse.Server.Temp.Application.Auth;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Application.Options;
 
-namespace ModularHouse.Server.Application;
+namespace ModularHouse.Server.Temp.Application;
 
 public static class AssemblyConfigurator
 {

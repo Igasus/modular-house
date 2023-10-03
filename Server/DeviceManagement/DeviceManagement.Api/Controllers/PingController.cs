@@ -1,19 +1,19 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularHouse.Server.Temp.Api.Controllers;
+namespace ModularHouse.Server.DeviceManagement.Api.Controllers;
 
 [ApiController]
-[Produces(MediaTypeNames.Application.Json)]
 [Route("api/ping")]
+[Produces(MediaTypeNames.Application.Json)]
 public class PingController : ControllerBase
 {
     /// <summary>
     /// Ping
     /// </summary>
-    /// <returns>Task with ActionResult.</returns>
+    /// <returns>Action result.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public Task<IActionResult> PingAsync()

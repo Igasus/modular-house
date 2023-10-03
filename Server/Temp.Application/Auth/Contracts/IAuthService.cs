@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace ModularHouse.Server.Application.Auth.Contracts;
+namespace ModularHouse.Server.Temp.Application.Auth.Contracts;
 
 public interface IAuthService
 {

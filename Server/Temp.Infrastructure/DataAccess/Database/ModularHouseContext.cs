@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ModularHouse.Server.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Infrastructure.DataAccess.Database;
+namespace ModularHouse.Server.Temp.Infrastructure.DataAccess.Database;
 
 public class ModularHouseContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {

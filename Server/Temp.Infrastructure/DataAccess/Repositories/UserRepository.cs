@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModularHouse.Server.Domain.UserAggregate;
-using ModularHouse.Server.Infrastructure.DataAccess.Database;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Infrastructure.DataAccess.Database;
 
-namespace ModularHouse.Server.Infrastructure.DataAccess.Repositories;
+namespace ModularHouse.Server.Temp.Infrastructure.DataAccess.Repositories;
 
 public class UserRepository : IUserRepository
 {

@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Application.Options;
-using ModularHouse.Server.Domain.UserAggregate;
-using ModularHouse.Server.Infrastructure.Auth;
-using ModularHouse.Server.Infrastructure.DataAccess.Database;
-using ModularHouse.Server.Infrastructure.DataAccess.DataSources;
-using ModularHouse.Server.Infrastructure.DataAccess.Repositories;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Application.Options;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Infrastructure.Auth;
+using ModularHouse.Server.Temp.Infrastructure.DataAccess.Database;
+using ModularHouse.Server.Temp.Infrastructure.DataAccess.DataSources;
+using ModularHouse.Server.Temp.Infrastructure.DataAccess.Repositories;
 
-namespace ModularHouse.Server.Infrastructure;
+namespace ModularHouse.Server.Temp.Infrastructure;
 
 public static class AssemblyConfigurator
 {

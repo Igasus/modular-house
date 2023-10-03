@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ModularHouse.Server.Application.Abstractions;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Application.Commands;
+using ModularHouse.Server.Temp.Application.Abstractions;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Application.Commands;
 
-namespace ModularHouse.Server.Application.CommandHandlers;
+namespace ModularHouse.Server.Temp.Application.CommandHandlers;
 
 public class AuthSignUpCommandHandler : ICommandHandler<AuthSignUpCommand>
 {

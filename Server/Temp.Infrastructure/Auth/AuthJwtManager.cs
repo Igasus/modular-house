@@ -4,12 +4,12 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ModularHouse.Server.Application.Auth;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Application.Auth.Dto;
-using ModularHouse.Server.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Application.Auth;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Application.Auth.Dto;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Infrastructure.Auth;
+namespace ModularHouse.Server.Temp.Infrastructure.Auth;
 
 public class AuthJwtManager : IAuthTokenManager
 {

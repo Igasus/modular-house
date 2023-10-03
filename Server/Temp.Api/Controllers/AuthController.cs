@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ModularHouse.Server.Api.MappingExtensions;
-using ModularHouse.Server.Application.Commands;
-using ModularHouse.Server.Application.Queries;
+using ModularHouse.Server.Temp.Api.MappingExtensions;
+using ModularHouse.Server.Temp.Application.Commands;
+using ModularHouse.Server.Temp.Application.Queries;
 using ModularHouse.Shared.Models.Requests.Auth;
 using ModularHouse.Shared.Models.Responses.Auth;
 
-namespace ModularHouse.Server.Api.Controllers;
+namespace ModularHouse.Server.Temp.Api.Controllers;
 
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]

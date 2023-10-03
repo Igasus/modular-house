@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ModularHouse.Server.Application.Abstractions;
+namespace ModularHouse.Server.Temp.Application.Abstractions;
 
 public interface ICommand : IRequest
 {

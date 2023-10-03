@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Domain.Exceptions;
-using ModularHouse.Server.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Domain.Exceptions;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Application.Auth;
+namespace ModularHouse.Server.Temp.Application.Auth;
 
 public class AuthService : IAuthService
 {

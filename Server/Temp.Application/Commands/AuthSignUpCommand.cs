@@ -1,5 +1,5 @@
-﻿using ModularHouse.Server.Application.Abstractions;
+﻿using ModularHouse.Server.Temp.Application.Abstractions;
 
-namespace ModularHouse.Server.Application.Commands;
+namespace ModularHouse.Server.Temp.Application.Commands;
 
 public record AuthSignUpCommand(string UserName, string Email, string Password) : ICommand;

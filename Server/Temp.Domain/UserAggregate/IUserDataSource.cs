@@ -1,4 +1,4 @@
-﻿namespace ModularHouse.Server.Domain.UserAggregate;
+﻿namespace ModularHouse.Server.Temp.Domain.UserAggregate;
 
 public interface IUserDataSource
 {

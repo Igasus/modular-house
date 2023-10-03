@@ -1,7 +1,7 @@
-﻿using ModularHouse.Server.Application.Auth.Dto;
-using ModularHouse.Server.Domain.UserAggregate;
+﻿using ModularHouse.Server.Temp.Application.Auth.Dto;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Application.Auth.Contracts;
+namespace ModularHouse.Server.Temp.Application.Auth.Contracts;
 
 public interface IAuthTokenManager
 {

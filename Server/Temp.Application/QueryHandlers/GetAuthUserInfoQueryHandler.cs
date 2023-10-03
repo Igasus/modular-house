@@ -1,14 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ModularHouse.Server.Application.Abstractions;
-using ModularHouse.Server.Application.Auth.Contracts;
-using ModularHouse.Server.Application.Auth.Dto;
-using ModularHouse.Server.Application.Queries;
-using ModularHouse.Server.Domain.Exceptions;
-using ModularHouse.Server.Domain.UserAggregate;
+using ModularHouse.Server.Temp.Application.Abstractions;
+using ModularHouse.Server.Temp.Application.Auth.Contracts;
+using ModularHouse.Server.Temp.Application.Auth.Dto;
+using ModularHouse.Server.Temp.Application.Queries;
+using ModularHouse.Server.Temp.Domain.Exceptions;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Application.QueryHandlers;
+namespace ModularHouse.Server.Temp.Application.QueryHandlers;
 
 public class GetAuthUserInfoQueryHandler : IQueryHandler<GetAuthUserInfoQuery, AuthUserInfoDto>
 {

@@ -1,8 +1,8 @@
-﻿using ModularHouse.Server.Application.Auth.Dto;
-using ModularHouse.Server.Domain.UserAggregate;
+﻿using ModularHouse.Server.Temp.Application.Auth.Dto;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 using ModularHouse.Shared.Models.Responses.Auth;
 
-namespace ModularHouse.Server.Api.MappingExtensions;
+namespace ModularHouse.Server.Temp.Api.MappingExtensions;
 
 public static class AuthMappingExtensions
 {

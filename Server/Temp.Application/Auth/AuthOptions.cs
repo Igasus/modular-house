@@ -1,4 +1,4 @@
-﻿namespace ModularHouse.Server.Application.Auth;
+﻿namespace ModularHouse.Server.Temp.Application.Auth;
 
 public record AuthOptions
 {

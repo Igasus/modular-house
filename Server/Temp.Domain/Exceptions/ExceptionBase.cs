@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ModularHouse.Server.Domain.Exceptions;
+namespace ModularHouse.Server.Temp.Domain.Exceptions;
 
 public abstract class ExceptionBase : Exception
 {

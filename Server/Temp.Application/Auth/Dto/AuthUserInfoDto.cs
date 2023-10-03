@@ -1,5 +1,5 @@
-﻿using ModularHouse.Server.Domain.UserAggregate;
+﻿using ModularHouse.Server.Temp.Domain.UserAggregate;
 
-namespace ModularHouse.Server.Application.Auth.Dto;
+namespace ModularHouse.Server.Temp.Application.Auth.Dto;
 
 public record AuthUserInfoDto(AuthTokenDto Token, User User);

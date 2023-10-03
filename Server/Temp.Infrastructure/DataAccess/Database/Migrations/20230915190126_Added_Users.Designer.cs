@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModularHouse.Server.Infrastructure;
-using ModularHouse.Server.Infrastructure.DataAccess.Database;
+using ModularHouse.Server.Temp.Infrastructure.DataAccess.Database;
 
 #nullable disable
 

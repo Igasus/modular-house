@@ -1,4 +1,4 @@
-﻿namespace ModularHouse.Server.Application.Options;
+﻿namespace ModularHouse.Server.Temp.Application.Options;
 
 public record IdentityOptions
 {
