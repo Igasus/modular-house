@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>ModularHouse.Server.UserManagement.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,8 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ModularHouse.Server.UserManagement.Application\ModularHouse.Server.UserManagement.Application.csproj" />
-      <ProjectReference Include="..\ModularHouse.Server.UserManagement.Infrastructure\ModularHouse.Server.UserManagement.Infrastructure.csproj" />
+      <ProjectReference Include="..\UserManagement.Application\UserManagement.Application.csproj" />
+      <ProjectReference Include="..\UserManagement.Infrastructure\UserManagement.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

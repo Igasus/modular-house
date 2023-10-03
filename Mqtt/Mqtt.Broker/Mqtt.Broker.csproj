@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>6ce4849a-8fcd-4007-9f9d-991689368594</UserSecretsId>
+      <RootNamespace>ModularHouse.Mqtt.Broker</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>

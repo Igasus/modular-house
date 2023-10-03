@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModularHouse.Server.Infrastructure;
 using ModularHouse.Server.Infrastructure.DataAccess.Database;
@@ -12,9 +13,10 @@ using ModularHouse.Server.Infrastructure.DataAccess.Database;
 namespace ModularHouse.Server.Infrastructure.Migrations
 {
     [DbContext(typeof(ModularHouseContext))]
-    partial class ModularHouseContextModelSnapshot : ModelSnapshot
+    [Migration("20230915190126_Added_Users")]
+    partial class Added_Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +156,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ModularHouse.Server.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Server.Domain.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,7 +233,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("ModularHouse.Server.Domain.UserAggregate.User", null)
+                    b.HasOne("Server.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -240,7 +242,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("ModularHouse.Server.Domain.UserAggregate.User", null)
+                    b.HasOne("Server.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -255,7 +257,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ModularHouse.Server.Domain.UserAggregate.User", null)
+                    b.HasOne("Server.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +266,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("ModularHouse.Server.Domain.UserAggregate.User", null)
+                    b.HasOne("Server.Domain.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <UserSecretsId>cdb0c6c2-eb91-481a-b2a6-0a38d046af47</UserSecretsId>
+    <RootNamespace>ModularHouse.Server.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ModularHouse.Shared\ModularHouse.Shared.Models\ModularHouse.Shared.Models.csproj" />
-    <ProjectReference Include="..\ModularHouse.Server.Application\ModularHouse.Server.Application.csproj" />
-    <ProjectReference Include="..\ModularHouse.Server.Infrastructure\ModularHouse.Server.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Models\Shared.Models.csproj" />
+    <ProjectReference Include="..\Server.Application\Server.Application.csproj" />
+    <ProjectReference Include="..\Server.Infrastructure\Server.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

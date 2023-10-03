@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ModularHouse.Client.Blazor</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ModularHouse.Shared\ModularHouse.Shared.Models\ModularHouse.Shared.Models.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Models\Shared.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
