@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DeviceManagement.Domain\DeviceManagement.Domain.csproj" />
+      <ProjectReference Include="..\DeviceManagement.Application\DeviceManagement.Application.csproj" />
     </ItemGroup>
 
 </Project>

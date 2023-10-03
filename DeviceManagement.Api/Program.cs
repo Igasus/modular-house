@@ -10,7 +10,6 @@ services
     .AddSwaggerGen()
     .AddControllers();
 
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

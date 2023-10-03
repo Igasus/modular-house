@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DeviceManagement.Domain\DeviceManagement.Domain.csproj" />
-      <ProjectReference Include="..\DeviceManagement.Infrastructure\DeviceManagement.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
