@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using ModularHouse.Mqtt.Broker;
 using MQTTnet.AspNetCore;
 

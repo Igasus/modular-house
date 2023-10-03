@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace ModularHouse.Mqtt.Broker.Auth;
 

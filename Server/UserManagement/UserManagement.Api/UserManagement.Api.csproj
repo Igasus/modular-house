@@ -8,6 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\UserManagement.Application\UserManagement.Application.csproj" />
+        <ProjectReference Include="..\UserManagement.Infrastructure\UserManagement.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
     </ItemGroup>
 
@@ -15,11 +20,6 @@
         <Content Update="appsettings.Development.json">
             <DependentUpon>appsettings.json</DependentUpon>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\UserManagement.Application\UserManagement.Application.csproj" />
-        <ProjectReference Include="..\UserManagement.Infrastructure\UserManagement.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

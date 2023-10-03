@@ -6,8 +6,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>ModularHouse.Server.Temp.Domain</RootNamespace>
     </PropertyGroup>
-
-
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     </ItemGroup>

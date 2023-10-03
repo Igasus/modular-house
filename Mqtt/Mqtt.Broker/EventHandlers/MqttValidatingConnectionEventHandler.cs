@@ -1,4 +1,6 @@
-﻿using ModularHouse.Mqtt.Broker.Auth;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using ModularHouse.Mqtt.Broker.Auth;
 using ModularHouse.Mqtt.Broker.EventHandlers.Contracts;
 using MQTTnet.Protocol;
 using MQTTnet.Server;

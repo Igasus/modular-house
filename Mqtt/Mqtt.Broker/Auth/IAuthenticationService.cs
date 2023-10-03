@@ -1,4 +1,6 @@
-﻿namespace ModularHouse.Mqtt.Broker.Auth;
+﻿using System.Threading.Tasks;
+
+namespace ModularHouse.Mqtt.Broker.Auth;
 
 public interface IAuthenticationService
 {
