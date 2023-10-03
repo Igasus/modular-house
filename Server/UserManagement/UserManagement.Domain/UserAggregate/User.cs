@@ -1,4 +1,6 @@
-﻿namespace ModularHouse.Server.UserManagement.Domain.UserAggregate;
+﻿using System;
+
+namespace ModularHouse.Server.UserManagement.Domain.UserAggregate;
 
 public class User
 {

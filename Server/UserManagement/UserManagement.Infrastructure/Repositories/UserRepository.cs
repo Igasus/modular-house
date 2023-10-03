@@ -1,4 +1,6 @@
-﻿using ModularHouse.Server.UserManagement.Domain.UserAggregate;
+﻿using System;
+using System.Threading.Tasks;
+using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.Repositories;
 

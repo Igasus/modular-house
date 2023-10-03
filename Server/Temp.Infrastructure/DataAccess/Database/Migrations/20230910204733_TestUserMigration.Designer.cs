@@ -25,7 +25,7 @@ namespace ModularHouse.Server.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Server.Domain.UserAggregate.User", b =>
+            modelBuilder.Entity("Temp.Domain.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

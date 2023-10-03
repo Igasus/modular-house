@@ -1,4 +1,7 @@
-﻿namespace ModularHouse.Server.UserManagement.Domain.UserAggregate;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ModularHouse.Server.UserManagement.Domain.UserAggregate;
 
 public interface IUserDataSource
 {
