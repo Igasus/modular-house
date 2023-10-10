@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModularHouse.Server.Temp.Application;
+using ModularHouse.Server.Temp.Domain;
 using ModularHouse.Server.Temp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services
+    .ConfigureDomainServices()
     .ConfigureApplicationServices(builder.Configuration)
     .ConfigureInfrastructureServices(builder.Configuration);
 

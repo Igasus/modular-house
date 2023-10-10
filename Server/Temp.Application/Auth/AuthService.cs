@@ -15,7 +15,7 @@ public class AuthService : IAuthService
         _userManager = userManager;
     }
 
-    public async Task CreateUserAsync(string userName, string email, string password)
+    public async Task<User> CreateUserAsync(string userName, string email, string password)
     {
         var user = await _userManager.FindByNameAsync(userName);
         if (user is not null)
@@ -42,6 +42,8 @@ public class AuthService : IAuthService
 
             throw new InternalServerErrorException(errorMessage);
         }
+
+        return user;
     }
 
     public async Task<bool> ValidateCredentialsByUserNameAsync(string userName, string password)
