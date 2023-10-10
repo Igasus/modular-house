@@ -20,12 +20,12 @@ namespace ModularHouse.Server.Temp.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IDomainEventBus _eventBus;
+    private readonly IDomainEventBus _domainEventBus;
 
-    public AuthController(IMediator mediator, IDomainEventBus eventBus)
+    public AuthController(IMediator mediator, IDomainEventBus domainEventBus)
     {
         _mediator = mediator;
-        _eventBus = eventBus;
+        _domainEventBus = domainEventBus;
     }
 
     [HttpPost("sign-up")]
@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
         var transactionId = Guid.NewGuid();
         
         var command = new AuthSignUpCommand(transactionId, request.UserName, request.Email, request.Password);
-        var eventWaitTask = _eventBus.WaitAsync<UserCreatedEvent>(5000, transactionId);
+        var eventWaitTask = _domainEventBus.WaitAsync<UserCreatedEvent>(5000, transactionId);
         
         await _mediator.Send(command);
         var result = await eventWaitTask;
