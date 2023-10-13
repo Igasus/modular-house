@@ -5,9 +5,4 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
 public sealed class PostgreSqlContext : DbContext
 {
     public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options) { }
-
-    public void Initialize()
-    {
-        Database.Migrate();
-    }
 }
