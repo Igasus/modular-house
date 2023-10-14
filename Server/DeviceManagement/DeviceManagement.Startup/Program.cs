@@ -1,36 +1,18 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using ModularHouse.Server.DeviceManagement.Api;
 using ModularHouse.Server.DeviceManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-var services = builder.Services;
 
-services
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen()
-    .AddControllers();
-
-// Infrastructure configuration
-services.ConfigureInfrastructureServices(builder.Configuration);
+builder.Services
+    .ConfigureWebApiServices()
+    .ConfigureInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseWebApi();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.MapControllers();
 app.Services.InitializeDatabase();
 
 app.Run();
