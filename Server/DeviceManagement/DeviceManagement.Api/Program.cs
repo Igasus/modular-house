@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModularHouse.Server.DeviceManagement.Api;
+using ModularHouse.Server.DeviceManagement.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
-services
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen()
-    .AddControllers();
+services.ConfigureApiServices();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
