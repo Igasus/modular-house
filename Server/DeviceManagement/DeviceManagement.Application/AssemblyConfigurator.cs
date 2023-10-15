@@ -6,8 +6,6 @@ public static class AssemblyConfigurator
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        //TODO call this method from DeviceManagement.Startup
-        
         services.AddMediatR(config =>
             config.RegisterServicesFromAssembly(typeof(AssemblyConfigurator).Assembly));
     
