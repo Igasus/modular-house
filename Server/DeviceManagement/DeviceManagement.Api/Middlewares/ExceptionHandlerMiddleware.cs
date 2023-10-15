@@ -9,7 +9,6 @@ using ModularHouse.Server.DeviceManagement.Domain.Exceptions;
 
 namespace ModularHouse.Server.DeviceManagement.Api.Middlewares;
 
-//TODO move middleware to the DeviceManagement.Startup
 public class ExceptionHandlerMiddleware
 {
     private const string INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error.";
