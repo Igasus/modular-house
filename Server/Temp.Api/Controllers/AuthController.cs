@@ -5,9 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Server.Temp.Api.MappingExtensions;
+using ModularHouse.Server.Temp.Api.Services.Contracts;
 using ModularHouse.Server.Temp.Application.Commands;
 using ModularHouse.Server.Temp.Application.Queries;
-using ModularHouse.Server.Temp.Domain.EventMessaging.Contracts;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 using ModularHouse.Server.Temp.Domain.UserAggregate.Events;
 using ModularHouse.Shared.Models.Requests.Auth;
 using ModularHouse.Shared.Models.Responses.Auth;
@@ -20,29 +21,23 @@ namespace ModularHouse.Server.Temp.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IDomainEventBus _domainEventBus;
+    private readonly IAuthApiService _authApiService;
 
-    public AuthController(IMediator mediator, IDomainEventBus domainEventBus)
+    public AuthController(IMediator mediator, IAuthApiService authApiService)
     {
         _mediator = mediator;
-        _domainEventBus = domainEventBus;
+        _authApiService = authApiService;
     }
 
     [HttpPost("sign-up")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     public async Task<IActionResult> SignUpAsync([FromBody] AuthSignUpRequest request)
     {
         var transactionId = Guid.NewGuid();
-        
-        var command = new AuthSignUpCommand(transactionId, request.UserName, request.Email, request.Password);
-        var eventWaitTask = _domainEventBus.WaitAsync<UserCreatedEvent>(5000, transactionId);
-        
-        await _mediator.Send(command);
-        var result = await eventWaitTask;
 
-        return result.EventReceived
-            ? Ok(result.Event.User)
-            : Ok(result);
+        var user = await _authApiService.SignUpAsync(transactionId, request.UserName, request.Email, request.Password);
+
+        return Ok(user);
     }
 
     [HttpPost("sing-in")]
