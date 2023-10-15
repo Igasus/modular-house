@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "DeviceManagement.Api": {
+    "DeviceManagement.Startup": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:3200;http://localhost:3201",
