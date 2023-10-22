@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ModularHouse.Server.Temp.Application.Abstractions;
 using ModularHouse.Server.Temp.Application.Auth.Contracts;
 using ModularHouse.Server.Temp.Application.Commands;
-using ModularHouse.Server.Temp.Domain.EventMessaging.Contracts;
 using ModularHouse.Server.Temp.Domain.UserAggregate.Events;
+using Shared.InternalMessaging.CQRS.Abstractions;
+using Shared.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Server.Temp.Application.CommandHandlers;
 

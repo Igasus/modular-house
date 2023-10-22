@@ -10,5 +10,9 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\Shared.InternalMessaging.DomainEvents\Shared.InternalMessaging.DomainEvents.csproj" />
+    </ItemGroup>
 
 </Project>

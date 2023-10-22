@@ -1,4 +1,4 @@
-﻿using ModularHouse.Server.Temp.Domain.EventMessaging.Contracts;
+﻿using Shared.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Server.Temp.Domain.UserAggregate.Events;
 

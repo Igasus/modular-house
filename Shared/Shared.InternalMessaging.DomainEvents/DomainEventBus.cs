@@ -1,7 +1,11 @@
-﻿using ModularHouse.Server.Temp.Domain.EventMessaging.Contracts;
-using ModularHouse.Server.Temp.Domain.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Shared.InternalMessaging.DomainEvents.Abstractions;
 
-namespace ModularHouse.Server.Temp.Domain.EventMessaging;
+namespace Shared.InternalMessaging.DomainEvents;
 
 public class DomainEventBus : IDomainEventBus
 {
@@ -39,8 +43,9 @@ public class DomainEventBus : IDomainEventBus
         var eventHandler = _subscribedHandlers
             .FirstOrDefault(handler => handler.SubscriptionId == subscriptionId);
 
+        // TODO: Replace Exception with InternalServerErrorException
         if (eventHandler is null)
-            throw new InternalServerErrorException(
+            throw new Exception(
                 "Error while Unsubscribing from DomainEvent: Subscription with specified SubscriptionId is not found.");
 
         _subscribedHandlers.Remove(eventHandler);
@@ -48,9 +53,11 @@ public class DomainEventBus : IDomainEventBus
         return Task.CompletedTask;
     }
 
-    public async Task<DomainEventWaitResult<TEvent>> WaitAsync<TEvent>(int milliseconds, Guid? transactionId = null)
+    public async Task<TEvent> WaitAsync<TEvent>(TimeSpan? throwTimeout = null, Guid? transactionId = null)
         where TEvent : IDomainEvent
     {
+        throwTimeout ??= Constraints.DefaultEventWaitTimeout;
+        
         var domainEvent = default(TEvent);
         var cancellationTokenSource = new CancellationTokenSource();
 
@@ -58,7 +65,7 @@ public class DomainEventBus : IDomainEventBus
 
         try
         {
-            await Task.Delay(milliseconds, cancellationTokenSource.Token);
+            await Task.Delay(throwTimeout.Value, cancellationTokenSource.Token);
         }
         catch (TaskCanceledException)
         {
@@ -67,10 +74,17 @@ public class DomainEventBus : IDomainEventBus
 
         await UnsubscribeAsync(subscriptionId);
 
-        var eventReceived = cancellationTokenSource.IsCancellationRequested;
-        var result = new DomainEventWaitResult<TEvent>(eventReceived, domainEvent);
-        
-        return result;
+        if (cancellationTokenSource.IsCancellationRequested)
+        {
+            // TODO replace Exception with DomainEventWaitTimeoutException
+            var exceptionMessage = $"Time out while waiting Event {typeof(TEvent).Name} with " + (transactionId is null
+                ? "any TransactionId."
+                : $"TransactionId = {transactionId.Value}");
+
+            throw new Exception(exceptionMessage);
+        }
+
+        return domainEvent;
         
         void WaitingEventHandler(TEvent value)
         {

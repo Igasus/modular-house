@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ModularHouse.Server.Temp.Application.Auth;
 using ModularHouse.Server.Temp.Application.Auth.Contracts;
 using ModularHouse.Server.Temp.Application.Options;
+using Shared.InternalMessaging.CQRS;
 
 namespace ModularHouse.Server.Temp.Application;
 
@@ -12,8 +13,7 @@ public static class AssemblyConfigurator
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddMediatR(config =>
-            config.RegisterServicesFromAssembly(typeof(AssemblyConfigurator).Assembly));
+        services.AddCQRS(typeof(AssemblyConfigurator).Assembly);
 
         services.Configure<AuthOptions>(options =>
             configuration.GetSection(AuthOptions.Section).Bind(options));

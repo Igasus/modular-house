@@ -6,10 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Server.Temp.Api.MappingExtensions;
 using ModularHouse.Server.Temp.Api.Services.Contracts;
-using ModularHouse.Server.Temp.Application.Commands;
 using ModularHouse.Server.Temp.Application.Queries;
 using ModularHouse.Server.Temp.Domain.UserAggregate;
-using ModularHouse.Server.Temp.Domain.UserAggregate.Events;
 using ModularHouse.Shared.Models.Requests.Auth;
 using ModularHouse.Shared.Models.Responses.Auth;
 

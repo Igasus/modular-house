@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using MediatR;
 using ModularHouse.Server.Temp.Api.Services.Contracts;
 using ModularHouse.Server.Temp.Application.Commands;
-using ModularHouse.Server.Temp.Domain.EventMessaging.Contracts;
 using ModularHouse.Server.Temp.Domain.UserAggregate;
 using ModularHouse.Server.Temp.Domain.UserAggregate.Events;
+using Shared.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Server.Temp.Api.Services;
 
@@ -22,13 +22,13 @@ public class AuthApiService : IAuthApiService
 
     public async Task<User> SignUpAsync(Guid transactionId, string userName, string email, string password)
     {
-        var eventWaitTask = _domainEventBus.WaitAsync<UserCreatedEvent>(5000, transactionId);
+        var eventWaitTask = _domainEventBus.WaitAsync<UserCreatedEvent>(transactionId: transactionId);
 
         var command = new AuthSignUpCommand(transactionId, userName, email, password);
         await _mediator.Send(command);
 
         var result = await eventWaitTask;
 
-        return result.Event.User;
+        return result.User;
     }
 }

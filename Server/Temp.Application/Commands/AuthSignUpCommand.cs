@@ -1,5 +1,5 @@
 ﻿using System;
-using ModularHouse.Server.Temp.Application.Abstractions;
+using Shared.InternalMessaging.CQRS.Abstractions;
 
 namespace ModularHouse.Server.Temp.Application.Commands;
 
