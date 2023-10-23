@@ -1,11 +1,13 @@
-﻿using System.Net.Mime;
+﻿using System;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Server.Temp.Api.MappingExtensions;
-using ModularHouse.Server.Temp.Application.Commands;
+using ModularHouse.Server.Temp.Api.Services.Contracts;
 using ModularHouse.Server.Temp.Application.Queries;
+using ModularHouse.Server.Temp.Domain.UserAggregate;
 using ModularHouse.Shared.Models.Requests.Auth;
 using ModularHouse.Shared.Models.Responses.Auth;
 
@@ -17,20 +19,23 @@ namespace ModularHouse.Server.Temp.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IAuthApiService _authApiService;
 
-    public AuthController(IMediator mediator)
+    public AuthController(IMediator mediator, IAuthApiService authApiService)
     {
         _mediator = mediator;
+        _authApiService = authApiService;
     }
 
     [HttpPost("sign-up")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
     public async Task<IActionResult> SignUpAsync([FromBody] AuthSignUpRequest request)
     {
-        var command = new AuthSignUpCommand(request.UserName, request.Email, request.Password);
-        await _mediator.Send(command);
-        
-        return Ok();
+        var transactionId = Guid.NewGuid();
+
+        var user = await _authApiService.SignUpAsync(transactionId, request.UserName, request.Email, request.Password);
+
+        return Ok(user);
     }
 
     [HttpPost("sing-in")]

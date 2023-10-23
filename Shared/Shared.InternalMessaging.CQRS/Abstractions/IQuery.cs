@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ModularHouse.Server.Temp.Application.Abstractions;
+namespace Shared.InternalMessaging.CQRS.Abstractions;
 
 public interface IQuery<out TResponse> : IRequest<TResponse>
 {

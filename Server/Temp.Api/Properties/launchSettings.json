@@ -8,7 +8,7 @@
       }
     },
     "profiles": {
-      "ModularHouse.Server": {
+      "Server.Temp.Api": {
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": true,
