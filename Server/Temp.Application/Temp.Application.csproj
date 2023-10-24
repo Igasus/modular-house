@@ -9,6 +9,7 @@
     </PropertyGroup>
     
     <ItemGroup>
+        <ProjectReference Include="..\..\Shared\Shared.InternalMessaging.CQRS\Shared.InternalMessaging.CQRS.csproj" />
         <ProjectReference Include="..\Temp.Domain\Temp.Domain.csproj" />
     </ItemGroup>
     

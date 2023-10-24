@@ -1,12 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ModularHouse.Server.Temp.Application.Abstractions;
 using ModularHouse.Server.Temp.Application.Auth.Contracts;
 using ModularHouse.Server.Temp.Application.Auth.Dto;
 using ModularHouse.Server.Temp.Application.Queries;
 using ModularHouse.Server.Temp.Domain.Exceptions;
 using ModularHouse.Server.Temp.Domain.UserAggregate;
+using Shared.InternalMessaging.CQRS.Abstractions;
 
 namespace ModularHouse.Server.Temp.Application.QueryHandlers;
 
