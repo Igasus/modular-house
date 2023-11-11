@@ -18,11 +18,15 @@ public static class AssemblyConfigurator
             .AddJsonOptions(options => 
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
         
+        services.AddTransient<TransactionMiddleware>();
+        services.AddTransient<ExceptionHandlerMiddleware>();
+        
         return services;
     }
 
     public static WebApplication UseWebApi(this WebApplication app)
     {
+        app.UseMiddleware<TransactionMiddleware>();
         app.UseMiddleware<ExceptionHandlerMiddleware>();
         
         app.UseRouting();
