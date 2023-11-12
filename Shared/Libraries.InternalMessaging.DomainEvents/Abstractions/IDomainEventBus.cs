@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Shared.InternalMessaging.DomainEvents.Abstractions;
+namespace Libraries.InternalMessaging.DomainEvents.Abstractions;
 
 public interface IDomainEventBus
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.InternalMessaging.CQRS;
+namespace Libraries.InternalMessaging.CQRS;
 
 public static class AssemblyConfigurator
 {

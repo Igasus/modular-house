@@ -1,3 +1,4 @@
+using Common.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +27,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// TODO add exception handling
+app.UseExceptionHandlerMiddleware();
 
 app.Run();

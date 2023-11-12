@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Shared.InternalMessaging.CQRS.Abstractions;
+namespace Libraries.InternalMessaging.CQRS.Abstractions;
 
 public interface ICommand : IRequest
 {

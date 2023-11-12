@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shared.InternalMessaging.DomainEvents;
+namespace Libraries.InternalMessaging.DomainEvents;
 
 public static class Constraints
 {

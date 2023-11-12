@@ -4,13 +4,6 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <RootNamespace>ModularHouse.Server.UserManagement.Domain</RootNamespace>
     </PropertyGroup>
-
-
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\Common.Domain\Common.Domain.csproj" />
-    </ItemGroup>
-
+    
 </Project>

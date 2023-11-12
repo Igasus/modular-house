@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shared.InternalMessaging.DomainEvents.Abstractions;
+namespace Libraries.InternalMessaging.DomainEvents.Abstractions;
 
 public interface IDomainEvent
 {

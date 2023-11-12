@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Shared.InternalMessaging.DomainEvents.Abstractions;
+﻿using Libraries.InternalMessaging.DomainEvents.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.InternalMessaging.DomainEvents;
+namespace Libraries.InternalMessaging.DomainEvents;
 
 public static class AssemblyConfigurator
 {
