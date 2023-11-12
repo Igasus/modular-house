@@ -1,5 +1,5 @@
-﻿using Libraries.InternalMessaging.DomainEvents;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ModularHouse.Libraries.InternalMessaging.DomainEvents;
 
 namespace ModularHouse.Server.DeviceManagement.Domain;
 

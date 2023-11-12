@@ -43,15 +43,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Startup", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Api", "Server\DeviceManagement\DeviceManagement.Api\DeviceManagement.Api.csproj", "{21CDF13E-3163-437B-BB27-AD32F14CF467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries.InternalMessaging.CQRS", "Shared\Libraries.InternalMessaging.CQRS\Libraries.InternalMessaging.CQRS.csproj", "{0994F5AE-C687-4717-872C-2C3F8882C062}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries.InternalMessaging.CQRS", "Libraries\Libraries.InternalMessaging.CQRS\Libraries.InternalMessaging.CQRS.csproj", "{0994F5AE-C687-4717-872C-2C3F8882C062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries.InternalMessaging.DomainEvents", "Shared\Libraries.InternalMessaging.DomainEvents\Libraries.InternalMessaging.DomainEvents.csproj", "{2A92327F-9897-4124-8627-8DE67309C10D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries.InternalMessaging.DomainEvents", "Libraries\Libraries.InternalMessaging.DomainEvents\Libraries.InternalMessaging.DomainEvents.csproj", "{2A92327F-9897-4124-8627-8DE67309C10D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Tests", "Server\DeviceManagement\DeviceManagement.Tests\DeviceManagement.Tests.csproj", "{D62B1283-F925-4346-8CF1-B1C2E52AA3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Shared\Common.Domain\Common.Domain.csproj", "{584BD363-C3B8-4D50-A93F-12151BB6CB55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Server\Common\Common.Domain\Common.Domain.csproj", "{584BD363-C3B8-4D50-A93F-12151BB6CB55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Shared\Common.Api\Common.Api.csproj", "{86395B70-646D-4854-8688-4B45BE569EC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Server\Common\Common.Api\Common.Api.csproj", "{86395B70-646D-4854-8688-4B45BE569EC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F5FF06EC-52BD-4B20-9932-F870C561BBD1}"
 EndProject

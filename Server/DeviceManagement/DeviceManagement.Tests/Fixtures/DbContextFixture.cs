@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
-namespace DeviceManagement.Tests.Fixtures;
+namespace ModularHouse.Server.DeviceManagement.Tests.Fixtures;
 
 public class DbContextFixture : IDisposable
 {
