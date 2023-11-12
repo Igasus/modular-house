@@ -15,6 +15,10 @@ builder.Services
     .ConfigureApplicationServices()
     .ConfigureInfrastructureServices();
 
+builder.Services
+    .AddTransactionMiddleware()
+    .AddExceptionHandlerMiddleware();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -27,6 +31,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+app.UseTransactionMiddleware();
 app.UseExceptionHandlerMiddleware();
 
 app.Run();

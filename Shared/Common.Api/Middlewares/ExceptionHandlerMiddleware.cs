@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Common.Domain;
 using Common.Domain.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -38,10 +40,9 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
 
     private async Task HandlerExceptionAsync(Exception exception, HttpContext context)
     {
-        // TODO Fix TransactionId after TransactionId logic is implemented
         var errorMessage = exception.Message;
         var errorDetails = Array.Empty<string>();
-        var transactionId = Guid.NewGuid();
+        var transactionId = CurrentTransaction.TransactionId;
         
         if (exception is ExceptionBase customException)
         {
@@ -59,10 +60,13 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
         if (_environment.IsDevelopment())
             errorResponse = errorResponse.WithErrorStackTrace(exception.StackTrace);
 
-        var errorResponseAsJson = JsonSerializer.Serialize(errorResponse);
+        var errorResponseAsJson = JsonSerializer.Serialize(
+            errorResponse,
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
         _logger.LogError(exception, errorResponseAsJson);
         
+        context.Response.ContentType = MediaTypeNames.Application.Json;
         await context.Response.WriteAsync(errorResponseAsJson);
     }
 }

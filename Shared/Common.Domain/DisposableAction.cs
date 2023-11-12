@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ModularHouse.Server.DeviceManagement.Domain.Common;
+namespace Common.Domain;
 
 public class DisposableAction : IDisposable
 {
