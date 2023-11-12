@@ -22,6 +22,9 @@ public static class AssemblyConfigurator
             .AddTransactionMiddleware()
             .AddExceptionHandlerMiddleware();
         
+        services.AddTransient<TransactionMiddleware>();
+        services.AddTransient<ExceptionHandlerMiddleware>();
+        
         return services;
     }
 
