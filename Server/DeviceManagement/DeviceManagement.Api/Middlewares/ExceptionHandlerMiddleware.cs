@@ -6,41 +6,45 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ModularHouse.Server.DeviceManagement.Api.Dto;
+using ModularHouse.Server.DeviceManagement.Domain.Common;
 using ModularHouse.Server.DeviceManagement.Domain.Exceptions;
 
 namespace ModularHouse.Server.DeviceManagement.Api.Middlewares;
 
-public class ExceptionHandlerMiddleware
+public class ExceptionHandlerMiddleware : IMiddleware
 {
     private const string INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error.";
     private static readonly JsonSerializerOptions JSON_WEB_SERIALIZER_OPTIONS = new(JsonSerializerDefaults.Web);
 
-    private readonly RequestDelegate _next;
     private readonly IWebHostEnvironment _environment;
+    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-    public ExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment environment)
+    public ExceptionHandlerMiddleware(IWebHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger)
     {
-        _next = next;
         _environment = environment;
+        _logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
             await HandleExceptionAsync(context, ex);
+            
+            _logger.LogError(ex,
+                "Exception was thrown from DeviceManagement. Message: {message}, TransactionId: {transactionId}",
+                ex.Message, CurrentTransaction.TransactionId);
         }
     }
 
     private async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        // TODO implement logging
-
         var response = context.Response;
         response.ContentType = MediaTypeNames.Application.Json;
 
