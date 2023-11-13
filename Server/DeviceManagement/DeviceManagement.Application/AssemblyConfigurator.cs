@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shared.InternalMessaging.CQRS;
+using ModularHouse.Libraries.InternalMessaging.CQRS;
 
 namespace ModularHouse.Server.DeviceManagement.Application;
 

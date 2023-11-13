@@ -1,7 +1,7 @@
-﻿using DeviceManagement.Tests.Fixtures;
+﻿using ModularHouse.Server.DeviceManagement.Tests.Fixtures;
 using Xunit;
 
-namespace DeviceManagement.Tests.Collections;
+namespace ModularHouse.Server.DeviceManagement.Tests.Collections;
 
 [CollectionDefinition(Constants.ManagementTests)]
 public class ManagementCollections : ICollectionFixture<DbContextFixture>

@@ -4,7 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-      <UserSecretsId>1c0a554c-eee9-4421-8523-8b7468592931</UserSecretsId>
+        <UserSecretsId>1c0a554c-eee9-4421-8523-8b7468592931</UserSecretsId>
+        <RootNamespace>ModularHouse.Server.DeviceManagement.Startup</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>

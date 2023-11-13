@@ -2,14 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <RootNamespace>ModularHouse.Shared.Models</RootNamespace>
+        <Nullable>disable</Nullable>
+        <RootNamespace>ModularHouse.Libraries.InternalMessaging.CQRS</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser" />
+      <PackageReference Include="MediatR" Version="12.1.1" />
     </ItemGroup>
-
 
 </Project>

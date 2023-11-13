@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModularHouse.Server.Common.Api.Middlewares;
 using ModularHouse.Server.UserManagement.Application;
 using ModularHouse.Server.UserManagement.Infrastructure;
 
@@ -14,6 +15,10 @@ builder.Services
     .ConfigureApplicationServices()
     .ConfigureInfrastructureServices();
 
+builder.Services
+    .AddTransactionMiddleware()
+    .AddExceptionHandlerMiddleware();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -26,6 +31,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// TODO add exception handling
+app.UseTransactionMiddleware();
+app.UseExceptionHandlerMiddleware();
 
 app.Run();

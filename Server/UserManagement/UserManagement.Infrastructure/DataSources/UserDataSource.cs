@@ -7,7 +7,7 @@ namespace ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 
 public class UserDataSource : IUserDataSource
 {
-    public Task<IEnumerable<User>> GetAllAsync()
+    public Task<IReadOnlyList<User>> GetAllAsync()
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,4 @@
-﻿namespace DeviceManagement.Tests;
+﻿namespace ModularHouse.Server.DeviceManagement.Tests;
 
 public static class Constants
 {

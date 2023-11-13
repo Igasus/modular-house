@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\Shared.InternalMessaging.DomainEvents\Shared.InternalMessaging.DomainEvents.csproj" />
+      <ProjectReference Include="..\..\..\Libraries\Libraries.InternalMessaging.DomainEvents\Libraries.InternalMessaging.DomainEvents.csproj" />
     </ItemGroup>
 
 </Project>
