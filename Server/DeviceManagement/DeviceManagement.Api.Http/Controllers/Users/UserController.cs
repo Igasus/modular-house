@@ -38,7 +38,7 @@ public class UserController : ControllerBase
         await _mediator.Send(new CreateUserCommand(id));
 
         var createdUserEvent = await userCreatedTask;
-        return Ok(createdUserEvent.User);
+        return Ok(createdUserEvent.User.ToResponse());
     }
 
     /// <summary>
