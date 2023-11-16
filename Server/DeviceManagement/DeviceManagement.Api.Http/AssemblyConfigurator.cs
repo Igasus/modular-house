@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModularHouse.Server.Common.Api.Middlewares;
 
-namespace ModularHouse.Server.DeviceManagement.Api;
+namespace ModularHouse.Server.DeviceManagement.Api.Http;
 
 public static class AssemblyConfigurator
 {

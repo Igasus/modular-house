@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 
-namespace ModularHouse.Server.DeviceManagement.Api.Controllers.Users;
+namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers.Users;
 
 [ApiController]
 [Route("api/users")]

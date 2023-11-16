@@ -39,9 +39,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.Broker", "Mqtt\Mqtt.Broker\Mqtt.Broker.csproj", "{C00753E6-835A-4456-AA14-E7E8A9AF92D4}"
 EndProject
 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Startup", "Server\DeviceManagement\DeviceManagement.Startup\DeviceManagement.Startup.csproj", "{9BA16542-579C-42C9-B79D-912A9251BAC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Api.Startup", "Server\DeviceManagement\DeviceManagement.Api.Startup\DeviceManagement.Api.Startup.csproj", "{9BA16542-579C-42C9-B79D-912A9251BAC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Api", "Server\DeviceManagement\DeviceManagement.Api\DeviceManagement.Api.csproj", "{21CDF13E-3163-437B-BB27-AD32F14CF467}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceManagement.Api.Http", "Server\DeviceManagement\DeviceManagement.Api.Http\DeviceManagement.Api.Http.csproj", "{21CDF13E-3163-437B-BB27-AD32F14CF467}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libraries.InternalMessaging.CQRS", "Libraries\Libraries.InternalMessaging.CQRS\Libraries.InternalMessaging.CQRS.csproj", "{0994F5AE-C687-4717-872C-2C3F8882C062}"
 EndProject
