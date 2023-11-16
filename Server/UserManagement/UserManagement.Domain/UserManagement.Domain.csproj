@@ -10,6 +10,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Libraries\Libraries.InternalMessaging.DomainEvents\Libraries.InternalMessaging.DomainEvents.csproj" />
       <ProjectReference Include="..\..\..\Shared\Common.Domain\Common.Domain.csproj" />
     </ItemGroup>
 
