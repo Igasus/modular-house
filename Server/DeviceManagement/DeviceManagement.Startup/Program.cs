@@ -14,9 +14,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseWebApi();
-app.UseHttpsRedirection();
-app.UseAuthorization();
+app.ConfigureWebApi();
 app.Services.InitializeDatabase();
 
 app.Run();

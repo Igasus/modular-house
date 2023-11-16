@@ -28,7 +28,7 @@ public static class AssemblyConfigurator
         return services;
     }
 
-    public static WebApplication UseWebApi(this WebApplication app)
+    public static WebApplication ConfigureWebApi(this WebApplication app)
     {
         app.UseRouting();
         app.UseEndpoints(endpoints =>
@@ -46,6 +46,8 @@ public static class AssemblyConfigurator
         app.UseExceptionHandlerMiddleware();
         
         app.MapControllers();
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
 
         return app;
     }
