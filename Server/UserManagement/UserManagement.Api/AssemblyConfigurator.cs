@@ -13,8 +13,8 @@ public static class AssemblyConfigurator
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        services.AddTransactionMiddleware();
-        services.AddExceptionHandlerMiddleware();
+        services.AddTransactionMiddleware()
+            .AddExceptionHandlerMiddleware();
         
         return services;
     }
@@ -31,8 +31,8 @@ public static class AssemblyConfigurator
         app.UseAuthorization();
         app.MapControllers();
 
-        app.UseTransactionMiddleware();
-        app.UseExceptionHandlerMiddleware();
+        app.UseTransactionMiddleware()
+            .UseExceptionHandlerMiddleware();
         
         return app;
     }
