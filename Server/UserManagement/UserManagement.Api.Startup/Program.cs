@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Builder;
-using ModularHouse.Server.UserManagement.Api;
+using ModularHouse.Server.UserManagement.Api.Http;
 using ModularHouse.Server.UserManagement.Application;
 using ModularHouse.Server.UserManagement.Domain;
 using ModularHouse.Server.UserManagement.Infrastructure;

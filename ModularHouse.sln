@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{1C9142
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserManagement", "UserManagement", "{4E17E0FD-E98C-4460-949B-A7A310BF943A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Api", "Server\UserManagement\UserManagement.Api\UserManagement.Api.csproj", "{79AF3287-97E6-4846-88D9-3A2AAB2225B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Api.Http", "Server\UserManagement\UserManagement.Api.Http\UserManagement.Api.Http.csproj", "{79AF3287-97E6-4846-88D9-3A2AAB2225B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Domain", "Server\UserManagement\UserManagement.Domain\UserManagement.Domain.csproj", "{684F30DC-F48E-48AF-95BA-FAA0595FBC7D}"
 EndProject
@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F5FF06
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{6F23DE37-7148-43F1-A5B2-CE255099E0F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Startup", "Server\UserManagement\UserManagement.Startup\UserManagement.Startup.csproj", "{D4524F12-1922-4892-92EE-5B822F4DA341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagement.Api.Startup", "Server\UserManagement\UserManagement.Api.Startup\UserManagement.Api.Startup.csproj", "{D4524F12-1922-4892-92EE-5B822F4DA341}"
 EndProject
 
 Global

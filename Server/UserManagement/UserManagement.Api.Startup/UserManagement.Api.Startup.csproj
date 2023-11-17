@@ -4,12 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <RootNamespace>ModularHouse.Server.UserManagement.Startup</RootNamespace>
+        <RootNamespace>ModularHouse.Server.UserManagement.Api.Startup</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
-    </ItemGroup>
 
     <ItemGroup>
       <Content Update="appsettings.Development.json">
@@ -18,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\UserManagement.Api\UserManagement.Api.csproj" />
+      <ProjectReference Include="..\UserManagement.Api.Http\UserManagement.Api.Http.csproj" />
       <ProjectReference Include="..\UserManagement.Infrastructure\UserManagement.Infrastructure.csproj" />
     </ItemGroup>
 
