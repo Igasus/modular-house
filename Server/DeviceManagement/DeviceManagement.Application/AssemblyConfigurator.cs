@@ -7,7 +7,10 @@ public static class AssemblyConfigurator
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        services.AddCQRS(typeof(AssemblyConfigurator).Assembly);
+        services.AddMediatR(configuration =>
+            configuration.RegisterServicesFromAssembly(typeof(AssemblyConfigurator).Assembly));
+        services.AddCQRS();
+        
         return services;
     }
 }

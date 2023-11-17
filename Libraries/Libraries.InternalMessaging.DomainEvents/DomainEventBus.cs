@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Libraries.InternalMessaging.DomainEvents;
 
 public class DomainEventBus : IDomainEventBus
 {
+    private readonly IPublisher _publisher;
+    
+    public DomainEventBus(IPublisher publisher)
+    {
+        _publisher = publisher;
+    }
+    
     private record SubscribedEventHandler(Type EventType, Action<IDomainEvent> Callback)
     {
         public Guid SubscriptionId { get; } = Guid.NewGuid();
@@ -16,7 +24,7 @@ public class DomainEventBus : IDomainEventBus
 
     private readonly IList<SubscribedEventHandler> _subscribedHandlers = new List<SubscribedEventHandler>();
     
-    public Task PublishAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent
+    public async Task PublishAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent
     {
         var handlersToNotify = _subscribedHandlers
             .Where(eventHandler => eventHandler.EventType == typeof(TEvent))
@@ -25,7 +33,7 @@ public class DomainEventBus : IDomainEventBus
         foreach (var eventHandler in handlersToNotify)
             eventHandler.Callback(domainEvent);
 
-        return Task.CompletedTask;
+        await _publisher.Publish(domainEvent);
     }
 
     public Task<Guid> SubscribeAsync<TEvent>(Action<TEvent> callback) where TEvent : IDomainEvent
