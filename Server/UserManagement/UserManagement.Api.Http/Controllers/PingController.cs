@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularHouse.Server.UserManagement.Api.Controllers;
+namespace ModularHouse.Server.UserManagement.Api.Http.Controllers;
 
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
