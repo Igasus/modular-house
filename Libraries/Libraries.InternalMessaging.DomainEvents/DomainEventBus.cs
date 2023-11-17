@@ -83,17 +83,14 @@ public class DomainEventBus : IDomainEventBus
         await UnsubscribeAsync(subscriptionId);
 
         if (cancellationTokenSource.IsCancellationRequested)
-        {
-            // TODO replace Exception with DomainEventWaitTimeoutException
-            var exceptionMessage = $"Time out while waiting Event {typeof(TEvent).Name} with " + (transactionId is null
-                ? "any TransactionId."
-                : $"TransactionId = {transactionId.Value}");
-
-            throw new Exception(exceptionMessage);
-        }
-
-        return domainEvent;
+            return domainEvent;
         
+        var exceptionMessage = $"Time out while waiting Event {typeof(TEvent).Name} with " + (transactionId is null
+            ? "any TransactionId."
+            : $"TransactionId = {transactionId.Value}");
+
+        throw new Exception(exceptionMessage);
+
         void WaitingEventHandler(TEvent value)
         {
             if (transactionId is not null && value.TransactionId != transactionId)
