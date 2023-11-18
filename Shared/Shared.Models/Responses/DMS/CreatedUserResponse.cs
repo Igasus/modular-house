@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers.Users.Responses;
+namespace ModularHouse.Shared.Models.Responses.DMS;
 
 public record CreatedUserResponse(Guid Id, DateTime AdditionDate);
