@@ -22,14 +22,14 @@ public static class AssemblyConfigurator
             .AddTransactionMiddleware()
             .AddExceptionHandlerMiddleware();
         
-        services.AddTransient<TransactionMiddleware>();
-        services.AddTransient<ExceptionHandlerMiddleware>();
-        
         return services;
     }
 
     public static WebApplication ConfigureWebApi(this WebApplication app)
     {
+        app.UseTransactionMiddleware();
+        app.UseExceptionHandlerMiddleware();
+        
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
@@ -41,9 +41,6 @@ public static class AssemblyConfigurator
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
-        app.UseTransactionMiddleware();
-        app.UseExceptionHandlerMiddleware();
         
         app.MapControllers();
         app.UseHttpsRedirection();

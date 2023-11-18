@@ -49,7 +49,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">User Id</param>
     /// <returns>Result status code</returns>
-    [HttpDelete]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
