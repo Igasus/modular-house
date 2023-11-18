@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 public interface IUserRepository
 {
-    public DbSet<User> Users { get; }
-    public DbContext Context { get; }
+    public Task CreateAsync(User user, CancellationToken cancellationToken);
+    public void Delete(User user);
+    public Task SaveChangesAsync(CancellationToken cancellationToken);
 }

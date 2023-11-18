@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
@@ -13,6 +14,18 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public DbSet<User> Users => _context.Users;
-    public DbContext Context => _context;
+    public async Task CreateAsync(User user, CancellationToken cancellationToken)
+    {
+        await _context.Users.AddAsync(user, cancellationToken);
+    }
+
+    public void Delete(User user)
+    {
+        _context.Users.Remove(user);
+    }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

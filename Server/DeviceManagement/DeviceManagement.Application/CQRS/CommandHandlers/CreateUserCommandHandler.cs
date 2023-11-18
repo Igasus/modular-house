@@ -36,8 +36,8 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 
         var user = new User { Id = command.Id, AdditionDate = DateTime.UtcNow };
 
-        await _userRepository.Users.AddAsync(user, cancellationToken);
-        await _userRepository.Context.SaveChangesAsync(cancellationToken);
+        await _userRepository.CreateAsync(user, cancellationToken);
+        await _userRepository.SaveChangesAsync(cancellationToken);
 
         var userCreatedEvent = new UserCreatedEvent(user, CurrentTransaction.TransactionId);
         await _eventBus.PublishAsync(userCreatedEvent);
