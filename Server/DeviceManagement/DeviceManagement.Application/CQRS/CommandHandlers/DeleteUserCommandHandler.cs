@@ -19,9 +19,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
         _userRepository = userRepository;
     }
 
-    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await _mediator.Send(new GetUserQuery(request.Id), cancellationToken);
+        var user = await _mediator.Send(new GetUserQuery(command.Id), cancellationToken);
 
         _userRepository.Users.Remove(user);
         await _userRepository.Context.SaveChangesAsync(cancellationToken);

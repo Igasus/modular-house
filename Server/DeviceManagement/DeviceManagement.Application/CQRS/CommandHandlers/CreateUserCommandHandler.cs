@@ -26,15 +26,15 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         _eventBus = eventBus;
     }
 
-    public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var existingUser = await _mediator.Send(new GetUserQuery(request.Id), cancellationToken);
+        var existingUser = await _mediator.Send(new GetUserQuery(command.Id), cancellationToken);
         if (existingUser != null)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<User>());
         }
 
-        var user = new User { Id = request.Id, AdditionDate = DateTime.UtcNow };
+        var user = new User { Id = command.Id, AdditionDate = DateTime.UtcNow };
 
         await _userRepository.Users.AddAsync(user, cancellationToken);
         await _userRepository.Context.SaveChangesAsync(cancellationToken);

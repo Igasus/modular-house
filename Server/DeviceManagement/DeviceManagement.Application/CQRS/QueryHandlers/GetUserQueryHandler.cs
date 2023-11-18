@@ -17,9 +17,9 @@ public class GetUserQueryHandler : IQueryHandler<GetUserQuery, User>
         _userDataSource = userDataSource;
     }
 
-    public async Task<User> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    public async Task<User> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userDataSource.Users.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-        return user ?? throw new NotFoundException($"User was not found with given Id: {request.Id}.");
+        var user = await _userDataSource.Users.FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
+        return user ?? throw new NotFoundException($"User was not found with given Id: {query.Id}.");
     }
 }
