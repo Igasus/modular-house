@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
-using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
@@ -19,6 +17,6 @@ public class GetUserQueryHandler : IQueryHandler<GetUserQuery, User>
 
     public async Task<User> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        return await _userDataSource.Users.FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
+        return await _userDataSource.GetByIdAsync(query.Id, cancellationToken);
     }
 }

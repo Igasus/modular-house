@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
@@ -14,5 +17,13 @@ public class UserDataSource : IUserDataSource
         _context = context;
     }
 
-    public IQueryable<User> Users => _context.Users.AsNoTracking();
+    public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Users.ToListAsync(cancellationToken);
+    }
+
+    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
 }
