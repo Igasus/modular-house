@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
@@ -19,12 +19,12 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IDomainEventBus _eventBus;
-    private readonly IMediator _mediator;
+    private readonly IMessageBus _messageBus;
 
-    public UserController(IDomainEventBus eventBus, IMediator mediator)
+    public UserController(IDomainEventBus eventBus, IMessageBus messageBus)
     {
         _eventBus = eventBus;
-        _mediator = mediator;
+        _messageBus = messageBus;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
         var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>();
-        await _mediator.Send(new CreateUserCommand(id));
+        await _messageBus.Send(new CreateUserCommand(id));
 
         var createdUserEvent = await userCreatedTask;
         return Ok(createdUserEvent.User.ToResponse());
@@ -55,7 +55,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
         var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>();
-        await _mediator.Send(new DeleteUserCommand(id));
+        await _messageBus.Send(new DeleteUserCommand(id));
 
         await userDeletedTask;
         return Ok();

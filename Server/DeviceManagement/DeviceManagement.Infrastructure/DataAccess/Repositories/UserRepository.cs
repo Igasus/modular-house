@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ModularHouse.Server.Common.Domain;
+using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
@@ -19,8 +23,14 @@ public class UserRepository : IUserRepository
         await _context.Users.AddAsync(user, cancellationToken);
     }
 
-    public void Delete(User user)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (user is null)
+        {
+            throw new NotFoundException(ErrorMessages.NotFound<User>());
+        }
+        
         _context.Users.Remove(user);
     }
 
