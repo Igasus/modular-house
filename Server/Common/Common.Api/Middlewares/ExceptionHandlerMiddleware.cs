@@ -40,23 +40,25 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
 
     private async Task HandlerExceptionAsync(Exception exception, HttpContext context)
     {
-        var errorMessage = exception.Message;
+        string errorMessage;
         var errorDetails = Array.Empty<string>();
-        var transactionId = CurrentTransaction.TransactionId;
         
         if (exception is ExceptionBase customException)
         {
             context.Response.StatusCode = (int)customException.ResponseStatusCode;
+            errorMessage = exception.Message;
 
-            if (customException.ResponseStatusCode is not HttpStatusCode.InternalServerError)
+            if (_environment.IsDevelopment()
+                || customException.ResponseStatusCode is not HttpStatusCode.InternalServerError)
                 errorDetails = customException.ErrorDetails.ToArray();
         }
         else
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            errorMessage = ErrorMessages.InternalServer;
         }
         
-        var errorResponse = new ErrorResponse(errorMessage, errorDetails, transactionId);
+        var errorResponse = new ErrorResponse(errorMessage, errorDetails, CurrentTransaction.TransactionId);
         if (_environment.IsDevelopment())
             errorResponse = errorResponse.WithErrorStackTrace(exception.StackTrace);
 
