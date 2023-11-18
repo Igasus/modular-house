@@ -18,5 +18,18 @@ public static class ErrorMessages
         return message;
     }
     
+    public static string AlreadyExist<TSource>() =>
+        $"{typeof(TSource).Name} already exist.";
+
+    public static string AlreadyExistDetails<TSource, TMember>(
+        Expression<Func<TSource, TMember>> memberAccess,
+        TMember memberValue)
+    {
+        var memberName = ((MemberExpression)memberAccess.Body).Member.Name;
+        var message = $"{typeof(TSource).Name} {{ {memberName}: {memberValue} }} already exist.";
+
+        return message;
+    }
+
     public const string InternalServer = "Internal server error.";
 }

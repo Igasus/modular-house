@@ -31,7 +31,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         var existingUser = await _mediator.Send(new GetUserQuery(request.Id), cancellationToken);
         if (existingUser != null)
         {
-            throw new BadRequestException($"User already exists with given Id: {request.Id}.");
+            throw new BadRequestException(ErrorMessages.AlreadyExist<User>());
         }
 
         var user = CreateUserFromRequest(request);
