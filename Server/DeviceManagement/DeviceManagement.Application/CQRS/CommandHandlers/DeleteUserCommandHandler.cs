@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using MediatR;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
+using ModularHouse.Server.Common.Domain;
+using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
@@ -22,6 +24,10 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
     public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
         var user = await _mediator.Send(new GetUserQuery(command.Id), cancellationToken);
+        if (user is null)
+        {
+            throw new NotFoundException(ErrorMessages.NotFound<User>());
+        }
 
         _userRepository.Users.Remove(user);
         await _userRepository.Context.SaveChangesAsync(cancellationToken);
