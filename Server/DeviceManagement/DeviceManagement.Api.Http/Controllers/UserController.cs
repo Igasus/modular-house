@@ -3,12 +3,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
+using ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
+using ModularHouse.Shared.Models.Responses.DMS;
 
-namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers.Users;
+namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 
 [ApiController]
 [Route("api/users")]
@@ -29,9 +32,9 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">User Id</param>
     /// <returns>Created User</returns>
-    /// <response code = "200">If creation was successful</response>
-    /// <response code = "400">If the user already exists in the system</response>
     [HttpPost("{id:guid}")]
+    [ProducesResponseType(typeof(CreatedUserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
         var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>();
@@ -46,12 +49,15 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">User Id</param>
     /// <returns>Result status code</returns>
-    /// <response code = "200">If deletion was successful</response>
-    /// <response code = "404">If the user was not found in the system</response>
     [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
+        var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>();
         await _mediator.Send(new DeleteUserCommand(id));
+
+        await userDeletedTask;
         return Ok();
     }
 }
