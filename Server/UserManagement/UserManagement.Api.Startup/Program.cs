@@ -10,7 +10,7 @@ webApiApplicationBuilder.Services
     .ConfigureWebApiServices()
     .ConfigureApplicationServices()
     .ConfigureDomainServices()
-    .ConfigureInfrastructureServices();
+    .ConfigureInfrastructureServices(webApiApplicationBuilder.Configuration);
 
 var webApiApplication = webApiApplicationBuilder.Build();
 
