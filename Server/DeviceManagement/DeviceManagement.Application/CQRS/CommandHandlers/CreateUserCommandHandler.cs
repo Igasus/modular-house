@@ -29,13 +29,13 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 
     public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var existingUser = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(command.Id));
+        var existingUser = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(command.UserId));
         if (existingUser != null)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<User>());
         }
 
-        var user = new User { Id = command.Id, AdditionDate = DateTime.UtcNow };
+        var user = new User { Id = command.UserId, AdditionDate = DateTime.UtcNow };
 
         await _userRepository.CreateAsync(user, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);

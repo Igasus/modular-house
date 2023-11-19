@@ -22,7 +22,7 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
 
     public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        await _userRepository.DeleteAsync(command.Id, cancellationToken);
+        await _userRepository.DeleteAsync(command.UserId, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);
 
         await _eventBus.PublishAsync(new UserDeletedEvent(CurrentTransaction.TransactionId));

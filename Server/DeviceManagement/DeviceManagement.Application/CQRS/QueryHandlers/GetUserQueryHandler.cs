@@ -19,7 +19,7 @@ public class GetUserQueryHandler : IQueryHandler<GetUserQuery, GetUserQueryRespo
 
     public async Task<GetUserQueryResponse> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userDataSource.GetByIdAsync(query.Id, cancellationToken);
+        var user = await _userDataSource.GetByIdAsync(query.UserId, cancellationToken);
         return user?.ToResponse();
     }
 }
