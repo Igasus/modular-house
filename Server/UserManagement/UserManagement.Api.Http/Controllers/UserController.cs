@@ -1,10 +1,14 @@
 using System;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
+using ModularHouse.Server.UserManagement.Api.Http.MappingExtensions;
+using ModularHouse.Server.UserManagement.Application.Queries;
+using ModularHouse.Server.UserManagement.Application.QueryResponses;
 using ModularHouse.Shared.Models.Requests.UMS;
 using ModularHouse.Shared.Models.Responses;
 using ModularHouse.Shared.Models.Responses.UMS;
@@ -33,7 +37,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ListedResponse<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var queryResponse = await _messageBus.Send<GetUsersQuery, GetUsersQueryResponse>(new GetUsersQuery());
+        var usersAsResponseList = queryResponse.Users.Select(dto => dto.AsResponse()).ToList();
+
+        var response = new ListedResponse<UserResponse>(usersAsResponseList, queryResponse.TotalUsersCount);
+        return Ok(response);
     }
 
     /// <summary>
@@ -46,7 +54,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
-        throw new NotImplementedException();
+        var queryResponse =
+            await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
+
+        var response = queryResponse.User.AsResponse();
+        return Ok(response);
     }
 
     /// <summary>

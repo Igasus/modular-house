@@ -1,5 +1,3 @@
-using System;
-
 namespace ModularHouse.Shared.Models.Requests.UMS;
 
 public record UserRequest

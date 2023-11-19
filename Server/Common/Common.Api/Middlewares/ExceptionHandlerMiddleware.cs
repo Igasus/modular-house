@@ -56,6 +56,9 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             errorMessage = ErrorMessages.InternalServer;
+            
+            if (_environment.IsDevelopment())
+                errorDetails = new[] { exception.Message };
         }
         
         var errorResponse = new ErrorResponse(errorMessage, errorDetails, CurrentTransaction.TransactionId);
