@@ -14,17 +14,17 @@ public static class UserDataMapper
         return new User { Id = user.Id, AdditionDate = user.AdditionDate };
     }
 
-    public static GetUserQueryResponse ToGetUserResponse(this User user)
+    public static GetUserQueryResponse ToResponse(this User user)
     {
         return new GetUserQueryResponse(new GetUserDto(user.Id, user.AdditionDate));
     }
 
-    public static UserCreatedDto ToUserCreatedDto(this User user)
+    public static UserCreatedDto ToCreatedDto(this User user)
     {
         return new UserCreatedDto(user.Id, user.AdditionDate);
     }
 
-    public static UserDeletedDto ToUserDeletedDto(this User user)
+    public static UserDeletedDto ToDeletedDto(this User user)
     {
         return new UserDeletedDto(user.Id, user.AdditionDate);
     }

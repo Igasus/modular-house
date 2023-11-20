@@ -35,9 +35,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
             throw new NotFoundException(ErrorMessages.NotFound<User>());
         }
         
-        var deletedUser = _userRepository.Delete(getUserResponse.ToDomain());
+        var user = _userRepository.Delete(getUserResponse.ToDomain());
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        await _eventBus.PublishAsync(new UserDeletedEvent(deletedUser.ToUserDeletedDto(), CurrentTransaction.TransactionId));
+        await _eventBus.PublishAsync(new UserDeletedEvent(user.ToDeletedDto(), CurrentTransaction.TransactionId));
     }
 }
