@@ -54,10 +54,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
-        var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>();
         await _messageBus.Send(new DeleteUserCommand(id));
-
-        var userDeletedEvent = await userDeletedTask;
-        return Ok(userDeletedEvent.User.ToDeletedResponse());
+        return Ok();
     }
 }
