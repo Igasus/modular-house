@@ -19,11 +19,15 @@ public class UserDataSource : IUserDataSource
 
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Users.ToListAsync(cancellationToken);
+        return await _context.Users
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }
