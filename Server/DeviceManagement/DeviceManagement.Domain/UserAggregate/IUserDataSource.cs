@@ -7,6 +7,6 @@ namespace ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 public interface IUserDataSource
 {
-    public Task<List<User>> GetAllAsync(CancellationToken cancellationToken);
+    public Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken);
     public Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

@@ -17,7 +17,7 @@ public class UserDataSource : IUserDataSource
         _context = context;
     }
 
-    public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await _context.Users.ToListAsync(cancellationToken);
     }
