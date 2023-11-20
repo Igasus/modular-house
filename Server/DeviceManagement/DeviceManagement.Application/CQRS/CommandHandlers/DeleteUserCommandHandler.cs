@@ -4,6 +4,7 @@ using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Command;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
+using ModularHouse.Server.DeviceManagement.Application.DataMappers;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
@@ -22,9 +23,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
 
     public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        await _userRepository.DeleteAsync(command.UserId, cancellationToken);
+        var deletedUser = await _userRepository.DeleteAsync(command.UserId, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        await _eventBus.PublishAsync(new UserDeletedEvent(CurrentTransaction.TransactionId));
+        await _eventBus.PublishAsync(new UserDeletedEvent(deletedUser.ToUserDeletedDto(), CurrentTransaction.TransactionId));
     }
 }

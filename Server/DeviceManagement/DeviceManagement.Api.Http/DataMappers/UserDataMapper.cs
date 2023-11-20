@@ -9,4 +9,9 @@ public static class UserDataMapper
     {
         return new UserCreatedResponse(user.Id, user.AdditionDate);
     }
+
+    public static UserDeletedResponse ToResponse(this UserDeletedDto user)
+    {
+        return new UserDeletedResponse(user.Id, user.AdditionDate);
+    }
 }

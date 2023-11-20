@@ -40,8 +40,8 @@ public class UserController : ControllerBase
         var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>();
         await _messageBus.Send(new CreateUserCommand(id));
 
-        var createdUserEvent = await userCreatedTask;
-        return Ok(createdUserEvent.User.ToResponse());
+        var userCreatedEvent = await userCreatedTask;
+        return Ok(userCreatedEvent.User.ToResponse());
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class UserController : ControllerBase
         var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>();
         await _messageBus.Send(new DeleteUserCommand(id));
 
-        await userDeletedTask;
-        return Ok();
+        var userDeletedEvent = await userDeletedTask;
+        return Ok(userDeletedEvent.User.ToResponse());
     }
 }

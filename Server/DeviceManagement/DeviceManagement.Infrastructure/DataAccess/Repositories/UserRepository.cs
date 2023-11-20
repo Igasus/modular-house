@@ -18,12 +18,13 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task CreateAsync(User user, CancellationToken cancellationToken)
+    public async Task<User> CreateAsync(User user, CancellationToken cancellationToken)
     {
         await _context.Users.AddAsync(user, cancellationToken);
+        return user;
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<User> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (user is null)
@@ -32,6 +33,7 @@ public class UserRepository : IUserRepository
         }
         
         _context.Users.Remove(user);
+        return user;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

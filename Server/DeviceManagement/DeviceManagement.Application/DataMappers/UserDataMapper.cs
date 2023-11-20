@@ -7,13 +7,18 @@ namespace ModularHouse.Server.DeviceManagement.Application.DataMappers;
 
 public static class UserDataMapper
 {
-    public static GetUserQueryResponse ToResponse(this User user)
+    public static GetUserQueryResponse ToGetUserResponse(this User user)
     {
         return new GetUserQueryResponse(new GetUserDto(user.Id, user.AdditionDate));
     }
 
-    public static UserCreatedDto ToDto(this User user)
+    public static UserCreatedDto ToUserCreatedDto(this User user)
     {
         return new UserCreatedDto(user.Id, user.AdditionDate);
+    }
+
+    public static UserDeletedDto ToUserDeletedDto(this User user)
+    {
+        return new UserDeletedDto(user.Id, user.AdditionDate);
     }
 }
