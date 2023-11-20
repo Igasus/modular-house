@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
+using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
@@ -37,7 +38,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
-        var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>();
+        var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(null, CurrentTransaction.TransactionId);
         await _messageBus.Send(new CreateUserCommand(id));
 
         var userCreatedEvent = await userCreatedTask;
