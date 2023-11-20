@@ -7,6 +7,13 @@ namespace ModularHouse.Server.DeviceManagement.Application.DataMappers;
 
 public static class UserDataMapper
 {
+    public static User ToDomain(this GetUserQueryResponse getUserResponse)
+    {
+        var user = getUserResponse.User;
+
+        return new User { Id = user.Id, AdditionDate = user.AdditionDate };
+    }
+
     public static GetUserQueryResponse ToGetUserResponse(this User user)
     {
         return new GetUserQueryResponse(new GetUserDto(user.Id, user.AdditionDate));

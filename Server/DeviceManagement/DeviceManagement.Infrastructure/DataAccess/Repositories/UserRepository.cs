@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ModularHouse.Server.Common.Domain;
-using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
@@ -24,14 +20,8 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public User Delete(User user)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-        if (user is null)
-        {
-            throw new NotFoundException(ErrorMessages.NotFound<User>());
-        }
-        
         _context.Users.Remove(user);
         return user;
     }
