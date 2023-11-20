@@ -20,10 +20,9 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public User Delete(User user)
+    public void Delete(User user)
     {
         _context.Users.Remove(user);
-        return user;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

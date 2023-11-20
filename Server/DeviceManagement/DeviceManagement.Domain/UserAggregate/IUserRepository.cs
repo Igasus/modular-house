@@ -6,6 +6,6 @@ namespace ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 public interface IUserRepository
 {
     public Task<User> CreateAsync(User user, CancellationToken cancellationToken);
-    public User Delete(User user);
+    public void Delete(User user);
     public Task SaveChangesAsync(CancellationToken cancellationToken);
 }
