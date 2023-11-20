@@ -5,7 +5,9 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
 
 public sealed class PostgreSqlContext : DbContext
 {
-    public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options) { }
-
     public DbSet<User> Users { get; set; }
+
+    public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options)
+    {
+    }
 }
