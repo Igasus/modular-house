@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Command;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
-using ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
 using ModularHouse.Server.DeviceManagement.Application.DataMappers;
-using ModularHouse.Server.DeviceManagement.Application.QueryResponses;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
@@ -17,20 +14,21 @@ namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
 public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
-    private readonly IMessageBus _messageBus;
+    private readonly IUserDataSource _userDataSource;
     private readonly IUserRepository _userRepository;
     private readonly IDomainEventBus _eventBus;
 
-    public CreateUserCommandHandler(IMessageBus messageBus, IUserRepository userRepository, IDomainEventBus eventBus)
+    public CreateUserCommandHandler(
+        IUserDataSource userDataSource, IUserRepository userRepository, IDomainEventBus eventBus)
     {
-        _messageBus = messageBus;
+        _userDataSource = userDataSource;
         _userRepository = userRepository;
         _eventBus = eventBus;
     }
 
     public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var existingUser = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(command.UserId));
+        var existingUser = await _userDataSource.GetByIdAsync(command.UserId, cancellationToken);
         if (existingUser != null)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<User>());
