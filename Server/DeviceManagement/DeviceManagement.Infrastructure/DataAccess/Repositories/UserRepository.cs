@@ -14,11 +14,10 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User> CreateAsync(User user, CancellationToken cancellationToken)
+    public async Task CreateAsync(User user, CancellationToken cancellationToken)
     {
         await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return user;
     }
 
     public async Task DeleteAsync(User user, CancellationToken cancellationToken)

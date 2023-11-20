@@ -34,8 +34,8 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
             throw new BadRequestException(ErrorMessages.AlreadyExist<User>());
         }
 
-        var userToCreate = new User { Id = command.UserId, AdditionDate = DateTime.UtcNow };
-        var user = await _userRepository.CreateAsync(userToCreate, cancellationToken);
+        var user = new User { Id = command.UserId, AdditionDate = DateTime.UtcNow };
+        await _userRepository.CreateAsync(user, cancellationToken);
 
         var userCreatedEvent = new UserCreatedEvent(user.ToCreatedDto(), CurrentTransaction.TransactionId);
         await _eventBus.PublishAsync(userCreatedEvent);
