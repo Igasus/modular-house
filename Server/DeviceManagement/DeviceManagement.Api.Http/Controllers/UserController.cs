@@ -33,7 +33,7 @@ public class UserController : ControllerBase
     /// <param name="id">User Id</param>
     /// <returns>Created User</returns>
     [HttpPost("{id:guid}")]
-    [ProducesResponseType(typeof(CreatedUserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserCreatedResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {

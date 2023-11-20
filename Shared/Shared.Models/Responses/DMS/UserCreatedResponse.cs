@@ -2,4 +2,4 @@
 
 namespace ModularHouse.Shared.Models.Responses.DMS;
 
-public record CreatedUserResponse(Guid Id, DateTime AdditionDate);
+public record UserCreatedResponse(Guid Id, DateTime AdditionDate);

@@ -2,4 +2,4 @@
 
 namespace ModularHouse.Server.DeviceManagement.Application.Dto;
 
-public record UserDto(Guid Id, DateTime AdditionDate);
+public record GetUserDto(Guid Id, DateTime AdditionDate);

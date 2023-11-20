@@ -8,6 +8,7 @@ using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
+using ModularHouse.Server.DeviceManagement.Application.DataMappers;
 using ModularHouse.Server.DeviceManagement.Application.QueryResponses;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
@@ -40,7 +41,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         await _userRepository.CreateAsync(user, cancellationToken);
         await _userRepository.SaveChangesAsync(cancellationToken);
 
-        var userCreatedEvent = new UserCreatedEvent(user, CurrentTransaction.TransactionId);
+        var userCreatedEvent = new UserCreatedEvent(user.ToDto(), CurrentTransaction.TransactionId);
         await _eventBus.PublishAsync(userCreatedEvent);
     }
 }
