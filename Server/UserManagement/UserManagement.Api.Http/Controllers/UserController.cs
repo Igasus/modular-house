@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ public class UserController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
+    public async Task<IActionResult> GetByIdAsync([FromRoute, Required] Guid id)
     {
         var getUserQueryResponse =
             await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
@@ -72,7 +73,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateAsync([FromBody] UserRequest input)
+    public async Task<IActionResult> CreateAsync([FromBody, Required] UserRequest input)
     {
         var userCreatedTask =
             _domainEventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
@@ -96,7 +97,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UserRequest input)
+    public async Task<IActionResult> UpdateAsync([FromRoute, Required] Guid id, [FromBody, Required] UserRequest input)
     {
         var userUpdatedTask =
             _domainEventBus.WaitAsync<UserUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
@@ -118,7 +119,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
         var userDeletedTask =
             _domainEventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
