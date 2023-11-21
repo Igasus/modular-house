@@ -6,7 +6,6 @@ using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
-using ModularHouse.Server.DeviceManagement.Application.DataMappers;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
@@ -19,7 +18,9 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
     private readonly IDomainEventBus _eventBus;
 
     public CreateUserCommandHandler(
-        IUserDataSource userDataSource, IUserRepository userRepository, IDomainEventBus eventBus)
+        IUserDataSource userDataSource,
+        IUserRepository userRepository,
+        IDomainEventBus eventBus)
     {
         _userDataSource = userDataSource;
         _userRepository = userRepository;
@@ -37,7 +38,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         var user = new User { Id = command.UserId, AdditionDate = DateTime.UtcNow };
         await _userRepository.CreateAsync(user, cancellationToken);
 
-        var userCreatedEvent = new UserCreatedEvent(user.ToCreatedDto(), CurrentTransaction.TransactionId);
+        var userCreatedEvent = new UserCreatedEvent(user.Id, CurrentTransaction.TransactionId);
         await _eventBus.PublishAsync(userCreatedEvent);
     }
 }
