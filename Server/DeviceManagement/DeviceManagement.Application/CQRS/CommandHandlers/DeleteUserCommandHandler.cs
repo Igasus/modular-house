@@ -18,7 +18,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
     private readonly IDomainEventBus _eventBus;
 
     public DeleteUserCommandHandler(
-        IUserDataSource userDataSource, IUserRepository userRepository, IDomainEventBus eventBus)
+        IUserDataSource userDataSource,
+        IUserRepository userRepository,
+        IDomainEventBus eventBus)
     {
         _userDataSource = userDataSource;
         _userRepository = userRepository;
