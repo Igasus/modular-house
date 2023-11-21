@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
+using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
+using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure;
 
@@ -16,6 +19,22 @@ public static class AssemblyConfigurator
         services.AddDbContext<PostgreSqlContext>(options => 
             options.UseNpgsql(configuration.GetConnectionString(POSTGRE_SQL_SERVER)));
 
+        services
+            .AddRepositories()
+            .AddDataSources();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddTransient<IUserRepository, UserRepository>();
+        return services;
+    }
+
+    private static IServiceCollection AddDataSources(this IServiceCollection services)
+    {
+        services.AddTransient<IUserDataSource, UserDataSource>();
         return services;
     }
 

@@ -5,7 +5,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>disable</Nullable>
-        <RootNamespace>ModularHouse.Server.DeviceManagement.Api</RootNamespace>
+        <RootNamespace>ModularHouse.Server.DeviceManagement.Api.Http</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\DeviceManagement.Api.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

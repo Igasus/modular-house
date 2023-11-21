@@ -5,7 +5,7 @@
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <UserSecretsId>1c0a554c-eee9-4421-8523-8b7468592931</UserSecretsId>
-        <RootNamespace>ModularHouse.Server.DeviceManagement.Startup</RootNamespace>
+        <RootNamespace>ModularHouse.Server.DeviceManagement.Api.Startup</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>
@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DeviceManagement.Api\DeviceManagement.Api.csproj" />
+      <ProjectReference Include="..\DeviceManagement.Api.Http\DeviceManagement.Api.Http.csproj" />
       <ProjectReference Include="..\DeviceManagement.Infrastructure\DeviceManagement.Infrastructure.csproj" />
     </ItemGroup>
 
