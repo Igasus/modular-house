@@ -40,10 +40,10 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ListedResponse<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var queryResponse = await _messageBus.Send<GetUsersQuery, GetUsersQueryResponse>(new GetUsersQuery());
-        var usersAsResponseList = queryResponse.Users.Select(dto => dto.AsResponse()).ToList();
+        var getUserQueryResponse = await _messageBus.Send<GetUsersQuery, GetUsersQueryResponse>(new GetUsersQuery());
+        var usersAsResponseList = getUserQueryResponse.Users.Select(dto => dto.AsResponse()).ToList();
 
-        var response = new ListedResponse<UserResponse>(usersAsResponseList, queryResponse.TotalUsersCount);
+        var response = new ListedResponse<UserResponse>(usersAsResponseList, getUserQueryResponse.TotalUsersCount);
         return Ok(response);
     }
 
@@ -57,10 +57,10 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
-        var queryResponse =
+        var getUserQueryResponse =
             await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
 
-        var response = queryResponse.User.AsResponse();
+        var response = getUserQueryResponse.User.AsResponse();
         return Ok(response);
     }
 
@@ -79,10 +79,11 @@ public class UserController : ControllerBase
         await _messageBus.Send(new CreateUserCommand(input.AsInputDto()));
 
         var userCreatedEvent = await userCreatedTask;
-        var queryResponse = await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(
+        var getUserQueryResponse = await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(
             new GetUserByIdQuery(userCreatedEvent.UserId));
 
-        return Ok(queryResponse.User.AsResponse());
+        var response = getUserQueryResponse.User.AsResponse();
+        return Ok(response);
     }
 
     /// <summary>
@@ -95,9 +96,18 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UserResponse input)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UserRequest input)
     {
-        throw new NotImplementedException();
+        var userUpdatedTask =
+            _domainEventBus.WaitAsync<UserUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await _messageBus.Send(new UpdateUserCommand(id, input.AsInputDto()));
+
+        await userUpdatedTask;
+        var getUserQueryResponse =
+            await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
+
+        var response = getUserQueryResponse.User.AsResponse();
+        return Ok(response);
     }
 
     /// <summary>
@@ -110,6 +120,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
     {
-        throw new NotImplementedException();
+        var userDeletedTask =
+            _domainEventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await _messageBus.Send(new DeleteUserByIdCommand(id));
+        
+        await userDeletedTask;
+        return Ok();
     }
 }

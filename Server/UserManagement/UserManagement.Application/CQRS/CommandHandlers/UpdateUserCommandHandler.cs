@@ -10,13 +10,13 @@ using ModularHouse.Server.UserManagement.Domain.UserAggregate.Events;
 
 namespace ModularHouse.Server.UserManagement.Application.CQRS.CommandHandlers;
 
-public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
 {
     private readonly IUserDataSource _dataSource;
     private readonly IUserRepository _repository;
     private readonly IDomainEventBus _domainEventBus;
 
-    public CreateUserCommandHandler(
+    public UpdateUserCommandHandler(
         IUserDataSource dataSource,
         IUserRepository repository,
         IDomainEventBus domainEventBus)
@@ -26,21 +26,21 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByEmailAsync(request.Input.Email, cancellationToken);
-        if (user is not null)
+        var user = await _dataSource.GetByIdAsync(request.UserId, cancellationToken);
+        if (user is null)
         {
-            throw new BadRequestException(ErrorMessages.AlreadyExist<User>(),
-                ErrorMessages.AlreadyExistDetails((User u) => u.Email, request.Input.Email));
+            throw new NotFoundException(ErrorMessages.NotFound<User>(),
+                ErrorMessages.NotFoundDetails((User u) => u.Id, request.UserId));
         }
-
-        user = new User { Email = request.Input.Email };
+        
+        user.Email = request.Input.Email;
         user.SetPassword(request.Input.Password);
 
-        await _repository.CreateAsync(user, cancellationToken);
+        await _repository.UpdateAsync(user, cancellationToken);
 
-        var userCreatedEvent = new UserCreatedEvent(user.Id, CurrentTransaction.TransactionId);
-        await _domainEventBus.PublishAsync(userCreatedEvent);
+        var userUpdatedEvent = new UserUpdatedEvent(user.Id, CurrentTransaction.TransactionId);
+        await _domainEventBus.PublishAsync(userUpdatedEvent);
     }
 }
