@@ -19,7 +19,9 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
     private readonly IDomainEventBus _eventBus;
 
     public CreateUserCommandHandler(
-        IUserDataSource userDataSource, IUserRepository userRepository, IDomainEventBus eventBus)
+        IUserDataSource userDataSource,
+        IUserRepository userRepository,
+        IDomainEventBus eventBus)
     {
         _userDataSource = userDataSource;
         _userRepository = userRepository;

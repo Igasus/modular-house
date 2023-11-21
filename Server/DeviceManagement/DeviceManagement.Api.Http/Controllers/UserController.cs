@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
-        var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(null, CurrentTransaction.TransactionId);
+        var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
         await _messageBus.Send(new CreateUserCommand(id));
 
         var userCreatedEvent = await userCreatedTask;
@@ -55,7 +55,10 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
+        var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
         await _messageBus.Send(new DeleteUserCommand(id));
+
+        await userDeletedTask;
         return Ok();
     }
 }
