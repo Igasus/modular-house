@@ -24,8 +24,7 @@ public class UserDataSource : IUserDataSource
 
         var query =
             $"MATCH (user:{nameof(User)}) " +
-            "RETURN " +
-            $"    user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
+            $"RETURN user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
             $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
             $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
 
@@ -54,11 +53,11 @@ public class UserDataSource : IUserDataSource
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{{nameof(User.Id)}: $Id}}) " +
-                    "RETURN " +
-                    $"    user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
-                    $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
-                    $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
+        var query =
+            $"MATCH (user:{nameof(User)} {{{nameof(User.Id)}: $Id}}) " +
+            $"RETURN user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
+            $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
+            $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
         var parameters = new { Id = id.ToString() };
         
         User user;
@@ -85,11 +84,11 @@ public class UserDataSource : IUserDataSource
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{{nameof(User.Email)}: $Email}}) " +
-                    "RETURN " +
-                    $"    user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
-                    $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
-                    $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
+        var query =
+            $"MATCH (user:{nameof(User)} {{{nameof(User.Email)}: $Email}}) " +
+            $"RETURN user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
+            $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
+            $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
         var parameters = new { Email = email };
         
         User user;

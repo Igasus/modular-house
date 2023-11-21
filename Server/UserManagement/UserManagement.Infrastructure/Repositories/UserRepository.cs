@@ -19,10 +19,11 @@ public class UserRepository : IUserRepository
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"CREATE (user:{nameof(User)} {{ " +
-                    $"    {nameof(User.Id)}: $Id, " +
-                    $"    {nameof(User.Email)}: ${nameof(User.Email)}, " +
-                    $"    {nameof(User.PasswordHash)}: ${nameof(User.PasswordHash)} }})";
+        var query =
+            $"CREATE (user:{nameof(User)} {{ " +
+            $"    {nameof(User.Id)}: $Id, " +
+            $"    {nameof(User.Email)}: ${nameof(User.Email)}, " +
+            $"    {nameof(User.PasswordHash)}: ${nameof(User.PasswordHash)} }})";
 
         var userId = user.Id == default
             ? Guid.NewGuid()
@@ -50,10 +51,10 @@ public class UserRepository : IUserRepository
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
-                    "SET " +
-                    $"    user.{nameof(User.Email)} = ${nameof(User.Email)}," +
-                    $"    user.{nameof(User.PasswordHash)} = ${nameof(User.PasswordHash)}";
+        var query =
+            $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
+            $"SET user.{nameof(User.Email)} = ${nameof(User.Email)}," +
+            $"    user.{nameof(User.PasswordHash)} = ${nameof(User.PasswordHash)}";
         
         var parameters = new
         {
@@ -76,8 +77,9 @@ public class UserRepository : IUserRepository
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
-                    $"DETACH DELETE user";
+        var query =
+            $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
+            "DETACH DELETE user";
         
         var parameters = new
         {
