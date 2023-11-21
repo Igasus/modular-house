@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
@@ -6,6 +7,7 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
 public sealed class PostgreSqlContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Device> Devices { get; set; }
 
     public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options)
     {

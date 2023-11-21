@@ -31,7 +31,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
         var user = await _userDataSource.GetByIdAsync(command.UserId, cancellationToken);
         if (user is null)
         {
-            throw new NotFoundException(ErrorMessages.NotFound<User>());
+            throw new NotFoundException(
+                ErrorMessages.NotFound<User>(),
+                ErrorMessages.NotFoundDetails((User u) => u.Id, command.UserId));
         }
 
         await _userRepository.DeleteAsync(user, cancellationToken);
