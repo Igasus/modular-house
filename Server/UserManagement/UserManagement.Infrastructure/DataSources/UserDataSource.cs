@@ -30,7 +30,7 @@ public class UserDataSource : IUserDataSource
             $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
 
         var users = new List<User>();
-        
+
         try
         {
             var queryResult = await session.RunAsync(query);

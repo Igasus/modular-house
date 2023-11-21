@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularHouse.Server.DeviceManagement.Api.Controllers;
+namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 
 [ApiController]
 [Route("api/ping")]

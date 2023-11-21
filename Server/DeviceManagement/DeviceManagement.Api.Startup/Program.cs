@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Builder;
-using ModularHouse.Server.DeviceManagement.Api;
+using ModularHouse.Server.DeviceManagement.Api.Http;
 using ModularHouse.Server.DeviceManagement.Application;
 using ModularHouse.Server.DeviceManagement.Domain;
 using ModularHouse.Server.DeviceManagement.Infrastructure;
@@ -14,9 +14,7 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseWebApi();
-app.UseHttpsRedirection();
-app.UseAuthorization();
+app.ConfigureWebApi();
 app.Services.InitializeDatabase();
 
 app.Run();
