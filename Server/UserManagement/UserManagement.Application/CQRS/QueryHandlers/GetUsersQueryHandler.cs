@@ -20,7 +20,7 @@ public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, GetUsersQueryRe
 
     public async Task<GetUsersQueryResponse> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = await _dataSource.GetAllAsync();
+        var users = await _dataSource.GetAllAsync(cancellationToken);
         var usersAsDtoList = users.Select(user => user.AsDto()).ToList();
 
         return new GetUsersQueryResponse(usersAsDtoList, users.Count);

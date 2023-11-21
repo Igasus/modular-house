@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
-using ModularHouse.Server.UserManagement.Infrastructure.ConfigurationOptions;
 using ModularHouse.Server.UserManagement.Infrastructure.DataSources;
+using ModularHouse.Server.UserManagement.Infrastructure.Neo4j;
 using ModularHouse.Server.UserManagement.Infrastructure.Repositories;
 using Neo4j.Driver;
 

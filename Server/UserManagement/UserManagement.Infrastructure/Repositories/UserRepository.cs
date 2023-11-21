@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
+using ModularHouse.Server.UserManagement.Infrastructure.Neo4j;
 using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.Repositories;
@@ -17,7 +18,7 @@ public class UserRepository : IUserRepository
 
     public async Task CreateAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var session = _driver.AsyncSession();
+        await using var connection = ConnectionContainer.FromDriver(_driver);
 
         var query =
             $"CREATE (user:{nameof(User)} {{ " +
@@ -36,20 +37,13 @@ public class UserRepository : IUserRepository
             user.PasswordHash
         };
 
-        try
-        {
-            await session.RunAsync(query, parameters);
-            user.Id = userId;
-        }
-        finally
-        {
-            await session.CloseAsync();
-        }
+        await connection.Session.RunAsync(query, parameters);
+        user.Id = userId;
     }
 
     public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var session = _driver.AsyncSession();
+        await using var connection = ConnectionContainer.FromDriver(_driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
@@ -63,19 +57,12 @@ public class UserRepository : IUserRepository
             user.PasswordHash
         };
 
-        try
-        {
-            await session.RunAsync(query, parameters);
-        }
-        finally
-        {
-            await session.CloseAsync();
-        }
+        await connection.Session.RunAsync(query, parameters);
     }
 
     public async Task DeleteAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var session = _driver.AsyncSession();
+        await using var connection = ConnectionContainer.FromDriver(_driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
@@ -86,13 +73,6 @@ public class UserRepository : IUserRepository
             Id = user.Id.ToString()
         };
 
-        try
-        {
-            await session.RunAsync(query, parameters);
-        }
-        finally
-        {
-            await session.CloseAsync();
-        }
+        await connection.Session.RunAsync(query, parameters);
     }
 }

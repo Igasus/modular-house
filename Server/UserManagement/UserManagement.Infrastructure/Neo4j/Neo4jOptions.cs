@@ -1,4 +1,4 @@
-namespace ModularHouse.Server.UserManagement.Infrastructure.ConfigurationOptions;
+namespace ModularHouse.Server.UserManagement.Infrastructure.Neo4j;
 
 public record Neo4jOptions
 {

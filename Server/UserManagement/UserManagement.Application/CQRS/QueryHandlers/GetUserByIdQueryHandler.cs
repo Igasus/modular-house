@@ -21,7 +21,7 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserBy
 
     public async Task<GetUserByIdQueryResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByIdAsync(request.UserId);
+        var user = await _dataSource.GetByIdAsync(request.UserId, cancellationToken);
         if (user is null)
         {
             throw new NotFoundException(
