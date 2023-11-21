@@ -3,4 +3,4 @@ using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
-public record UserCreatedEvent(Guid Id, Guid TransactionId) : IDomainEvent;
+public record UserCreatedEvent(Guid UserId, Guid TransactionId) : IDomainEvent;

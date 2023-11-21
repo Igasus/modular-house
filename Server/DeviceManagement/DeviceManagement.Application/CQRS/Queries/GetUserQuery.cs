@@ -4,4 +4,4 @@ using ModularHouse.Server.DeviceManagement.Application.CQRS.QueryResponses;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
 
-public record GetUserQuery(Guid Id) : IQuery<GetUserQueryResponse>;
+public record GetUserQuery(Guid UserId) : IQuery<GetUserQueryResponse>;
