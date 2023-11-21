@@ -40,12 +40,14 @@ public class DeviceController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
-        var deviceCreatedTask = _eventBus.WaitAsync<DeviceCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        var deviceCreatedTask =
+            _eventBus.WaitAsync<DeviceCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+
         await _messageBus.Send(new CreateDeviceCommand(id));
         var deviceCreatedEvent = await deviceCreatedTask;
 
-        var deviceQueryResponse = 
-            await _messageBus.Send<GetDeviceQuery, GetDeviceQueryResponse>(new GetDeviceQuery(deviceCreatedEvent.DeviceId));
+        var deviceQueryResponse = await _messageBus.Send<GetDeviceQuery, GetDeviceQueryResponse>(
+            new GetDeviceQuery(deviceCreatedEvent.DeviceId));
 
         return Ok(deviceQueryResponse.Device.ToCreatedResponse());
     }
@@ -60,7 +62,9 @@ public class DeviceController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
-        var deviceDeletedTask = _eventBus.WaitAsync<DeviceDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        var deviceDeletedTask =
+            _eventBus.WaitAsync<DeviceDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+
         await _messageBus.Send(new DeleteDeviceCommand(id));
         await deviceDeletedTask;
 

@@ -44,8 +44,8 @@ public class UserController : ControllerBase
         await _messageBus.Send(new CreateUserCommand(id));
         var userCreatedEvent = await userCreatedTask;
 
-        var userQueryResponse =
-            await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(userCreatedEvent.UserId));
+        var userQueryResponse = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(
+            new GetUserQuery(userCreatedEvent.UserId));
 
         return Ok(userQueryResponse.User.ToCreatedResponse());
     }
