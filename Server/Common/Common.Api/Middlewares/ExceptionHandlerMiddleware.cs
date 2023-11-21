@@ -34,31 +34,28 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
-            await HandlerExceptionAsync(exception, context);
+            await HandleExceptionAsync(exception, context);
         }
     }
 
-    private async Task HandlerExceptionAsync(Exception exception, HttpContext context)
+    private async Task HandleExceptionAsync(Exception exception, HttpContext context)
     {
         string errorMessage;
-        var errorDetails = Array.Empty<string>();
+        string[] errorDetails;
         
-        if (exception is ExceptionBase customException)
+        if (exception is ExceptionBase customException
+            && (_environment.IsDevelopment()
+                || customException.ResponseStatusCode is not HttpStatusCode.InternalServerError))
         {
+            errorMessage = customException.Message;
+            errorDetails = customException.ErrorDetails.ToArray();
             context.Response.StatusCode = (int)customException.ResponseStatusCode;
-            errorMessage = exception.Message;
-
-            if (_environment.IsDevelopment()
-                || customException.ResponseStatusCode is not HttpStatusCode.InternalServerError)
-                errorDetails = customException.ErrorDetails.ToArray();
         }
         else
         {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             errorMessage = ErrorMessages.InternalServer;
-            
-            if (_environment.IsDevelopment())
-                errorDetails = new[] { exception.Message };
+            errorDetails = Array.Empty<string>();
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         }
         
         var errorResponse = new ErrorResponse(errorMessage, errorDetails, CurrentTransaction.TransactionId);
@@ -70,7 +67,7 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
             new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
         _logger.LogError(exception, errorResponseAsJson);
-        
+
         context.Response.ContentType = MediaTypeNames.Application.Json;
         await context.Response.WriteAsync(errorResponseAsJson);
     }
