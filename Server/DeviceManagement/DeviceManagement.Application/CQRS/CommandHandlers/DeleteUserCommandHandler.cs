@@ -5,7 +5,6 @@ using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
-using ModularHouse.Server.DeviceManagement.Application.DataMappers;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
@@ -18,7 +17,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
     private readonly IDomainEventBus _eventBus;
 
     public DeleteUserCommandHandler(
-        IUserDataSource userDataSource, IUserRepository userRepository, IDomainEventBus eventBus)
+        IUserDataSource userDataSource,
+        IUserRepository userRepository,
+        IDomainEventBus eventBus)
     {
         _userDataSource = userDataSource;
         _userRepository = userRepository;
@@ -35,6 +36,6 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
 
         await _userRepository.DeleteAsync(user, cancellationToken);
 
-        await _eventBus.PublishAsync(new UserDeletedEvent(user.ToDeletedDto(), CurrentTransaction.TransactionId));
+        await _eventBus.PublishAsync(new UserDeletedEvent(user.Id, CurrentTransaction.TransactionId));
     }
 }
