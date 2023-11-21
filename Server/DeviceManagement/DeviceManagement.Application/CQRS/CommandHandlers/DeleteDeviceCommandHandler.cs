@@ -31,7 +31,9 @@ public class DeleteDeviceCommandHandler : ICommandHandler<DeleteDeviceCommand>
         var existingDevice = await _deviceDataSource.GetByIdAsync(command.DeviceId, cancellationToken);
         if (existingDevice is null)
         {
-            throw new NotFoundException(ErrorMessages.NotFound<Device>());
+            throw new NotFoundException(
+                ErrorMessages.NotFound<Device>(),
+                ErrorMessages.NotFoundDetails((Device d) => d.Id, command.DeviceId));
         }
 
         await _deviceRepository.DeleteAsync(existingDevice, cancellationToken);

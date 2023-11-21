@@ -32,7 +32,9 @@ public class CreateDeviceCommandHandler : ICommandHandler<CreateDeviceCommand>
         var existingDevice = await _deviceDataSource.GetByIdAsync(command.DeviceId, cancellationToken);
         if (existingDevice is not null)
         {
-            throw new BadRequestException(ErrorMessages.AlreadyExist<Device>());
+            throw new BadRequestException(
+                ErrorMessages.AlreadyExist<Device>(),
+                ErrorMessages.AlreadyExistDetails((Device d) => d.Id, command.DeviceId));
         }
 
         var device = new Device { Id = command.DeviceId, AdditionDate = DateTime.UtcNow };
