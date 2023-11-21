@@ -43,9 +43,11 @@ public class UserController : ControllerBase
         var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
         await _messageBus.Send(new CreateUserCommand(id));
         var userCreatedEvent = await userCreatedTask;
-        var user = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(userCreatedEvent.Id));
 
-        return Ok(user.ToCreatedResponse());
+        var userQueryResponse =
+            await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(userCreatedEvent.UserId));
+
+        return Ok(userQueryResponse.User.ToCreatedResponse());
     }
 
     /// <summary>
