@@ -1,17 +1,13 @@
-﻿using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
-using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Dto;
+﻿using ModularHouse.Server.DeviceManagement.Application.CQRS.QueryResponses;
+using ModularHouse.Server.DeviceManagement.Application.Dto;
+using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.DataMappers;
 
 public static class UserDataMapper
 {
-    public static UserCreatedDto ToCreatedDto(this User user)
+    public static GetUserQueryResponse ToResponse(this User user)
     {
-        return new UserCreatedDto(user.Id, user.AdditionDate);
-    }
-
-    public static UserDeletedDto ToDeletedDto(this User user)
-    {
-        return new UserDeletedDto(user.Id, user.AdditionDate);
+        return new GetUserQueryResponse(new UserDto(user.Id, user.AdditionDate));
     }
 }

@@ -9,6 +9,8 @@ using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 using ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
+using ModularHouse.Server.DeviceManagement.Application.CQRS.Queries;
+using ModularHouse.Server.DeviceManagement.Application.CQRS.QueryResponses;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 using ModularHouse.Shared.Models.Responses.DMS;
 
@@ -40,9 +42,10 @@ public class UserController : ControllerBase
     {
         var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
         await _messageBus.Send(new CreateUserCommand(id));
-
         var userCreatedEvent = await userCreatedTask;
-        return Ok(userCreatedEvent.User.ToCreatedResponse());
+        var user = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(new GetUserQuery(userCreatedEvent.Id));
+
+        return Ok(user.ToCreatedResponse());
     }
 
     /// <summary>

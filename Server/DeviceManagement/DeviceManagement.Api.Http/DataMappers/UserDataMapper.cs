@@ -1,12 +1,12 @@
-﻿using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Dto;
+﻿using ModularHouse.Server.DeviceManagement.Application.CQRS.QueryResponses;
 using ModularHouse.Shared.Models.Responses.DMS;
 
 namespace ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 
 public static class UserDataMapper
 {
-    public static UserCreatedResponse ToCreatedResponse(this UserCreatedDto user)
+    public static UserCreatedResponse ToCreatedResponse(this GetUserQueryResponse queryResponse)
     {
-        return new UserCreatedResponse(user.Id, user.AdditionDate);
+        return new UserCreatedResponse(queryResponse.User.Id, queryResponse.User.AdditionDate);
     }
 }
