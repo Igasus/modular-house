@@ -1,9 +1,9 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Command;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 using ModularHouse.Server.Common.Domain;
+using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Server.UserManagement.Application.CQRS.Commands;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate.Events;
@@ -30,8 +30,11 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
     {
         var user = await _dataSource.GetByEmailAsync(request.Input.Email, cancellationToken);
         if (user is not null)
-            // TODO throw AlreadyExistException with proper message
-            throw new Exception("User already exist");
+        {
+            throw new BadRequestException(
+                ErrorMessages.AlreadyExist<User>(),
+                ErrorMessages.AlreadyExistDetails((User u) => u.Email, request.Input.Email));
+        }
 
         user = new User { Email = request.Input.Email };
         user.SetPassword(request.Input.Password);
