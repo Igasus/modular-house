@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Query;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
+using ModularHouse.Server.UserManagement.Application.CQRS.Queries;
+using ModularHouse.Server.UserManagement.Application.CQRS.QueryResponses;
 using ModularHouse.Server.UserManagement.Application.MappingExtensions;
-using ModularHouse.Server.UserManagement.Application.Queries;
-using ModularHouse.Server.UserManagement.Application.QueryResponses;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 
-namespace ModularHouse.Server.UserManagement.Application.QueryHandlers;
+namespace ModularHouse.Server.UserManagement.Application.CQRS.QueryHandlers;
 
 public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserByIdQueryResponse>
 {

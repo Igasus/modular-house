@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
+using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.UserManagement.Api.Http.MappingExtensions;
-using ModularHouse.Server.UserManagement.Application.Queries;
-using ModularHouse.Server.UserManagement.Application.QueryResponses;
+using ModularHouse.Server.UserManagement.Application.CQRS.Commands;
+using ModularHouse.Server.UserManagement.Application.CQRS.Queries;
+using ModularHouse.Server.UserManagement.Application.CQRS.QueryResponses;
+using ModularHouse.Server.UserManagement.Domain.UserAggregate.Events;
 using ModularHouse.Shared.Models.Requests.UMS;
 using ModularHouse.Shared.Models.Responses;
 using ModularHouse.Shared.Models.Responses.UMS;
@@ -71,7 +74,15 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromBody] UserRequest input)
     {
-        throw new NotImplementedException();
+        var userCreatedTask =
+            _domainEventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await _messageBus.Send(new CreateUserCommand(input.AsInputDto()));
+
+        var userCreatedEvent = await userCreatedTask;
+        var queryResponse = await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(
+            new GetUserByIdQuery(userCreatedEvent.UserId));
+
+        return Ok(queryResponse.User.AsResponse());
     }
 
     /// <summary>

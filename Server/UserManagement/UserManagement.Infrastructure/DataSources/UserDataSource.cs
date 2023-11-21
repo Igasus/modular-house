@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 using Neo4j.Driver;
@@ -17,7 +18,7 @@ public class UserDataSource : IUserDataSource
         _driver = driver;
     }
 
-    public async Task<IReadOnlyList<User>> GetAllAsync()
+    public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         await using var session = _driver.AsyncSession();
 
@@ -32,8 +33,9 @@ public class UserDataSource : IUserDataSource
         
         try
         {
-            var queryResultList = await (await session.RunAsync(query)).ToListAsync();
-            foreach (var queryResultItem in queryResultList)
+            var queryResult = await session.RunAsync(query);
+            var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
+            foreach (var queryResultItem in queryResultAsList)
             {
                 var userAsJson = JsonSerializer.Serialize(queryResultItem.Values);
                 var user = JsonSerializer.Deserialize<User>(userAsJson);
@@ -48,25 +50,58 @@ public class UserDataSource : IUserDataSource
         return users;
     }
 
-    public async Task<User> GetByIdAsync(Guid id)
+    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{{nameof(User.Id)}: $id}}) " +
+        var query = $"MATCH (user:{nameof(User)} {{{nameof(User.Id)}: $Id}}) " +
                     "RETURN " +
                     $"    user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
                     $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
                     $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
-        var parameters = new { id = id.ToString() };
+        var parameters = new { Id = id.ToString() };
         
         User user;
 
         try
         {
-            var queryResult = (await (await session.RunAsync(query, parameters)).ToListAsync()).FirstOrDefault();
-            if (queryResult is null) return null;
+            var queryResult = await session.RunAsync(query, parameters);
+            var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
+            var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
+            if (queryResultAsSingleRecord is null) return null;
                     
-            var userAsJson = JsonSerializer.Serialize(queryResult.Values);
+            var userAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
+            user = JsonSerializer.Deserialize<User>(userAsJson);
+        }
+        finally
+        {
+            await session.CloseAsync();
+        }
+
+        return user;
+    }
+
+    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        await using var session = _driver.AsyncSession();
+
+        var query = $"MATCH (user:{nameof(User)} {{{nameof(User.Email)}: $Email}}) " +
+                    "RETURN " +
+                    $"    user.{nameof(User.Id)} AS {nameof(User.Id)}, " +
+                    $"    user.{nameof(User.Email)} AS {nameof(User.Email)}, " +
+                    $"    user.{nameof(User.PasswordHash)} AS {nameof(User.PasswordHash)} ";
+        var parameters = new { Email = email };
+        
+        User user;
+
+        try
+        {
+            var queryResult = await session.RunAsync(query, parameters);
+            var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
+            var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
+            if (queryResultAsSingleRecord is null) return null;
+                    
+            var userAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
             user = JsonSerializer.Deserialize<User>(userAsJson);
         }
         finally

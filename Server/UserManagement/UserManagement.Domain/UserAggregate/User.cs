@@ -8,12 +8,12 @@ public class User
     public string Email { get; set; }
     public string PasswordHash { get; set; }
 
-    public void SetPassword()
+    public void SetPassword(string password)
     {
         throw new NotImplementedException();
     }
 
-    public bool ValidatePassword()
+    public bool ValidatePassword(string password)
     {
         throw new NotImplementedException();
     }
