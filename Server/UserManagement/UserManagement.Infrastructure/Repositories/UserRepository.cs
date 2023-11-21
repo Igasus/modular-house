@@ -24,12 +24,21 @@ public class UserRepository : IUserRepository
                     $"    {nameof(User.Email)}: ${nameof(User.Email)}, " +
                     $"    {nameof(User.PasswordHash)}: ${nameof(User.PasswordHash)} }})";
 
-        if (user.Id == default)
-            user.Id = Guid.NewGuid();
+        var userId = user.Id == default
+            ? Guid.NewGuid()
+            : user.Id;
+        
+        var parameters = new
+        {
+            Id = userId.ToString(),
+            user.Email,
+            user.PasswordHash
+        };
 
         try
         {
-            await session.RunAsync(query, user);
+            await session.RunAsync(query, parameters);
+            user.Id = userId;
         }
         finally
         {
@@ -41,14 +50,21 @@ public class UserRepository : IUserRepository
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: ${nameof(User.Id)} }}) " +
+        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
                     "SET " +
                     $"    user.{nameof(User.Email)} = ${nameof(User.Email)}," +
                     $"    user.{nameof(User.PasswordHash)} = ${nameof(User.PasswordHash)}";
+        
+        var parameters = new
+        {
+            Id = user.Id.ToString(),
+            user.Email,
+            user.PasswordHash
+        };
 
         try
         {
-            await session.RunAsync(query, user);
+            await session.RunAsync(query, parameters);
         }
         finally
         {
@@ -60,9 +76,13 @@ public class UserRepository : IUserRepository
     {
         await using var session = _driver.AsyncSession();
 
-        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: ${nameof(User.Id)} }}) " +
+        var query = $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
                     $"DETACH DELETE user";
-        var parameters = new { user.Id };
+        
+        var parameters = new
+        {
+            Id = user.Id.ToString()
+        };
 
         try
         {
