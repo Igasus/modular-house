@@ -30,6 +30,8 @@ public static class AssemblyConfigurator
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IDeviceRepository, DeviceRepository>();
+
         return services;
     }
 
