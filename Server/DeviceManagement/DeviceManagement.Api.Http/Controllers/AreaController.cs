@@ -72,6 +72,7 @@ public class AreaController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(AreaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody, Required] AreaRequest input)
     {
         var areaCreatedTask = _eventBus.WaitAsync<AreaCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
