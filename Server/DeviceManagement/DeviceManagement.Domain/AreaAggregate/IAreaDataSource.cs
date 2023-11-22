@@ -9,4 +9,5 @@ public interface IAreaDataSource
 {
     Task<IReadOnlyList<Area>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<Area> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Area> GetByNameAsync(string name, CancellationToken cancellationToken = default);
 }
