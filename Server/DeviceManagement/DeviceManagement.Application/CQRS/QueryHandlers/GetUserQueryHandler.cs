@@ -17,9 +17,9 @@ public class GetUserQueryHandler : IQueryHandler<GetUserQuery, GetUserQueryRespo
         _userDataSource = userDataSource;
     }
 
-    public async Task<GetUserQueryResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    public async Task<GetUserQueryResponse> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userDataSource.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await _userDataSource.GetByIdAsync(query.UserId, cancellationToken);
         var userDto = user.ToDto();
 
         return new GetUserQueryResponse(userDto);

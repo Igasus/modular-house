@@ -17,9 +17,9 @@ public class GetAreaByIdQueryHandler : IQueryHandler<GetAreaByIdQuery, GetAreaBy
         _areaDataSource = areaDataSource;
     }
 
-    public async Task<GetAreaByIdQueryResponse> Handle(GetAreaByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetAreaByIdQueryResponse> Handle(GetAreaByIdQuery query, CancellationToken cancellationToken)
     {
-        var area = await _areaDataSource.GetByIdAsync(request.AreaId, cancellationToken);
+        var area = await _areaDataSource.GetByIdAsync(query.AreaId, cancellationToken);
 
         return new GetAreaByIdQueryResponse(area?.ToDto());
     }

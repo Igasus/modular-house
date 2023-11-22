@@ -17,7 +17,7 @@ public class GetAreasQueryHandler : IQueryHandler<GetAreasQuery, GetAreasQueryRe
         _areaDataSource = areaDataSource;
     }
 
-    public async Task<GetAreasQueryResponse> Handle(GetAreasQuery request, CancellationToken cancellationToken)
+    public async Task<GetAreasQueryResponse> Handle(GetAreasQuery query, CancellationToken cancellationToken)
     {
         var areas = await _areaDataSource.GetAllAsync(cancellationToken);
 
