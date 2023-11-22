@@ -54,13 +54,14 @@ public class AreaController : ControllerBase
     /// <returns>Action result with Area</returns>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(AreaResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdAsync([FromRoute, Required] Guid id)
     {
         var getAreaByIdQueryResponse =
             await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(new GetAreaByIdQuery(id));
 
-        return Ok(getAreaByIdQueryResponse.Area.ToResponse());
+        return Ok(getAreaByIdQueryResponse.Area?.ToResponse());
     }
 
     /// <summary>
