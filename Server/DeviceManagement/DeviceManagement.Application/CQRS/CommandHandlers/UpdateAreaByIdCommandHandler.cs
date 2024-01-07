@@ -34,9 +34,10 @@ public class UpdateAreaByIdCommandHandler : ICommandHandler<UpdateAreaByIdComman
 
     public async Task Handle(UpdateAreaByIdCommand command, CancellationToken cancellationToken)
     {
-        var area = await GetAreaThrowIfNotExistAsync(command.AreaId, cancellationToken);
+        await ThrowIfAreaIsNotExistAsync(command.AreaId, cancellationToken);
         await ThrowIfUserHasNoAreaAsync(command, cancellationToken);
 
+        var area = await _areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
         area.Name = command.Area.Name;
         area.Description = command.Area.Description;
         area.LastUpdatedDate = DateTime.UtcNow;
@@ -47,17 +48,15 @@ public class UpdateAreaByIdCommandHandler : ICommandHandler<UpdateAreaByIdComman
         await _eventBus.PublishAsync(new AreaUpdatedEvent(area.Id, CurrentTransaction.TransactionId));
     }
     
-    private async Task<Area> GetAreaThrowIfNotExistAsync(Guid id, CancellationToken cancellationToken)
+    private async Task ThrowIfAreaIsNotExistAsync(Guid id, CancellationToken cancellationToken)
     {
-        var area = await _areaDataSource.GetByIdAsync(id, cancellationToken);
-        if (area is null)
+        var isAreaExist = await _areaDataSource.ExistByIdAsync(id, cancellationToken);
+        if (!isAreaExist)
         {
             throw new NotFoundException(
                 ErrorMessages.NotFound<Area>(),
                 ErrorMessages.NotFoundDetails((Area a) => a.Id, id));
         }
-
-        return area;
     }
 
     private async Task ThrowIfUserHasNoAreaAsync(UpdateAreaByIdCommand command, CancellationToken cancellationToken)
