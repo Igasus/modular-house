@@ -34,7 +34,7 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
     public async Task Handle(CreateAreaCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfUserIsNotExistAsync(command.Area.UserId, cancellationToken);
-        await ThrowIfAreaIsNotExistAsync(command.Area.Name, cancellationToken);
+        await ThrowIfAreaExistAsync(command.Area.Name, cancellationToken);
 
         var area = new Area
         {
@@ -53,8 +53,8 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
 
     private async Task ThrowIfUserIsNotExistAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var existingUser = await _userDataSource.GetByIdAsync(userId, cancellationToken);
-        if (existingUser is null)
+        var isUserExist = await _userDataSource.ExistByIdAsync(userId, cancellationToken);
+        if (!isUserExist)
         {
             throw new NotFoundException(
                 ErrorMessages.NotFound<User>(),
@@ -62,10 +62,10 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
         }
     }
     
-    private async Task ThrowIfAreaIsNotExistAsync(string name, CancellationToken cancellationToken)
+    private async Task ThrowIfAreaExistAsync(string name, CancellationToken cancellationToken)
     {
-        var existingArea = await _areaDataSource.GetByNameAsync(name, cancellationToken);
-        if (existingArea is not null)
+        var isAreaExist = await _areaDataSource.ExistByNameAsync(name, cancellationToken);
+        if (isAreaExist)
         {
             throw new BadRequestException(
                 ErrorMessages.AlreadyExist<Area>(),

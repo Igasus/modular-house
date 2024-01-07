@@ -29,8 +29,8 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 
     public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var existingUser = await _userDataSource.GetByIdAsync(command.UserId, cancellationToken);
-        if (existingUser is not null)
+        var isUserExist = await _userDataSource.ExistByIdAsync(command.UserId, cancellationToken);
+        if (isUserExist)
         {
             throw new BadRequestException(
                 ErrorMessages.AlreadyExist<User>(),

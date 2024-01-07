@@ -30,4 +30,9 @@ public class DeviceDataSource : IDeviceDataSource
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+
+    public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Devices.AnyAsync(x => x.Id == id, cancellationToken);
+    }
 }

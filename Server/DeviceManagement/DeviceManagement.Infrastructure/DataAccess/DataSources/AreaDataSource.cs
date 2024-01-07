@@ -31,10 +31,8 @@ public class AreaDataSource : IAreaDataSource
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<Area> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await _context.Areas
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        return await _context.Areas.AnyAsync(x => x.Name == name, cancellationToken);
     }
 }

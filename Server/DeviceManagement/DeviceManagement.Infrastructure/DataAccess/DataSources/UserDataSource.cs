@@ -42,4 +42,9 @@ public class UserDataSource : IUserDataSource
             .Select(area => area.Id)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users.AnyAsync(x => x.Id == id, cancellationToken);
+    }
 }
