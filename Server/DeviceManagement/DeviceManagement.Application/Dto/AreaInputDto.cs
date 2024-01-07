@@ -2,4 +2,9 @@
 
 namespace ModularHouse.Server.DeviceManagement.Application.Dto;
 
-public record AreaInputDto(string Name, string Description, Guid UserId);
+public record AreaInputDto
+{
+    public string Name { get; init; }
+    public string Description { get; init; }
+    public Guid UserId { get; init; }
+}

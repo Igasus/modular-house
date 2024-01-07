@@ -2,4 +2,9 @@
 
 namespace ModularHouse.Shared.Models.Requests.DMS;
 
-public record AreaRequest(string Name, string Description, Guid UserId);
+public record AreaRequest
+{
+    public string Name { get; }
+    public string Description { get; }
+    public Guid UserId { get; }
+}
