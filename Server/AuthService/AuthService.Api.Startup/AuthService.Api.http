@@ -1,0 +1,5 @@
+@HostAddress = http://localhost:3401
+
+###
+GET {{HostAddress}}/api/ping
+###
