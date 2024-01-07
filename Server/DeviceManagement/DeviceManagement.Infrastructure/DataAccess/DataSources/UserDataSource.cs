@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -30,17 +29,6 @@ public class UserDataSource : IUserDataSource
         return await _context.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-    }
-
-    public async Task<IReadOnlyList<Guid>> GetAreaIdsAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await _context.Users
-            .AsNoTracking()
-            .Include(user => user.CreatedAreas)
-            .Where(user => user.Id == id)
-            .SelectMany(user => user.CreatedAreas)
-            .Select(area => area.Id)
-            .ToListAsync(cancellationToken);
     }
 
     public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
