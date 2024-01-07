@@ -22,7 +22,7 @@ public static class AreaDataMapper
         };
     }
 
-    public static IReadOnlyList<AreaResponse> ToResponse(this IReadOnlyList<AreaDto> areas)
+    public static IReadOnlyList<AreaResponse> ToResponseList(this IReadOnlyList<AreaDto> areas)
     {
         return areas.Select(ToResponse).ToList();
     }

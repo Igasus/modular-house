@@ -21,6 +21,6 @@ public class GetAreasQueryHandler : IQueryHandler<GetAreasQuery, GetAreasQueryRe
     {
         var areas = await _areaDataSource.GetAllAsync(cancellationToken);
 
-        return new GetAreasQueryResponse(areas.ToDto(), areas.Count);
+        return new GetAreasQueryResponse(areas.ToDtoList(), areas.Count);
     }
 }

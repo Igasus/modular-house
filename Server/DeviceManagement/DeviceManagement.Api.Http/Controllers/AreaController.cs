@@ -41,7 +41,7 @@ public class AreaController : ControllerBase
     public async Task<IActionResult> GetAllAsync()
     {
         var getAreasQueryResponse = await _messageBus.Send<GetAreasQuery, GetAreasQueryResponse>(new GetAreasQuery());
-        var areasAsResponseList = getAreasQueryResponse.Areas.ToResponse();
+        var areasAsResponseList = getAreasQueryResponse.Areas.ToResponseList();
 
         var response = new ListedResponse<AreaResponse>(areasAsResponseList, getAreasQueryResponse.Areas.Count);
         return Ok(response);

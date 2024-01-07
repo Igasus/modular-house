@@ -21,7 +21,7 @@ public static class AreaDataMapper
         };
     }
 
-    public static IReadOnlyList<AreaDto> ToDto(this IReadOnlyList<Area> areas)
+    public static IReadOnlyList<AreaDto> ToDtoList(this IReadOnlyList<Area> areas)
     {
         return areas.Select(ToDto).ToList();
     }
