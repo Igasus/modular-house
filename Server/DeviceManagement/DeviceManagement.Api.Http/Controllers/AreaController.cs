@@ -61,7 +61,7 @@ public class AreaController : ControllerBase
         var getAreaByIdQueryResponse =
             await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(new GetAreaByIdQuery(id));
 
-        return Ok(getAreaByIdQueryResponse.Area?.ToResponse());
+        return Ok(getAreaByIdQueryResponse.Area.ToResponse());
     }
 
     /// <summary>
