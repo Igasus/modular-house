@@ -29,8 +29,8 @@ public class CreateDeviceCommandHandler : ICommandHandler<CreateDeviceCommand>
 
     public async Task Handle(CreateDeviceCommand command, CancellationToken cancellationToken)
     {
-        var existingDevice = await _deviceDataSource.GetByIdAsync(command.DeviceId, cancellationToken);
-        if (existingDevice is not null)
+        var isDeviceExist = await _deviceDataSource.ExistByIdAsync(command.DeviceId, cancellationToken);
+        if (isDeviceExist)
         {
             throw new BadRequestException(
                 ErrorMessages.AlreadyExist<Device>(),

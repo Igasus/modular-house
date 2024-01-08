@@ -5,8 +5,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 
 public static class DeviceDataMapper
 {
-    public static DeviceCreatedResponse ToCreatedResponse(this DeviceDto device)
+    public static DeviceResponse ToResponse(this DeviceDto device)
     {
-        return new DeviceCreatedResponse(device.Id, device.AdditionDate);
+        return new DeviceResponse(device.Id, device.AdditionDate);
     }
 }

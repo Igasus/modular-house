@@ -15,7 +15,7 @@ public class DeviceRepository : IDeviceRepository
         _context = context;
     }
 
-    public async Task CreateAsync(Device device, CancellationToken cancellationToken)
+    public async Task CreateAsync(Device device, CancellationToken cancellationToken = default)
     {
         var deviceEntry = await _context.Devices.AddAsync(device, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -23,7 +23,7 @@ public class DeviceRepository : IDeviceRepository
         deviceEntry.State = EntityState.Detached;
     }
 
-    public async Task DeleteAsync(Device device, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Device device, CancellationToken cancellationToken = default)
     {
         var deviceEntry = _context.Devices.Remove(device);
         await _context.SaveChangesAsync(cancellationToken);

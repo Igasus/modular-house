@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task CreateAsync(User user, CancellationToken cancellationToken)
+    public async Task CreateAsync(User user, CancellationToken cancellationToken = default)
     {
         var userEntry = await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -23,7 +23,7 @@ public class UserRepository : IUserRepository
         userEntry.State = EntityState.Detached;
     }
 
-    public async Task DeleteAsync(User user, CancellationToken cancellationToken)
+    public async Task DeleteAsync(User user, CancellationToken cancellationToken = default)
     {
         var userEntry = _context.Users.Remove(user);
         await _context.SaveChangesAsync(cancellationToken);

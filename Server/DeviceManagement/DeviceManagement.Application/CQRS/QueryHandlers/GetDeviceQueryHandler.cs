@@ -17,9 +17,9 @@ public class GetDeviceQueryHandler : IQueryHandler<GetDeviceQuery, GetDeviceQuer
         _deviceDataSource = deviceDataSource;
     }
 
-    public async Task<GetDeviceQueryResponse> Handle(GetDeviceQuery request, CancellationToken cancellationToken)
+    public async Task<GetDeviceQueryResponse> Handle(GetDeviceQuery query, CancellationToken cancellationToken)
     {
-        var device = await _deviceDataSource.GetByIdAsync(request.DeviceId, cancellationToken);
+        var device = await _deviceDataSource.GetByIdAsync(query.DeviceId, cancellationToken);
         var deviceDto = device.ToDto();
 
         return new GetDeviceQueryResponse(deviceDto);
