@@ -24,8 +24,8 @@ public static class AssemblyConfigurator
             c.IncludeXmlComments(xmlPath);
         });
 
-        services.AddExceptionHandlerMiddleware();
         services.AddTransactionMiddleware();
+        services.AddExceptionHandlerMiddleware();
         
         return services;
     }
@@ -41,8 +41,8 @@ public static class AssemblyConfigurator
         app.UseHttpsRedirection();
         app.MapControllers();
 
-        app.UseExceptionHandlerMiddleware();
         app.UseTransactionMiddleware();
+        app.UseExceptionHandlerMiddleware();
         
         return app;
     }
