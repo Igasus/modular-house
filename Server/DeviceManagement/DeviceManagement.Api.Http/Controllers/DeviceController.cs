@@ -34,9 +34,9 @@ public class DeviceController : ControllerBase
     /// Create Device with given Id.
     /// </summary>
     /// <param name="id">Device Id</param>
-    /// <returns>Created Device</returns>
+    /// <returns>Action result with Device</returns>
     [HttpPost("{id:guid}")]
-    [ProducesResponseType(typeof(DeviceCreatedResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DeviceResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
@@ -49,14 +49,14 @@ public class DeviceController : ControllerBase
         var deviceQueryResponse = await _messageBus.Send<GetDeviceQuery, GetDeviceQueryResponse>(
             new GetDeviceQuery(deviceCreatedEvent.DeviceId));
 
-        return Ok(deviceQueryResponse.Device.ToCreatedResponse());
+        return Ok(deviceQueryResponse.Device.ToResponse());
     }
 
     /// <summary>
     /// Delete Device with given Id.
     /// </summary>
     /// <param name="id">Device Id</param>
-    /// <returns>Result status code</returns>
+    /// <returns>Action result with status code</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

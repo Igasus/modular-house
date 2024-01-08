@@ -5,8 +5,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.DataMappers;
 
 public static class UserDataMapper
 {
-    public static UserCreatedResponse ToCreatedResponse(this UserDto user)
+    public static UserResponse ToResponse(this UserDto user)
     {
-        return new UserCreatedResponse(user.Id, user.AdditionDate);
+        return new UserResponse(user.Id, user.AdditionDate);
     }
 }

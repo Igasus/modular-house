@@ -34,9 +34,9 @@ public class UserController : ControllerBase
     /// Create User with given Id.
     /// </summary>
     /// <param name="id">User Id</param>
-    /// <returns>Created User</returns>
+    /// <returns>Action result with User</returns>
     [HttpPost("{id:guid}")]
-    [ProducesResponseType(typeof(UserCreatedResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
@@ -47,14 +47,14 @@ public class UserController : ControllerBase
         var userQueryResponse = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(
             new GetUserQuery(userCreatedEvent.UserId));
 
-        return Ok(userQueryResponse.User.ToCreatedResponse());
+        return Ok(userQueryResponse.User.ToResponse());
     }
 
     /// <summary>
     /// Delete User with given Id.
     /// </summary>
     /// <param name="id">User Id</param>
-    /// <returns>Result status code</returns>
+    /// <returns>Action result with status code</returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

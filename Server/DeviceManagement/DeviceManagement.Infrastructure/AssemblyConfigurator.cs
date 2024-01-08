@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
@@ -31,6 +32,7 @@ public static class AssemblyConfigurator
     {
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IDeviceRepository, DeviceRepository>();
+        services.AddTransient<IAreaRepository, AreaRepository>();
 
         return services;
     }
@@ -39,6 +41,7 @@ public static class AssemblyConfigurator
     {
         services.AddTransient<IUserDataSource, UserDataSource>();
         services.AddTransient<IDeviceDataSource, DeviceDataSource>();
+        services.AddTransient<IAreaDataSource, AreaDataSource>();
 
         return services;
     }
