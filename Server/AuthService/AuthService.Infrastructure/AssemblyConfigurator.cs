@@ -13,7 +13,7 @@ public static class AssemblyConfigurator
     {
         services.Configure<HttpClientsOptions>(configuration.GetSection(HttpClientsOptions.Section));
         
-        services.AddTransient<IUserHttpClient, UserHttpClient>();
+        services.AddScoped<IUserHttpClient, UserHttpClient>();
         
         return services;
     }
