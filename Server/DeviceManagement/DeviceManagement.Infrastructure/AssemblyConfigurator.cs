@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
+using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
@@ -42,6 +43,7 @@ public static class AssemblyConfigurator
         services.AddTransient<IUserDataSource, UserDataSource>();
         services.AddTransient<IDeviceDataSource, DeviceDataSource>();
         services.AddTransient<IAreaDataSource, AreaDataSource>();
+        services.AddTransient<IRouterDataSource, RouterDataSource>();
 
         return services;
     }
