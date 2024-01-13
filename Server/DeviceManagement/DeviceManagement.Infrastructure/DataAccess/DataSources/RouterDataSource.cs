@@ -30,4 +30,9 @@ public class RouterDataSource : IRouterDataSource
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+    
+    public async Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        return await _context.Routers.AnyAsync(x => x.Name == name, cancellationToken);
+    }
 }

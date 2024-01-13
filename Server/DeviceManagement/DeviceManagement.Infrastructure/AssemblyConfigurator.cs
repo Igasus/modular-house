@@ -34,6 +34,7 @@ public static class AssemblyConfigurator
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IDeviceRepository, DeviceRepository>();
         services.AddTransient<IAreaRepository, AreaRepository>();
+        services.AddTransient<IRouterRepository, RouterRepository>();
 
         return services;
     }
