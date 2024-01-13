@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ModularHouse.Server.AuthService.Application.Dto;
 using ModularHouse.Server.AuthService.Application.HttpClients.UMS;
@@ -18,34 +19,32 @@ namespace ModularHouse.Server.AuthService.Infrastructure.HttpClients;
 
 public class UserHttpClient : IUserHttpClient
 {
-    private readonly HttpClient _httpClient;
+    private const string BaseUri = "api/users";
     
-    public UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions)
+    private readonly HttpClient _httpClient;
+    private readonly ILogger<UserHttpClient> _logger;
+    
+    public UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILogger<UserHttpClient> logger)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri(httpClientsOptions.Value.UMS.BaseUrl)
-        };
+        _httpClient = new HttpClient { BaseAddress = new Uri(httpClientsOptions.Value.UMS.BaseUrl) };
+        _logger = logger;
     }
     
     public async Task<UserDto> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        // TODO Add logging
-        // TODO Add proper error messages
-        var response = await _httpClient.GetAsync($"api/users/{id}", cancellationToken);
+        var requestUri = $"{BaseUri}/{id}";
+        var response = await _httpClient.GetAsync(requestUri, cancellationToken);
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        if (response.StatusCode != HttpStatusCode.OK)
+        if (response.IsSuccessStatusCode)
         {
-            var errorDetails = new List<string>
-            {
-                $"HTTP GET - api/users/{id} request responded with not 200-OK status-code.",
-                $"HttpStatusCode: {response.StatusCode.ToString()}"
-            };
+            var errorMessage = ErrorMessages.NotSuccessResponse(HttpMethod.Get, requestUri);
+            List<string> errorDetails = [ErrorMessages.HttpResponseStatusCodeDetails(response.StatusCode)];
             if (!string.IsNullOrWhiteSpace(responseBody))
-                errorDetails.Add($"ErrorResponse: {JsonSerializer.Serialize(responseBody)}.");
+                errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
 
-            throw new InternalServerException(ErrorMessages.InternalServer, errorDetails.ToArray());
+            _logger.LogError(errorMessage);
+            throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
         
         var userResponse = JsonSerializer.Deserialize<UserResponse>(responseBody);
@@ -56,23 +55,20 @@ public class UserHttpClient : IUserHttpClient
 
     public async Task<UserDto> CreateUserAsync(UserCreateDto user, CancellationToken cancellationToken = default)
     {
-        // TODO Add logging
-        // TODO Add proper error messages
-        var responseContent = JsonContent.Create(user.AsRequest());
-        var response = await _httpClient.PostAsync("api/users", responseContent, cancellationToken);
+        var requestUri = BaseUri;
+        var requestContent = JsonContent.Create(user.AsRequest());
+        var response = await _httpClient.PostAsync(requestUri, requestContent, cancellationToken);
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
         if (response.StatusCode != HttpStatusCode.OK)
         {
-            var errorDetails = new List<string>
-            {
-                "HTTP POST - api/users request responded with not 200-OK status-code.",
-                $"HttpStatusCode: {response.StatusCode.ToString()}"
-            };
+            var errorMessage = ErrorMessages.NotSuccessResponse(HttpMethod.Post, requestUri);
+            List<string> errorDetails = [ErrorMessages.HttpResponseStatusCodeDetails(response.StatusCode)];
             if (!string.IsNullOrWhiteSpace(responseBody))
-                errorDetails.Add($"ErrorResponse: {JsonSerializer.Serialize(responseBody)}.");
-            
-            throw new InternalServerException(ErrorMessages.InternalServer, errorDetails.ToArray());
+                errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
+
+            _logger.LogError(errorMessage);
+            throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
         
         var userResponse = JsonSerializer.Deserialize<UserResponse>(responseBody);
