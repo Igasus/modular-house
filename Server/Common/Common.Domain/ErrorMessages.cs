@@ -35,7 +35,7 @@ public static class ErrorMessages
 
     public const string InternalServer = "Internal server error.";
 
-    public static string NotSuccessResponse(HttpMethod method, string requestUri) =>
+    public static string HttpResponseNotSuccess(HttpMethod method, string requestUri) =>
         $"HTTP {method.Method} - {requestUri} responded with not success StatusCode.";
 
     public static string HttpResponseStatusCodeDetails(HttpStatusCode statusCode) =>

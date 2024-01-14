@@ -36,9 +36,9 @@ public class UserHttpClient : IUserHttpClient
         var response = await _httpClient.GetAsync(requestUri, cancellationToken);
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var errorMessage = ErrorMessages.NotSuccessResponse(HttpMethod.Get, requestUri);
+            var errorMessage = ErrorMessages.HttpResponseNotSuccess(HttpMethod.Get, requestUri);
             List<string> errorDetails = [ErrorMessages.HttpResponseStatusCodeDetails(response.StatusCode)];
             if (!string.IsNullOrWhiteSpace(responseBody))
                 errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
@@ -60,9 +60,9 @@ public class UserHttpClient : IUserHttpClient
         var response = await _httpClient.PostAsync(requestUri, requestContent, cancellationToken);
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        if (response.StatusCode != HttpStatusCode.OK)
+        if (!response.IsSuccessStatusCode)
         {
-            var errorMessage = ErrorMessages.NotSuccessResponse(HttpMethod.Post, requestUri);
+            var errorMessage = ErrorMessages.HttpResponseNotSuccess(HttpMethod.Post, requestUri);
             List<string> errorDetails = [ErrorMessages.HttpResponseStatusCodeDetails(response.StatusCode)];
             if (!string.IsNullOrWhiteSpace(responseBody))
                 errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
