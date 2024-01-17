@@ -35,9 +35,4 @@ public class AreaDataSource : IAreaDataSource
     {
         return await _context.Areas.AnyAsync(x => x.Id == id, cancellationToken);
     }
-
-    public async Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default)
-    {
-        return await _context.Areas.AnyAsync(x => x.Name == name, cancellationToken);
-    }
 }

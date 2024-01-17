@@ -14,18 +14,15 @@ namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
 public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
 {
-    private readonly IAreaDataSource _areaDataSource;
     private readonly IUserDataSource _userDataSource;
     private readonly IAreaRepository _areaRepository;
     private readonly IDomainEventBus _eventBus;
 
     public CreateAreaCommandHandler(
-        IAreaDataSource areaDataSource,
         IUserDataSource userDataSource,
         IAreaRepository areaRepository,
         IDomainEventBus eventBus)
     {
-        _areaDataSource = areaDataSource;
         _userDataSource = userDataSource;
         _areaRepository = areaRepository;
         _eventBus = eventBus;
@@ -34,7 +31,6 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
     public async Task Handle(CreateAreaCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfUserIsNotExistAsync(command.Area.UserId, cancellationToken);
-        await ThrowIfAreaExistAsync(command.Area.Name, cancellationToken);
 
         var area = new Area
         {
@@ -59,17 +55,6 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
             throw new NotFoundException(
                 ErrorMessages.NotFound<User>(),
                 ErrorMessages.NotFoundDetails((User u) => u.Id, userId));
-        }
-    }
-    
-    private async Task ThrowIfAreaExistAsync(string name, CancellationToken cancellationToken)
-    {
-        var isAreaExist = await _areaDataSource.ExistByNameAsync(name, cancellationToken);
-        if (isAreaExist)
-        {
-            throw new BadRequestException(
-                ErrorMessages.AlreadyExist<Area>(),
-                ErrorMessages.AlreadyExistDetails((Area a) => a.Name, name));
         }
     }
 }
