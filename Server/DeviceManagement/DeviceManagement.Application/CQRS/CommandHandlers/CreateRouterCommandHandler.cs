@@ -41,6 +41,7 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         await ThrowIfUserIsNotExistByIdAsync(command.UserId, cancellationToken);
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
+        //TODO Add Device security check when DMC is ready.
         
         var router = new Router
         {
