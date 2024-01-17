@@ -20,7 +20,6 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
     private readonly IUserDataSource _userDataSource;
     private readonly IAreaDataSource _areaDataSource;
     private readonly IDeviceDataSource _deviceDataSource;
-    private readonly IRouterDataSource _routerDataSource;
     private readonly IDomainEventBus _eventBus;
 
     public CreateRouterCommandHandler(
@@ -28,14 +27,12 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         IUserDataSource userDataSource,
         IAreaDataSource areaDataSource, 
         IDeviceDataSource deviceDataSource,
-        IRouterDataSource routerDataSource,
         IDomainEventBus eventBus)
     {
         _routerRepository = routerRepository;
         _userDataSource = userDataSource;
         _areaDataSource = areaDataSource;
         _deviceDataSource = deviceDataSource;
-        _routerDataSource = routerDataSource;
         _eventBus = eventBus;
     }
 
@@ -44,7 +41,6 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         await ThrowIfUserIsNotExistByIdAsync(command.UserId, cancellationToken);
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
-        await ThrowIfRouterExistByNameAsync(command.Router.Name, cancellationToken);
         
         var router = new Router
         {
@@ -93,17 +89,6 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
             throw new NotFoundException(
                 ErrorMessages.NotFound<Device>(),
                 ErrorMessages.NotFoundDetails((Device d) => d.Id, id));
-        }
-    }
-
-    private async Task ThrowIfRouterExistByNameAsync(string name, CancellationToken cancellationToken)
-    {
-        var isRouterExist = await _routerDataSource.ExistByNameAsync(name, cancellationToken);
-        if (isRouterExist)
-        {
-            throw new BadRequestException(
-                ErrorMessages.AlreadyExist<Router>(),
-                ErrorMessages.AlreadyExistDetails((Router r) => r.Name, name));
         }
     }
 }

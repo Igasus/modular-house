@@ -9,5 +9,4 @@ public interface IRouterDataSource
 {
     Task<IReadOnlyList<Router>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<Router> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default);
 }
