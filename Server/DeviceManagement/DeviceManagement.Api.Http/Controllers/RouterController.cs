@@ -114,6 +114,32 @@ public class RouterController : ControllerBase
     }
 
     /// <summary>
+    /// Update Router Area.
+    /// </summary>
+    /// <param name="id">Router Id</param>
+    /// <param name="input">Input with AreaId</param>
+    /// <returns>Action result with updated Router</returns>
+    [HttpPatch("{id:guid}")]
+    [ProducesResponseType(typeof(RouterResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateAreaByIdAsync(
+        [FromRoute, Required] Guid id,
+        [FromBody, Required] RouterAreaUpdateRequest input)
+    {
+        var routerAreaUpdateTask = 
+            _eventBus.WaitAsync<RouterAreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+
+        await _messageBus.Send(new UpdateRouterAreaByIdCommand(id, input.AreaId));
+
+        var routerAreaUpdatedEvent = await routerAreaUpdateTask;
+
+        var getRouterByIdResponse = await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
+            new GetRouterByIdQuery(routerAreaUpdatedEvent.RouterId));
+
+        return Ok(getRouterByIdResponse.Router.ToResponse());
+    }
+
+    /// <summary>
     /// Delete Router.
     /// </summary>
     /// <param name="id">Router Id</param>
