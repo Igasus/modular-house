@@ -36,7 +36,8 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
                         name: "FK_Routers_Devices_DeviceId",
                         column: x => x.DeviceId,
                         principalTable: "Devices",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Routers_Users_CreatedByUserId",
                         column: x => x.CreatedByUserId,

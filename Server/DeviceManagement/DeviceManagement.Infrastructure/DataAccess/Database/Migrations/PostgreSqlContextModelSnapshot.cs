@@ -162,7 +162,9 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
 
                     b.HasOne("ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate.Device", "Device")
                         .WithOne("Router")
-                        .HasForeignKey("ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Router", "DeviceId");
+                        .HasForeignKey("ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Router", "DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ModularHouse.Server.DeviceManagement.Domain.UserAggregate.User", "LastUpdatedByUser")
                         .WithMany("LastUpdatedRouters")

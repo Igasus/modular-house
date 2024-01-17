@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database.Migrations
 {
     [DbContext(typeof(PostgreSqlContext))]
-    [Migration("20240113114432_Created_Routers")]
+    [Migration("20240117215002_Created_Routers")]
     partial class Created_Routers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,7 +164,9 @@ namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Databas
 
                     b.HasOne("ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate.Device", "Device")
                         .WithOne("Router")
-                        .HasForeignKey("ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Router", "DeviceId");
+                        .HasForeignKey("ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Router", "DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ModularHouse.Server.DeviceManagement.Domain.UserAggregate.User", "LastUpdatedByUser")
                         .WithMany("LastUpdatedRouters")

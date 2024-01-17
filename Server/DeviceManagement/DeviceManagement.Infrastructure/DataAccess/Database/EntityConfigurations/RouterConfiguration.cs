@@ -14,8 +14,7 @@ public class RouterConfiguration : IEntityTypeConfiguration<Router>
 
         builder.HasOne(router => router.Device)
             .WithOne(device => device.Router)
-            .HasForeignKey<Router>(x => x.DeviceId)
-            .IsRequired(false);
+            .HasForeignKey<Router>(x => x.DeviceId);
 
         builder.HasOne(router => router.CreatedByUser)
             .WithMany(user => user.CreatedRouters)
