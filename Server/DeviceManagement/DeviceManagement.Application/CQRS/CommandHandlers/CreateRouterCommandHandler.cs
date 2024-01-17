@@ -41,6 +41,7 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         await ThrowIfUserIsNotExistByIdAsync(command.UserId, cancellationToken);
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
+        await ThrowIfDeviceAlreadyLinkedByIdAsync(command.DeviceId, cancellationToken);
         //TODO Add Device security check when DMC is ready.
         
         var router = new Router
@@ -90,6 +91,17 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
             throw new NotFoundException(
                 ErrorMessages.NotFound<Device>(),
                 ErrorMessages.NotFoundDetails((Device d) => d.Id, id));
+        }
+    }
+
+    private async Task ThrowIfDeviceAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var isDeviceAlreadyLinked = await _deviceDataSource.IsAlreadyLinkedByIdAsync(id, cancellationToken);
+        if (isDeviceAlreadyLinked)
+        {
+            throw new BadRequestException(
+                ErrorMessages.AlreadyLinked<Device>(),
+                ErrorMessages.AlreadyLinkedDetails((Device d) => d.Id, id));
         }
     }
 }

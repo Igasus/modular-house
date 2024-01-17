@@ -10,4 +10,5 @@ public interface IDeviceDataSource
     Task<IReadOnlyList<Device>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<Device> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> IsAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }
