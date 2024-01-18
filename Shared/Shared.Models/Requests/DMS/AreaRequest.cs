@@ -2,6 +2,6 @@
 
 public record AreaRequest
 {
-    public string Name { get; }
-    public string Description { get; }
+    public string Name { get; init; }
+    public string Description { get; init; }
 }
