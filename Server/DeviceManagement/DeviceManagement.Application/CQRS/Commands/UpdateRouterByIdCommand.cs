@@ -4,4 +4,4 @@ using ModularHouse.Server.DeviceManagement.Application.Dto;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.Commands;
 
-public record UpdateRouterByIdCommand(Guid RouterId, Guid UserId, RouterInputDto Router) : ICommand;
+public record UpdateRouterByIdCommand(Guid RouterId, RouterInputDto Router) : ICommand;

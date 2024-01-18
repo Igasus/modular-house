@@ -10,27 +10,23 @@ using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Events;
-using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
 public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
 {
     private readonly IRouterRepository _routerRepository;
-    private readonly IUserDataSource _userDataSource;
     private readonly IAreaDataSource _areaDataSource;
     private readonly IDeviceDataSource _deviceDataSource;
     private readonly IDomainEventBus _eventBus;
 
     public CreateRouterCommandHandler(
         IRouterRepository routerRepository,
-        IUserDataSource userDataSource,
         IAreaDataSource areaDataSource, 
         IDeviceDataSource deviceDataSource,
         IDomainEventBus eventBus)
     {
         _routerRepository = routerRepository;
-        _userDataSource = userDataSource;
         _areaDataSource = areaDataSource;
         _deviceDataSource = deviceDataSource;
         _eventBus = eventBus;
@@ -38,12 +34,12 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
 
     public async Task Handle(CreateRouterCommand command, CancellationToken cancellationToken)
     {
-        await ThrowIfUserIsNotExistByIdAsync(command.UserId, cancellationToken);
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
         await ThrowIfDeviceAlreadyLinkedByIdAsync(command.DeviceId, cancellationToken);
-        //TODO Add Device security check when DMC is ready.
         
+        //TODO Add Device security check when DMC is ready.
+        //TODO CreatedByUserId and LastUpdatedByUserId must be set by current user session
         var router = new Router
         {
             AreaId = command.AreaId,
@@ -51,25 +47,12 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
             Name = command.Router.Name,
             Description = command.Router.Description,
             CreationDate = DateTime.UtcNow,
-            CreatedByUserId = command.UserId,
-            LastUpdatedDate = DateTime.UtcNow,
-            LastUpdatedByUserId = command.UserId
+            LastUpdatedDate = DateTime.UtcNow
         };
 
         await _routerRepository.CreateAsync(router, cancellationToken);
         
         await _eventBus.PublishAsync(new RouterCreatedEvent(router.Id, CurrentTransaction.TransactionId));
-    }
-
-    private async Task ThrowIfUserIsNotExistByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        var isUserExist = await _userDataSource.ExistByIdAsync(id, cancellationToken);
-        if (!isUserExist)
-        {
-            throw new NotFoundException(
-                ErrorMessages.NotFound<User>(),
-                ErrorMessages.NotFoundDetails((User u) => u.Id, id));
-        }
     }
 
     private async Task ThrowIfAreaIsNotExistByIdAsync(Guid id, CancellationToken cancellationToken)

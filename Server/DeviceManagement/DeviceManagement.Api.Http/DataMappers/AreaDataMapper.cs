@@ -29,6 +29,6 @@ public static class AreaDataMapper
 
     public static AreaInputDto ToDto(this AreaRequest area)
     {
-        return new AreaInputDto { Name = area.Name, Description = area.Description, UserId = area.UserId };
+        return new AreaInputDto { Name = area.Name, Description = area.Description };
     }
 }

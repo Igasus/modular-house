@@ -79,7 +79,7 @@ public class RouterController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody, Required] RouterCreateRequest input)
     {
         var routerCreatedTask = _eventBus.WaitAsync<RouterCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new CreateRouterCommand(input.ToDto(), input.AreaId, input.DeviceId, input.UserId));
+        await _messageBus.Send(new CreateRouterCommand(input.ToDto(), input.AreaId, input.DeviceId));
 
         var routerCreatedEvent = await routerCreatedTask;
         
@@ -103,7 +103,7 @@ public class RouterController : ControllerBase
         [FromBody, Required] RouterUpdateRequest input)
     {
         var routerUpdatedTask = _eventBus.WaitAsync<RouterUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new UpdateRouterByIdCommand(id, input.UserId, input.ToDto()));
+        await _messageBus.Send(new UpdateRouterByIdCommand(id, input.ToDto()));
         
         var routerUpdatedEvent = await routerUpdatedTask;
         

@@ -30,12 +30,12 @@ public class UpdateAreaByIdCommandHandler : ICommandHandler<UpdateAreaByIdComman
     public async Task Handle(UpdateAreaByIdCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfAreaIsNotExistAsync(command.AreaId, cancellationToken);
-
+        
+        //TODO area.LastUpdatedByUserId must be set by current UserSession
         var area = await _areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
         area.Name = command.Area.Name;
         area.Description = command.Area.Description;
         area.LastUpdatedDate = DateTime.UtcNow;
-        area.LastUpdatedByUserId = command.Area.UserId;
 
         await _areaRepository.UpdateAsync(area, cancellationToken);
 
