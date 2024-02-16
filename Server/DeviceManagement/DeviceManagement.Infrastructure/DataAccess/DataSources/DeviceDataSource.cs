@@ -38,9 +38,7 @@ public class DeviceDataSource : IDeviceDataSource
 
     public async Task<bool> IsAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Devices
-            .Include(x => x.Router)
-            //TODO call .Include(x => x.Module) and add check if Module is not null too below with || operator
-            .AnyAsync(x => x.Id == id && x.Router != null, cancellationToken);
+        return await _context.Devices.AnyAsync(x => (x.Id == id) 
+                                                    && (x.Router != null || x.Module != null), cancellationToken);
     }
 }
