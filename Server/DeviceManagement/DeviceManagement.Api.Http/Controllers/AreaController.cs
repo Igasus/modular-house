@@ -43,7 +43,7 @@ public class AreaController : ControllerBase
         var getAreasQueryResponse = await _messageBus.Send<GetAreasQuery, GetAreasQueryResponse>(new GetAreasQuery());
         var areasAsResponseList = getAreasQueryResponse.Areas.ToResponseList();
 
-        var response = new ListedResponse<AreaResponse>(areasAsResponseList, getAreasQueryResponse.Areas.Count);
+        var response = new ListedResponse<AreaResponse>(areasAsResponseList, getAreasQueryResponse.TotalAreasCount);
         return Ok(response);
     }
 

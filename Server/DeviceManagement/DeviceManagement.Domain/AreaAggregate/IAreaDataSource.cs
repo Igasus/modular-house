@@ -10,5 +10,4 @@ public interface IAreaDataSource
     Task<IReadOnlyList<Area>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<Area> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default);
 }

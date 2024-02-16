@@ -32,6 +32,19 @@ public static class ErrorMessages
 
         return message;
     }
+    
+    public static string AlreadyLinked<TSource>() =>
+        $"{typeof(TSource).Name} already linked.";
+    
+    public static string AlreadyLinkedDetails<TSource, TMember>(
+        Expression<Func<TSource, TMember>> memberAccess,
+        TMember memberValue)
+    {
+        var memberName = ((MemberExpression)memberAccess.Body).Member.Name;
+        var message = $"{typeof(TSource).Name} {{ {memberName}: {memberValue} }} already linked.";
+
+        return message;
+    }
 
     public const string InternalServer = "Internal server error.";
 
