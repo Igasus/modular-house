@@ -32,10 +32,27 @@ public class RouterDataSource : IRouterDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-
+                    
         var routerAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var router = JsonSerializer.Deserialize<Router>(routerAsJson);
 
         return router;
+    }
+
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await using var connection = ConnectionContainer.FromDriver(_driver);
+
+        var query =
+            $"MATCH (router:{nameof(Router)} {{{nameof(Router.Id)}: $Id}}) " +
+            $"RETURN router.{nameof(Router.Id)} AS {nameof(Router.Id)}, " +
+            $"    router.{nameof(Router.AdditionDate)} AS {nameof(Router.AdditionDate)} ";
+        var parameters = new { Id = id.ToString() };
+
+        var queryResult = await connection.Session.RunAsync(query, parameters);
+        var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
+        var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
+        
+        return queryResultAsSingleRecord is not null;
     }
 }

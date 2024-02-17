@@ -7,4 +7,5 @@ namespace ModularHouse.Server.UserManagement.Domain.ModuleAggregate;
 public interface IModuleDataSource
 {
     Task<Module> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }
