@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using ModularHouse.Server.UserManagement.Domain.AreaAggregate;
+using ModularHouse.Server.UserManagement.Domain.ModuleAggregate;
+using ModularHouse.Server.UserManagement.Domain.RouterAggregate;
 using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 using ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 using ModularHouse.Server.UserManagement.Infrastructure.Neo4j;
@@ -23,9 +26,16 @@ public static class AssemblyConfigurator
             var authToken = AuthTokens.Basic(options.Auth.UserName, options.Auth.Password);
             return GraphDatabase.Driver(options.Uri, authToken);
         });
-        
+
         services.AddTransient<IUserDataSource, UserDataSource>();
+        services.AddTransient<IAreaDataSource, AreaDataSource>();
+        services.AddTransient<IRouterDataSource, RouterDataSource>();
+        services.AddTransient<IModuleDataSource, ModuleDataSource>();
+
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IAreaRepository, AreaRepository>();
+        services.AddTransient<IRouterRepository, RouterRepository>();
+        services.AddTransient<IModuleRepository, ModuleRepository>();
 
         return services;
     }
