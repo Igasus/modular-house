@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
+using ModularHouse.Server.DeviceManagement.Domain.ModuleAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
@@ -35,6 +36,7 @@ public static class AssemblyConfigurator
         services.AddTransient<IDeviceRepository, DeviceRepository>();
         services.AddTransient<IAreaRepository, AreaRepository>();
         services.AddTransient<IRouterRepository, RouterRepository>();
+        services.AddTransient<IModuleRepository, ModuleRepository>();
 
         return services;
     }
@@ -45,6 +47,7 @@ public static class AssemblyConfigurator
         services.AddTransient<IDeviceDataSource, DeviceDataSource>();
         services.AddTransient<IAreaDataSource, AreaDataSource>();
         services.AddTransient<IRouterDataSource, RouterDataSource>();
+        services.AddTransient<IModuleDataSource, ModuleDataSource>();
 
         return services;
     }
