@@ -26,13 +26,13 @@ public class DeleteAreaByIdCommandHandler : ICommandHandler<DeleteAreaByIdComman
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(DeleteAreaByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteAreaByIdCommand command, CancellationToken cancellationToken)
     {
-        var area = await _dataSource.GetByIdAsync(request.AreaId, cancellationToken);
+        var area = await _dataSource.GetByIdAsync(command.AreaId, cancellationToken);
         if (area is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Area>(),
-                ErrorMessages.NotFoundDetails((Area a) => a.Id, request.AreaId));
+                ErrorMessages.NotFoundDetails((Area a) => a.Id, command.AreaId));
         }
 
         await _repository.DeleteAsync(area, cancellationToken);

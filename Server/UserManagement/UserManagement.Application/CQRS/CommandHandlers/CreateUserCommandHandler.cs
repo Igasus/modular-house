@@ -26,17 +26,17 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByEmailAsync(request.Input.Email, cancellationToken);
+        var user = await _dataSource.GetByEmailAsync(command.Input.Email, cancellationToken);
         if (user is not null)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<User>(),
-                ErrorMessages.AlreadyExistDetails((User u) => u.Email, request.Input.Email));
+                ErrorMessages.AlreadyExistDetails((User u) => u.Email, command.Input.Email));
         }
 
-        user = new User { Email = request.Input.Email };
-        user.SetPassword(request.Input.Password);
+        user = new User { Email = command.Input.Email };
+        user.SetPassword(command.Input.Password);
 
         await _repository.CreateAsync(user, cancellationToken);
 

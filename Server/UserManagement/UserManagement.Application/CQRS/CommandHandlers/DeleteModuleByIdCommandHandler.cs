@@ -26,13 +26,13 @@ public class DeleteModuleByIdCommandHandler : ICommandHandler<DeleteModuleByIdCo
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(DeleteModuleByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteModuleByIdCommand command, CancellationToken cancellationToken)
     {
-        var module = await _dataSource.GetByIdAsync(request.ModuleId, cancellationToken);
+        var module = await _dataSource.GetByIdAsync(command.ModuleId, cancellationToken);
         if (module is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Module>(),
-                ErrorMessages.NotFoundDetails((Module a) => a.Id, request.ModuleId));
+                ErrorMessages.NotFoundDetails((Module a) => a.Id, command.ModuleId));
         }
 
         await _repository.DeleteAsync(module, cancellationToken);

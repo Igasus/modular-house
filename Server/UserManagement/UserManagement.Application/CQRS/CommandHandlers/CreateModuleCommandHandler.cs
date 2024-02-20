@@ -27,16 +27,16 @@ public class CreateModuleCommandHandler : ICommandHandler<CreateModuleCommand>
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(CreateModuleCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateModuleCommand command, CancellationToken cancellationToken)
     {
-        var moduleExists = await _dataSource.ExistsByIdAsync(request.Input.Id, cancellationToken);
+        var moduleExists = await _dataSource.ExistsByIdAsync(command.Input.Id, cancellationToken);
         if (moduleExists)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<Module>(),
-                ErrorMessages.AlreadyExistDetails((Module m) => m.Id, request.Input.Id));
+                ErrorMessages.AlreadyExistDetails((Module m) => m.Id, command.Input.Id));
         }
 
-        var module = request.Input.AsEntity();
+        var module = command.Input.AsEntity();
         await _repository.CreateAsync(module, cancellationToken);
 
         var moduleCreatedEvent = new ModuleCreatedEvent(module.Id, CurrentTransaction.TransactionId);

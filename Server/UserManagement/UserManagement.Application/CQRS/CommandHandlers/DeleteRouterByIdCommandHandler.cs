@@ -26,13 +26,13 @@ public class DeleteRouterByIdCommandHandler : ICommandHandler<DeleteRouterByIdCo
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(DeleteRouterByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRouterByIdCommand command, CancellationToken cancellationToken)
     {
-        var router = await _dataSource.GetByIdAsync(request.RouterId, cancellationToken);
+        var router = await _dataSource.GetByIdAsync(command.RouterId, cancellationToken);
         if (router is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Router>(),
-                ErrorMessages.NotFoundDetails((Router a) => a.Id, request.RouterId));
+                ErrorMessages.NotFoundDetails((Router a) => a.Id, command.RouterId));
         }
 
         await _repository.DeleteAsync(router, cancellationToken);

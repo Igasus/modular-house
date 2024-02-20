@@ -27,16 +27,16 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(CreateRouterCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateRouterCommand command, CancellationToken cancellationToken)
     {
-        var routerExists = await _dataSource.ExistsByIdAsync(request.Input.Id, cancellationToken);
+        var routerExists = await _dataSource.ExistsByIdAsync(command.Input.Id, cancellationToken);
         if (routerExists)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<Router>(),
-                ErrorMessages.AlreadyExistDetails((Router r) => r.Id, request.Input.Id));
+                ErrorMessages.AlreadyExistDetails((Router r) => r.Id, command.Input.Id));
         }
 
-        var router = request.Input.AsEntity();
+        var router = command.Input.AsEntity();
         await _repository.CreateAsync(router, cancellationToken);
 
         var routerCreatedEvent = new RouterCreatedEvent(router.Id, CurrentTransaction.TransactionId);

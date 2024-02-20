@@ -27,16 +27,16 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(CreateAreaCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateAreaCommand command, CancellationToken cancellationToken)
     {
-        var areaExists = await _dataSource.ExistsByIdAsync(request.Input.Id, cancellationToken);
+        var areaExists = await _dataSource.ExistsByIdAsync(command.Input.Id, cancellationToken);
         if (areaExists)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<Area>(),
-                ErrorMessages.AlreadyExistDetails((Area a) => a.Id, request.Input.Id));
+                ErrorMessages.AlreadyExistDetails((Area a) => a.Id, command.Input.Id));
         }
 
-        var area = request.Input.AsEntity();
+        var area = command.Input.AsEntity();
         await _repository.CreateAsync(area, cancellationToken);
 
         var areaCreatedEvent = new AreaCreatedEvent(area.Id, CurrentTransaction.TransactionId);
