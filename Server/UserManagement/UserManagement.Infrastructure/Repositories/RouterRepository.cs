@@ -31,7 +31,7 @@ public class RouterRepository : IRouterRepository
         var parameters = new
         {
             Id = router.Id.ToString(),
-            router.AdditionDate
+            AdditionDate = router.AdditionDate.ToString("O")
         };
 
         await connection.Session.RunAsync(query, parameters);

@@ -31,7 +31,7 @@ public class AreaRepository : IAreaRepository
         var parameters = new
         {
             Id = area.Id.ToString(),
-            area.AdditionDate
+            AdditionDate = area.AdditionDate.ToString("O")
         };
 
         await connection.Session.RunAsync(query, parameters);

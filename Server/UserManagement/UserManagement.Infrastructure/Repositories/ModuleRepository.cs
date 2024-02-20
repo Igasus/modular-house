@@ -31,7 +31,7 @@ public class ModuleRepository : IModuleRepository
         var parameters = new
         {
             Id = module.Id.ToString(),
-            module.AdditionDate
+            AdditionDate = module.AdditionDate.ToString("O")
         };
 
         await connection.Session.RunAsync(query, parameters);
