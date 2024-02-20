@@ -21,17 +21,8 @@ namespace ModularHouse.Server.UserManagement.Api.Http.Controllers;
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("api/modules")]
-public class ModuleController : ControllerBase
+public class ModuleController(IMessageBus messageBus, IDomainEventBus domainEventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public ModuleController(IMessageBus messageBus, IDomainEventBus domainEventBus)
-    {
-        _messageBus = messageBus;
-        _domainEventBus = domainEventBus;
-    }
-
     /// <summary>
     /// Create Module.
     /// </summary>
@@ -43,16 +34,16 @@ public class ModuleController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody, Required] ModuleRequest request)
     {
         var moduleCreatedTask =
-            _domainEventBus.WaitAsync<ModuleCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<ModuleCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var input = request.AsInputDto();
         var createModuleCommand = new CreateModuleCommand(input);
-        await _messageBus.Send(createModuleCommand);
+        await messageBus.Send(createModuleCommand);
 
         await moduleCreatedTask;
         var getModuleQuery = new GetModuleByIdQuery(input.Id);
         var getModuleQueryResponse =
-            await _messageBus.Send<GetModuleByIdQuery, GetModuleByIdQueryResponse>(getModuleQuery);
+            await messageBus.Send<GetModuleByIdQuery, GetModuleByIdQueryResponse>(getModuleQuery);
 
         var response = getModuleQueryResponse.Module.AsResponse();
         return Ok(response);
@@ -69,10 +60,10 @@ public class ModuleController : ControllerBase
     public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
         var moduleDeletedTask =
-            _domainEventBus.WaitAsync<ModuleDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<ModuleDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var deleteModuleCommand = new DeleteModuleByIdCommand(id);
-        await _messageBus.Send(deleteModuleCommand);
+        await messageBus.Send(deleteModuleCommand);
 
         await moduleDeletedTask;
 

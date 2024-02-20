@@ -21,17 +21,8 @@ namespace ModularHouse.Server.UserManagement.Api.Http.Controllers;
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("api/routers")]
-public class RouterController : ControllerBase
+public class RouterController(IMessageBus messageBus, IDomainEventBus domainEventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public RouterController(IMessageBus messageBus, IDomainEventBus domainEventBus)
-    {
-        _messageBus = messageBus;
-        _domainEventBus = domainEventBus;
-    }
-
     /// <summary>
     /// Create Router.
     /// </summary>
@@ -43,16 +34,16 @@ public class RouterController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody, Required] RouterRequest request)
     {
         var routerCreatedTask =
-            _domainEventBus.WaitAsync<RouterCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<RouterCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var input = request.AsInputDto();
         var createRouterCommand = new CreateRouterCommand(input);
-        await _messageBus.Send(createRouterCommand);
+        await messageBus.Send(createRouterCommand);
 
         await routerCreatedTask;
         var getRouterQuery = new GetRouterByIdQuery(input.Id);
         var getRouterQueryResponse =
-            await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(getRouterQuery);
+            await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(getRouterQuery);
 
         var response = getRouterQueryResponse.Router.AsResponse();
         return Ok(response);
@@ -69,10 +60,10 @@ public class RouterController : ControllerBase
     public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
         var routerDeletedTask =
-            _domainEventBus.WaitAsync<RouterDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<RouterDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var deleteRouterCommand = new DeleteRouterByIdCommand(id);
-        await _messageBus.Send(deleteRouterCommand);
+        await messageBus.Send(deleteRouterCommand);
 
         await routerDeletedTask;
 

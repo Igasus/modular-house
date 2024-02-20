@@ -10,18 +10,12 @@ using ModularHouse.Server.UserManagement.Domain.AreaAggregate;
 
 namespace ModularHouse.Server.UserManagement.Application.CQRS.QueryHandlers;
 
-public class GetAreaByIdQueryHandler : IQueryHandler<GetAreaByIdQuery, GetAreaByIdQueryResponse>
+public class GetAreaByIdQueryHandler(IAreaDataSource dataSource)
+    : IQueryHandler<GetAreaByIdQuery, GetAreaByIdQueryResponse>
 {
-    private readonly IAreaDataSource _dataSource;
-
-    public GetAreaByIdQueryHandler(IAreaDataSource dataSource)
-    {
-        _dataSource = dataSource;
-    }
-
     public async Task<GetAreaByIdQueryResponse> Handle(GetAreaByIdQuery query, CancellationToken cancellationToken)
     {
-        var area = await _dataSource.GetByIdAsync(query.AreaId, cancellationToken);
+        var area = await dataSource.GetByIdAsync(query.AreaId, cancellationToken);
         if (area is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Area>(),

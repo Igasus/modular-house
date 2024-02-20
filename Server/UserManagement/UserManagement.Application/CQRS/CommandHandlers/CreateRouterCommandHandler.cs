@@ -11,25 +11,15 @@ using ModularHouse.Server.UserManagement.Domain.RouterAggregate.Events;
 
 namespace ModularHouse.Server.UserManagement.Application.CQRS.CommandHandlers;
 
-public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
+public class CreateRouterCommandHandler(
+    IRouterDataSource dataSource,
+    IRouterRepository repository,
+    IDomainEventBus domainEventBus)
+    : ICommandHandler<CreateRouterCommand>
 {
-    private readonly IRouterDataSource _dataSource;
-    private readonly IRouterRepository _repository;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public CreateRouterCommandHandler(
-        IRouterDataSource dataSource,
-        IRouterRepository repository,
-        IDomainEventBus domainEventBus)
-    {
-        _dataSource = dataSource;
-        _repository = repository;
-        _domainEventBus = domainEventBus;
-    }
-
     public async Task Handle(CreateRouterCommand command, CancellationToken cancellationToken)
     {
-        var routerExists = await _dataSource.ExistsByIdAsync(command.Input.Id, cancellationToken);
+        var routerExists = await dataSource.ExistsByIdAsync(command.Input.Id, cancellationToken);
         if (routerExists)
         {
             throw new BadRequestException(ErrorMessages.AlreadyExist<Router>(),
@@ -37,9 +27,9 @@ public class CreateRouterCommandHandler : ICommandHandler<CreateRouterCommand>
         }
 
         var router = command.Input.AsEntity();
-        await _repository.CreateAsync(router, cancellationToken);
+        await repository.CreateAsync(router, cancellationToken);
 
         var routerCreatedEvent = new RouterCreatedEvent(router.Id, CurrentTransaction.TransactionId);
-        await _domainEventBus.PublishAsync(routerCreatedEvent);
+        await domainEventBus.PublishAsync(routerCreatedEvent);
     }
 }

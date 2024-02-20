@@ -7,18 +7,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(IDriver driver) : IUserRepository
 {
-    private readonly IDriver _driver;
-
-    public UserRepository(IDriver driver)
-    {
-        _driver = driver;
-    }
-
     public async Task CreateAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"CREATE (user:{nameof(User)} {{ " +
@@ -43,7 +36,7 @@ public class UserRepository : IUserRepository
 
     public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
@@ -62,7 +55,7 @@ public class UserRepository : IUserRepository
 
     public async Task DeleteAsync(User user, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +

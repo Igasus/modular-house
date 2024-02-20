@@ -21,17 +21,8 @@ namespace ModularHouse.Server.UserManagement.Api.Http.Controllers;
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("api/areas")]
-public class AreaController : ControllerBase
+public class AreaController(IMessageBus messageBus, IDomainEventBus domainEventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public AreaController(IMessageBus messageBus, IDomainEventBus domainEventBus)
-    {
-        _messageBus = messageBus;
-        _domainEventBus = domainEventBus;
-    }
-
     /// <summary>
     /// Create Area.
     /// </summary>
@@ -43,15 +34,15 @@ public class AreaController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody, Required] AreaRequest request)
     {
         var areaCreatedTask =
-            _domainEventBus.WaitAsync<AreaCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<AreaCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var input = request.AsInputDto();
         var createAreaCommand = new CreateAreaCommand(input);
-        await _messageBus.Send(createAreaCommand);
+        await messageBus.Send(createAreaCommand);
 
         await areaCreatedTask;
         var getAreaQuery = new GetAreaByIdQuery(input.Id);
-        var getAreaQueryResponse = await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaQuery);
+        var getAreaQueryResponse = await messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaQuery);
 
         var response = getAreaQueryResponse.Area.AsResponse();
         return Ok(response);
@@ -68,10 +59,10 @@ public class AreaController : ControllerBase
     public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
         var areaDeletedTask =
-            _domainEventBus.WaitAsync<AreaDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+            domainEventBus.WaitAsync<AreaDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         var deleteAreaCommand = new DeleteAreaByIdCommand(id);
-        await _messageBus.Send(deleteAreaCommand);
+        await messageBus.Send(deleteAreaCommand);
 
         await areaDeletedTask;
 

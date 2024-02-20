@@ -19,6 +19,8 @@ public class User
         public const int HashingKeyBytesNumber = 256;
     }
 
+    // TODO: Refactor Obsolete Method
+    [Obsolete("Obsolete")]
     public void SetPassword(string password)
     {
         var bytesCount = Random.Shared.Next() % PasswordHashingConfiguration.MaxSaltBytesCount + 1;
@@ -35,6 +37,8 @@ public class User
         PasswordHash = $"{saltAsString}-{hashAsString}";
     }
 
+    // TODO: Refactor Obsolete Method
+    [Obsolete("Obsolete")]
     public bool ValidatePassword(string password)
     {
         if (PasswordHash == default)

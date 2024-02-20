@@ -9,18 +9,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 
-public class AreaDataSource : IAreaDataSource
+public class AreaDataSource(IDriver driver) : IAreaDataSource
 {
-    private readonly IDriver _driver;
-
-    public AreaDataSource(IDriver driver)
-    {
-        _driver = driver;
-    }
-
     public async Task<Area> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (area:{nameof(Area)} {{{nameof(Area.Id)}: $Id}}) " +
@@ -41,7 +34,7 @@ public class AreaDataSource : IAreaDataSource
 
     public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (area:{nameof(Area)} {{{nameof(Area.Id)}: $Id}}) " +

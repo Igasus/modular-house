@@ -7,18 +7,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.Repositories;
 
-public class AreaRepository : IAreaRepository
+public class AreaRepository(IDriver driver) : IAreaRepository
 {
-    private readonly IDriver _driver;
-
-    public AreaRepository(IDriver driver)
-    {
-        _driver = driver;
-    }
-    
     public async Task CreateAsync(Area area, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"CREATE (area:{nameof(Area)} {{ " +
@@ -39,7 +32,7 @@ public class AreaRepository : IAreaRepository
 
     public async Task DeleteAsync(Area area, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (area:{nameof(Area)} {{ {nameof(Area.Id)}: $Id }}) " +
