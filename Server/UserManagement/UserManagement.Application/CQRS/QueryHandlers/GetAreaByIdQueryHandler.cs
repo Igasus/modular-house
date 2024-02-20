@@ -19,13 +19,13 @@ public class GetAreaByIdQueryHandler : IQueryHandler<GetAreaByIdQuery, GetAreaBy
         _dataSource = dataSource;
     }
 
-    public async Task<GetAreaByIdQueryResponse> Handle(GetAreaByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetAreaByIdQueryResponse> Handle(GetAreaByIdQuery query, CancellationToken cancellationToken)
     {
-        var area = await _dataSource.GetByIdAsync(request.AreaId, cancellationToken);
+        var area = await _dataSource.GetByIdAsync(query.AreaId, cancellationToken);
         if (area is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Area>(),
-                ErrorMessages.NotFoundDetails((Area a) => a.Id, request.AreaId));
+                ErrorMessages.NotFoundDetails((Area a) => a.Id, query.AreaId));
         }
 
         var response = new GetAreaByIdQueryResponse(area.AsDto());

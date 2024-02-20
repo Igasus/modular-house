@@ -20,14 +20,14 @@ public class GetModuleByIdQueryHandler : IQueryHandler<GetModuleByIdQuery, GetMo
     }
 
     public async Task<GetModuleByIdQueryResponse> Handle(
-        GetModuleByIdQuery request,
+        GetModuleByIdQuery query,
         CancellationToken cancellationToken)
     {
-        var module = await _dataSource.GetByIdAsync(request.ModuleId, cancellationToken);
+        var module = await _dataSource.GetByIdAsync(query.ModuleId, cancellationToken);
         if (module is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Module>(),
-                ErrorMessages.NotFoundDetails((Module m) => m.Id, request.ModuleId));
+                ErrorMessages.NotFoundDetails((Module m) => m.Id, query.ModuleId));
         }
 
         var response = new GetModuleByIdQueryResponse(module.AsDto());

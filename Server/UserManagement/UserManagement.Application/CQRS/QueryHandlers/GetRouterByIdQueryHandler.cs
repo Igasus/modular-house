@@ -20,14 +20,14 @@ public class GetRouterByIdQueryHandler : IQueryHandler<GetRouterByIdQuery, GetRo
     }
 
     public async Task<GetRouterByIdQueryResponse> Handle(
-        GetRouterByIdQuery request,
+        GetRouterByIdQuery query,
         CancellationToken cancellationToken)
     {
-        var router = await _dataSource.GetByIdAsync(request.RouterId, cancellationToken);
+        var router = await _dataSource.GetByIdAsync(query.RouterId, cancellationToken);
         if (router is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Router>(),
-                ErrorMessages.NotFoundDetails((Router r) => r.Id, request.RouterId));
+                ErrorMessages.NotFoundDetails((Router r) => r.Id, query.RouterId));
         }
 
         var response = new GetRouterByIdQueryResponse(router.AsDto());
