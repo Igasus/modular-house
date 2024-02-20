@@ -19,14 +19,14 @@ public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserBy
         _dataSource = dataSource;
     }
 
-    public async Task<GetUserByIdQueryResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetUserByIdQueryResponse> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await _dataSource.GetByIdAsync(query.UserId, cancellationToken);
         if (user is null)
         {
             throw new NotFoundException(
                 ErrorMessages.NotFound<User>(),
-                ErrorMessages.NotFoundDetails((User u) => u.Id, request.UserId));
+                ErrorMessages.NotFoundDetails((User u) => u.Id, query.UserId));
         }
 
         return new GetUserByIdQueryResponse(user.AsDto());

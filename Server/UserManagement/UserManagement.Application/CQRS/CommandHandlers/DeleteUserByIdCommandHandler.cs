@@ -26,13 +26,13 @@ public class DeleteUserByIdCommandHandler : ICommandHandler<DeleteUserByIdComman
         _domainEventBus = domainEventBus;
     }
 
-    public async Task Handle(DeleteUserByIdCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserByIdCommand command, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await _dataSource.GetByIdAsync(command.UserId, cancellationToken);
         if (user is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<User>(),
-                ErrorMessages.NotFoundDetails((User u) => u.Id, request.UserId));
+                ErrorMessages.NotFoundDetails((User u) => u.Id, command.UserId));
         }
 
         await _repository.DeleteAsync(user, cancellationToken);
