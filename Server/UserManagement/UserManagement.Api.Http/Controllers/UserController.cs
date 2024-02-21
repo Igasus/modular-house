@@ -22,17 +22,8 @@ namespace ModularHouse.Server.UserManagement.Api.Http.Controllers;
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("api/users")]
-public class UserController : ControllerBase
+public class UserController(IMessageBus messageBus, IDomainEventBus domainEventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public UserController(IMessageBus messageBus, IDomainEventBus domainEventBus)
-    {
-        _messageBus = messageBus;
-        _domainEventBus = domainEventBus;
-    }
-
     /// <summary>
     /// Get All Users.
     /// </summary>
@@ -41,7 +32,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ListedResponse<UserResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var getUserQueryResponse = await _messageBus.Send<GetUsersQuery, GetUsersQueryResponse>(new GetUsersQuery());
+        var getUserQueryResponse = await messageBus.Send<GetUsersQuery, GetUsersQueryResponse>(new GetUsersQuery());
         var usersAsResponseList = getUserQueryResponse.Users.Select(dto => dto.AsResponse()).ToList();
 
         var response = new ListedResponse<UserResponse>(usersAsResponseList, getUserQueryResponse.TotalUsersCount);
@@ -59,7 +50,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute, Required] Guid id)
     {
         var getUserQueryResponse =
-            await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
+            await messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
 
         var response = getUserQueryResponse.User.AsResponse();
         return Ok(response);
@@ -76,11 +67,11 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody, Required] UserRequest input)
     {
         var userCreatedTask =
-            _domainEventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new CreateUserCommand(input.AsInputDto()));
+            domainEventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new CreateUserCommand(input.AsInputDto()));
 
         var userCreatedEvent = await userCreatedTask;
-        var getUserQueryResponse = await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(
+        var getUserQueryResponse = await messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(
             new GetUserByIdQuery(userCreatedEvent.UserId));
 
         var response = getUserQueryResponse.User.AsResponse();
@@ -100,12 +91,12 @@ public class UserController : ControllerBase
     public async Task<IActionResult> UpdateAsync([FromRoute, Required] Guid id, [FromBody, Required] UserRequest input)
     {
         var userUpdatedTask =
-            _domainEventBus.WaitAsync<UserUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new UpdateUserCommand(id, input.AsInputDto()));
+            domainEventBus.WaitAsync<UserUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new UpdateUserCommand(id, input.AsInputDto()));
 
         await userUpdatedTask;
         var getUserQueryResponse =
-            await _messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
+            await messageBus.Send<GetUserByIdQuery, GetUserByIdQueryResponse>(new GetUserByIdQuery(id));
 
         var response = getUserQueryResponse.User.AsResponse();
         return Ok(response);
@@ -122,8 +113,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
         var userDeletedTask =
-            _domainEventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new DeleteUserByIdCommand(id));
+            domainEventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new DeleteUserByIdCommand(id));
         
         await userDeletedTask;
         return Ok();

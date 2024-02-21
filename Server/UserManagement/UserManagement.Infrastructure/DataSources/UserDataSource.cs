@@ -10,18 +10,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 
-public class UserDataSource : IUserDataSource
+public class UserDataSource(IDriver driver) : IUserDataSource
 {
-    private readonly IDriver _driver;
-
-    public UserDataSource(IDriver driver)
-    {
-        _driver = driver;
-    }
-
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (user:{nameof(User)}) " +
@@ -46,7 +39,7 @@ public class UserDataSource : IUserDataSource
 
     public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{{nameof(User.Id)}: $Id}}) " +
@@ -68,7 +61,7 @@ public class UserDataSource : IUserDataSource
 
     public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (user:{nameof(User)} {{{nameof(User.Email)}: $Email}}) " +

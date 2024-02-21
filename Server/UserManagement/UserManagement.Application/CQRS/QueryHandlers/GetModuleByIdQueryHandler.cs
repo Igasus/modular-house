@@ -10,20 +10,14 @@ using ModularHouse.Server.UserManagement.Domain.ModuleAggregate;
 
 namespace ModularHouse.Server.UserManagement.Application.CQRS.QueryHandlers;
 
-public class GetModuleByIdQueryHandler : IQueryHandler<GetModuleByIdQuery, GetModuleByIdQueryResponse>
+public class GetModuleByIdQueryHandler(IModuleDataSource dataSource)
+    : IQueryHandler<GetModuleByIdQuery, GetModuleByIdQueryResponse>
 {
-    private readonly IModuleDataSource _dataSource;
-
-    public GetModuleByIdQueryHandler(IModuleDataSource dataSource)
-    {
-        _dataSource = dataSource;
-    }
-
     public async Task<GetModuleByIdQueryResponse> Handle(
         GetModuleByIdQuery query,
         CancellationToken cancellationToken)
     {
-        var module = await _dataSource.GetByIdAsync(query.ModuleId, cancellationToken);
+        var module = await dataSource.GetByIdAsync(query.ModuleId, cancellationToken);
         if (module is null)
         {
             throw new NotFoundException(ErrorMessages.NotFound<Module>(),

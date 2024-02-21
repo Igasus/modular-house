@@ -9,18 +9,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 
-public class ModuleDataSource : IModuleDataSource
+public class ModuleDataSource(IDriver driver) : IModuleDataSource
 {
-    private readonly IDriver _driver;
-
-    public ModuleDataSource(IDriver driver)
-    {
-        _driver = driver;
-    }
-
     public async Task<Module> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (module:{nameof(Module)} {{{nameof(Module.Id)}: $Id}}) " +
@@ -41,7 +34,7 @@ public class ModuleDataSource : IModuleDataSource
 
     public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (module:{nameof(Module)} {{{nameof(Module.Id)}: $Id}}) " +

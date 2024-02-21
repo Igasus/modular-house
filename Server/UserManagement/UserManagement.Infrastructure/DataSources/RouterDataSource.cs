@@ -9,18 +9,11 @@ using Neo4j.Driver;
 
 namespace ModularHouse.Server.UserManagement.Infrastructure.DataSources;
 
-public class RouterDataSource : IRouterDataSource
+public class RouterDataSource(IDriver driver) : IRouterDataSource
 {
-    private readonly IDriver _driver;
-
-    public RouterDataSource(IDriver driver)
-    {
-        _driver = driver;
-    }
-
     public async Task<Router> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (router:{nameof(Router)} {{{nameof(Router.Id)}: $Id}}) " +
@@ -41,7 +34,7 @@ public class RouterDataSource : IRouterDataSource
 
     public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await using var connection = ConnectionContainer.FromDriver(_driver);
+        await using var connection = ConnectionContainer.FromDriver(driver);
 
         var query =
             $"MATCH (router:{nameof(Router)} {{{nameof(Router.Id)}: $Id}}) " +

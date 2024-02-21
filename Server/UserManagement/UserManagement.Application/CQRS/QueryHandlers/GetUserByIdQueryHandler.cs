@@ -10,18 +10,12 @@ using ModularHouse.Server.UserManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.UserManagement.Application.CQRS.QueryHandlers;
 
-public class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserByIdQueryResponse>
+public class GetUserByIdQueryHandler(IUserDataSource dataSource)
+    : IQueryHandler<GetUserByIdQuery, GetUserByIdQueryResponse>
 {
-    private readonly IUserDataSource _dataSource;
-
-    public GetUserByIdQueryHandler(IUserDataSource dataSource)
-    {
-        _dataSource = dataSource;
-    }
-
     public async Task<GetUserByIdQueryResponse> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
     {
-        var user = await _dataSource.GetByIdAsync(query.UserId, cancellationToken);
+        var user = await dataSource.GetByIdAsync(query.UserId, cancellationToken);
         if (user is null)
         {
             throw new NotFoundException(
