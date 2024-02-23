@@ -6,35 +6,28 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
 
-public class ModuleRepository : IModuleRepository
+public class ModuleRepository(PostgreSqlContext context) : IModuleRepository
 {
-    private readonly PostgreSqlContext _context;
-
-    public ModuleRepository(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task CreateAsync(Module module, CancellationToken cancellationToken = default)
     {
-        var moduleEntry = await _context.AddAsync(module, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        var moduleEntry = await context.AddAsync(module, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         moduleEntry.State = EntityState.Detached;
     }
 
     public async Task UpdateAsync(Module module, CancellationToken cancellationToken = default)
     {
-        var moduleEntry = _context.Update(module);
-        await _context.SaveChangesAsync(cancellationToken);
+        var moduleEntry = context.Update(module);
+        await context.SaveChangesAsync(cancellationToken);
 
         moduleEntry.State = EntityState.Detached;
     }
 
     public async Task DeleteAsync(Module module, CancellationToken cancellationToken = default)
     {
-        var moduleEntry = _context.Remove(module);
-        await _context.SaveChangesAsync(cancellationToken);
+        var moduleEntry = context.Remove(module);
+        await context.SaveChangesAsync(cancellationToken);
 
         moduleEntry.State = EntityState.Detached;
     }

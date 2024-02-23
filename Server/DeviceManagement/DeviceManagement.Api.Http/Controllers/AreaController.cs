@@ -21,17 +21,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 [ApiController]
 [Route("api/areas")]
 [Produces(MediaTypeNames.Application.Json)]
-public class AreaController : ControllerBase
+public class AreaController(IMessageBus messageBus, IDomainEventBus eventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _eventBus;
-
-    public AreaController(IMessageBus messageBus, IDomainEventBus eventBus)
-    {
-        _messageBus = messageBus;
-        _eventBus = eventBus;
-    }
-
     /// <summary>
     /// Get All Areas.
     /// </summary>
@@ -40,7 +31,7 @@ public class AreaController : ControllerBase
     [ProducesResponseType(typeof(ListedResponse<AreaResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var getAreasQueryResponse = await _messageBus.Send<GetAreasQuery, GetAreasQueryResponse>(new GetAreasQuery());
+        var getAreasQueryResponse = await messageBus.Send<GetAreasQuery, GetAreasQueryResponse>(new GetAreasQuery());
         var areasAsResponseList = getAreasQueryResponse.Areas.ToResponseList();
 
         var response = new ListedResponse<AreaResponse>(areasAsResponseList, getAreasQueryResponse.TotalAreasCount);
@@ -59,7 +50,7 @@ public class AreaController : ControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute, Required] Guid id)
     {
         var getAreaByIdQueryResponse =
-            await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(new GetAreaByIdQuery(id));
+            await messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(new GetAreaByIdQuery(id));
 
         return Ok(getAreaByIdQueryResponse.Area.ToResponse());
     }
@@ -75,12 +66,12 @@ public class AreaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody, Required] AreaRequest input)
     {
-        var areaCreatedTask = _eventBus.WaitAsync<AreaCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new CreateAreaCommand(input.ToDto()));
+        var areaCreatedTask = eventBus.WaitAsync<AreaCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new CreateAreaCommand(input.ToDto()));
 
         var areaCreatedEvent = await areaCreatedTask;
         var getAreaByIdQuery = new GetAreaByIdQuery(areaCreatedEvent.AreaId);
-        var getAreaByIdResponse = await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaByIdQuery);
+        var getAreaByIdResponse = await messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaByIdQuery);
 
         return Ok(getAreaByIdResponse.Area.ToResponse());
     }
@@ -96,12 +87,12 @@ public class AreaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateAsync([FromRoute, Required] Guid id, [FromBody, Required] AreaRequest input)
     {
-        var areaUpdatedTask = _eventBus.WaitAsync<AreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new UpdateAreaByIdCommand(id, input.ToDto()));
+        var areaUpdatedTask = eventBus.WaitAsync<AreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new UpdateAreaByIdCommand(id, input.ToDto()));
 
         var areaUpdatedEvent = await areaUpdatedTask;
         var getAreaByIdQuery = new GetAreaByIdQuery(areaUpdatedEvent.AreaId);
-        var getAreaByIdResponse = await _messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaByIdQuery);
+        var getAreaByIdResponse = await messageBus.Send<GetAreaByIdQuery, GetAreaByIdQueryResponse>(getAreaByIdQuery);
 
         return Ok(getAreaByIdResponse.Area.ToResponse());
     }
@@ -116,8 +107,8 @@ public class AreaController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
-        var areaDeletedTask = _eventBus.WaitAsync<AreaDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new DeleteAreaByIdCommand(id));
+        var areaDeletedTask = eventBus.WaitAsync<AreaDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new DeleteAreaByIdCommand(id));
 
         await areaDeletedTask;
 

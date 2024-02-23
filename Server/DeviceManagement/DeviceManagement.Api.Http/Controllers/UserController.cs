@@ -19,17 +19,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 [ApiController]
 [Route("api/users")]
 [Produces(MediaTypeNames.Application.Json)]
-public class UserController : ControllerBase
+public class UserController(IDomainEventBus eventBus, IMessageBus messageBus) : ControllerBase
 {
-    private readonly IDomainEventBus _eventBus;
-    private readonly IMessageBus _messageBus;
-
-    public UserController(IDomainEventBus eventBus, IMessageBus messageBus)
-    {
-        _eventBus = eventBus;
-        _messageBus = messageBus;
-    }
-
     /// <summary>
     /// Create User with given Id.
     /// </summary>
@@ -40,11 +31,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
-        var userCreatedTask = _eventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new CreateUserCommand(id));
+        var userCreatedTask = eventBus.WaitAsync<UserCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new CreateUserCommand(id));
         var userCreatedEvent = await userCreatedTask;
 
-        var userQueryResponse = await _messageBus.Send<GetUserQuery, GetUserQueryResponse>(
+        var userQueryResponse = await messageBus.Send<GetUserQuery, GetUserQueryResponse>(
             new GetUserQuery(userCreatedEvent.UserId));
 
         return Ok(userQueryResponse.User.ToResponse());
@@ -60,8 +51,8 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
-        var userDeletedTask = _eventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new DeleteUserCommand(id));
+        var userDeletedTask = eventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new DeleteUserCommand(id));
         await userDeletedTask;
 
         return Ok();

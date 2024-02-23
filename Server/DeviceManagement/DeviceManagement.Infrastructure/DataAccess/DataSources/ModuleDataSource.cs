@@ -8,25 +8,18 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
 
-public class ModuleDataSource : IModuleDataSource
+public class ModuleDataSource(PostgreSqlContext context) : IModuleDataSource
 {
-    private readonly PostgreSqlContext _context;
-
-    public ModuleDataSource(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IReadOnlyList<Module>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Modules
+        return await context.Modules
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
     public async Task<Module> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Modules
+        return await context.Modules
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }

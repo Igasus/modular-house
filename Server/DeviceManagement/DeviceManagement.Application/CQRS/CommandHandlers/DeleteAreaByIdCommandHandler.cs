@@ -10,25 +10,15 @@ using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class DeleteAreaByIdCommandHandler : ICommandHandler<DeleteAreaByIdCommand>
+public class DeleteAreaByIdCommandHandler(
+    IAreaDataSource areaDataSource,
+    IAreaRepository areaRepository,
+    IDomainEventBus eventBus)
+    : ICommandHandler<DeleteAreaByIdCommand>
 {
-    private readonly IAreaDataSource _areaDataSource;
-    private readonly IAreaRepository _areaRepository;
-    private readonly IDomainEventBus _eventBus;
-
-    public DeleteAreaByIdCommandHandler(
-        IAreaDataSource areaDataSource,
-        IAreaRepository areaRepository,
-        IDomainEventBus eventBus)
-    {
-        _areaDataSource = areaDataSource;
-        _areaRepository = areaRepository;
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(DeleteAreaByIdCommand command, CancellationToken cancellationToken)
     {
-        var area = await _areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
+        var area = await areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
         if (area is null)
         {
             throw new NotFoundException(
@@ -36,8 +26,8 @@ public class DeleteAreaByIdCommandHandler : ICommandHandler<DeleteAreaByIdComman
                 ErrorMessages.NotFoundDetails((Area a) => a.Id, command.AreaId));
         }
 
-        await _areaRepository.DeleteAsync(area, cancellationToken);
+        await areaRepository.DeleteAsync(area, cancellationToken);
 
-        await _eventBus.PublishAsync(new AreaDeletedEvent(area.Id, CurrentTransaction.TransactionId));
+        await eventBus.PublishAsync(new AreaDeletedEvent(area.Id, CurrentTransaction.TransactionId));
     }
 }

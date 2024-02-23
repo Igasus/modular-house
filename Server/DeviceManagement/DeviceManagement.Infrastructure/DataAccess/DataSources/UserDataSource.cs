@@ -8,31 +8,24 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
 
-public class UserDataSource : IUserDataSource
+public class UserDataSource(PostgreSqlContext context) : IUserDataSource
 {
-    private readonly PostgreSqlContext _context;
-
-    public UserDataSource(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IReadOnlyList<User>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        return await context.Users
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
     public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users
+        return await context.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Users.AnyAsync(x => x.Id == id, cancellationToken);
+        return await context.Users.AnyAsync(x => x.Id == id, cancellationToken);
     }
 }

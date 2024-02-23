@@ -8,18 +8,12 @@ using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.QueryHandlers;
 
-public class GetDeviceQueryHandler : IQueryHandler<GetDeviceQuery, GetDeviceQueryResponse>
+public class GetDeviceQueryHandler(IDeviceDataSource deviceDataSource)
+    : IQueryHandler<GetDeviceQuery, GetDeviceQueryResponse>
 {
-    private readonly IDeviceDataSource _deviceDataSource;
-
-    public GetDeviceQueryHandler(IDeviceDataSource deviceDataSource)
-    {
-        _deviceDataSource = deviceDataSource;
-    }
-
     public async Task<GetDeviceQueryResponse> Handle(GetDeviceQuery query, CancellationToken cancellationToken)
     {
-        var device = await _deviceDataSource.GetByIdAsync(query.DeviceId, cancellationToken);
+        var device = await deviceDataSource.GetByIdAsync(query.DeviceId, cancellationToken);
         var deviceDto = device.ToDto();
 
         return new GetDeviceQueryResponse(deviceDto);

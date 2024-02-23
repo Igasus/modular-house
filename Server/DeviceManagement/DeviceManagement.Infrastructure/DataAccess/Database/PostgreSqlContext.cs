@@ -7,17 +7,13 @@ using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
-public sealed class PostgreSqlContext : DbContext
+public sealed class PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Area> Areas { get; set; }
     public DbSet<Router> Routers { get; set; }
     public DbSet<Module> Modules { get; set; }
-
-    public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options)
-    {
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

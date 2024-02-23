@@ -10,18 +10,12 @@ using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.QueryHandlers;
 
-public class GetRouterByIdQueryHandler : IQueryHandler<GetRouterByIdQuery, GetRouterByIdQueryResponse>
+public class GetRouterByIdQueryHandler(IRouterDataSource routerDataSource)
+    : IQueryHandler<GetRouterByIdQuery, GetRouterByIdQueryResponse>
 {
-    private readonly IRouterDataSource _routerDataSource;
-
-    public GetRouterByIdQueryHandler(IRouterDataSource routerDataSource)
-    {
-        _routerDataSource = routerDataSource;
-    }
-
     public async Task<GetRouterByIdQueryResponse> Handle(GetRouterByIdQuery query, CancellationToken cancellationToken)
     {
-        var router = await _routerDataSource.GetByIdAsync(query.RouterId, cancellationToken);
+        var router = await routerDataSource.GetByIdAsync(query.RouterId, cancellationToken);
         if (router is null)
         {
             throw new NotFoundException(

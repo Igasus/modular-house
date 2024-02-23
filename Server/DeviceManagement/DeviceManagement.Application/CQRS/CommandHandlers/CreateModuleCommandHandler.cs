@@ -13,25 +13,13 @@ using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class CreateModuleCommandHandler : ICommandHandler<CreateModuleCommand>
+public class CreateModuleCommandHandler(
+    IModuleRepository moduleRepository,
+    IRouterDataSource routerDataSource,
+    IDeviceDataSource deviceDataSource,
+    IDomainEventBus domainEventBus)
+    : ICommandHandler<CreateModuleCommand>
 {
-    private readonly IModuleRepository _moduleRepository;
-    private readonly IRouterDataSource _routerDataSource;
-    private readonly IDeviceDataSource _deviceDataSource;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public CreateModuleCommandHandler(
-        IModuleRepository moduleRepository,
-        IRouterDataSource routerDataSource,
-        IDeviceDataSource deviceDataSource, 
-        IDomainEventBus domainEventBus)
-    {
-        _moduleRepository = moduleRepository;
-        _routerDataSource = routerDataSource;
-        _deviceDataSource = deviceDataSource;
-        _domainEventBus = domainEventBus;
-    }
-
     public async Task Handle(CreateModuleCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfRouterIsNotExistByIdAsync(command.RouterId, cancellationToken);
@@ -49,14 +37,14 @@ public class CreateModuleCommandHandler : ICommandHandler<CreateModuleCommand>
             LastUpdatedDate = DateTime.UtcNow,
         };
 
-        await _moduleRepository.CreateAsync(module, cancellationToken);
+        await moduleRepository.CreateAsync(module, cancellationToken);
 
-        await _domainEventBus.PublishAsync(new ModuleCreatedEvent(module.Id, CurrentTransaction.TransactionId));
+        await domainEventBus.PublishAsync(new ModuleCreatedEvent(module.Id, CurrentTransaction.TransactionId));
     }
 
     private async Task ThrowIfRouterIsNotExistByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var isRouterExist = await _routerDataSource.ExistByIdAsync(id, cancellationToken);
+        var isRouterExist = await routerDataSource.ExistByIdAsync(id, cancellationToken);
         if (!isRouterExist)
         {
             throw new NotFoundException(
@@ -67,7 +55,7 @@ public class CreateModuleCommandHandler : ICommandHandler<CreateModuleCommand>
 
     private async Task ThrowIfDeviceIsNotExistByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var isDeviceExist = await _deviceDataSource.ExistByIdAsync(id, cancellationToken);
+        var isDeviceExist = await deviceDataSource.ExistByIdAsync(id, cancellationToken);
         if (!isDeviceExist)
         {
             throw new NotFoundException(
@@ -78,7 +66,7 @@ public class CreateModuleCommandHandler : ICommandHandler<CreateModuleCommand>
 
     private async Task ThrowIfDeviceAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var isDeviceAlreadyLinked = await _deviceDataSource.IsAlreadyLinkedByIdAsync(id, cancellationToken);
+        var isDeviceAlreadyLinked = await deviceDataSource.IsAlreadyLinkedByIdAsync(id, cancellationToken);
         if (isDeviceAlreadyLinked)
         {
             throw new BadRequestException(
