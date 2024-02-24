@@ -4,15 +4,9 @@ using System.Net;
 
 namespace ModularHouse.Server.Common.Domain.Exceptions;
 
-public abstract class ExceptionBase : Exception
+public abstract class ExceptionBase(HttpStatusCode responseStatusCode, string message, params string[] errorDetails)
+    : Exception(message)
 {
-    public HttpStatusCode ResponseStatusCode { get; }
-    public IReadOnlyList<string> ErrorDetails { get; }
-
-    protected ExceptionBase(HttpStatusCode responseStatusCode, string message, params string[] errorDetails)
-        : base(message)
-    {
-        ResponseStatusCode = responseStatusCode;
-        ErrorDetails = errorDetails;
-    }
+    public HttpStatusCode ResponseStatusCode { get; } = responseStatusCode;
+    public IReadOnlyList<string> ErrorDetails { get; } = errorDetails;
 }
