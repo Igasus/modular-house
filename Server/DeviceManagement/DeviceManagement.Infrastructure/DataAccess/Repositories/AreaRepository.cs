@@ -6,35 +6,28 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
 
-public class AreaRepository : IAreaRepository
+public class AreaRepository(PostgreSqlContext context) : IAreaRepository
 {
-    private readonly PostgreSqlContext _context;
-
-    public AreaRepository(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task CreateAsync(Area area, CancellationToken cancellationToken = default)
     {
-        var areaEntry = await _context.AddAsync(area, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        var areaEntry = await context.AddAsync(area, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         areaEntry.State = EntityState.Detached;
     }
 
     public async Task UpdateAsync(Area area, CancellationToken cancellationToken = default)
     {
-        var areaEntry = _context.Update(area);
-        await _context.SaveChangesAsync(cancellationToken);
+        var areaEntry = context.Update(area);
+        await context.SaveChangesAsync(cancellationToken);
 
         areaEntry.State = EntityState.Detached;
     }
 
     public async Task DeleteAsync(Area area, CancellationToken cancellationToken = default)
     {
-        var areaEntry = _context.Remove(area);
-        await _context.SaveChangesAsync(cancellationToken);
+        var areaEntry = context.Remove(area);
+        await context.SaveChangesAsync(cancellationToken);
 
         areaEntry.State = EntityState.Detached;
     }

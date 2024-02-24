@@ -11,25 +11,15 @@ using ModularHouse.Server.DeviceManagement.Domain.UserAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+public class CreateUserCommandHandler(
+    IUserDataSource userDataSource,
+    IUserRepository userRepository,
+    IDomainEventBus eventBus)
+    : ICommandHandler<CreateUserCommand>
 {
-    private readonly IUserDataSource _userDataSource;
-    private readonly IUserRepository _userRepository;
-    private readonly IDomainEventBus _eventBus;
-
-    public CreateUserCommandHandler(
-        IUserDataSource userDataSource,
-        IUserRepository userRepository,
-        IDomainEventBus eventBus)
-    {
-        _userDataSource = userDataSource;
-        _userRepository = userRepository;
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var isUserExist = await _userDataSource.ExistByIdAsync(command.UserId, cancellationToken);
+        var isUserExist = await userDataSource.ExistByIdAsync(command.UserId, cancellationToken);
         if (isUserExist)
         {
             throw new BadRequestException(
@@ -38,8 +28,8 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         }
 
         var user = new User { Id = command.UserId, AdditionDate = DateTime.UtcNow };
-        await _userRepository.CreateAsync(user, cancellationToken);
+        await userRepository.CreateAsync(user, cancellationToken);
 
-        await _eventBus.PublishAsync(new UserCreatedEvent(user.Id, CurrentTransaction.TransactionId));
+        await eventBus.PublishAsync(new UserCreatedEvent(user.Id, CurrentTransaction.TransactionId));
     }
 }

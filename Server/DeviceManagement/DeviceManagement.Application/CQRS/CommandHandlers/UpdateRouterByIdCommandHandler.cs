@@ -11,25 +11,15 @@ using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class UpdateRouterByIdCommandHandler : ICommandHandler<UpdateRouterByIdCommand>
+public class UpdateRouterByIdCommandHandler(
+    IRouterRepository routerRepository,
+    IRouterDataSource routerDataSource,
+    IDomainEventBus eventBus)
+    : ICommandHandler<UpdateRouterByIdCommand>
 {
-    private readonly IRouterRepository _routerRepository;
-    private readonly IRouterDataSource _routerDataSource;
-    private readonly IDomainEventBus _eventBus;
-
-    public UpdateRouterByIdCommandHandler(
-        IRouterRepository routerRepository,
-        IRouterDataSource routerDataSource,
-        IDomainEventBus eventBus)
-    {
-        _routerRepository = routerRepository;
-        _routerDataSource = routerDataSource;
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(UpdateRouterByIdCommand command, CancellationToken cancellationToken)
     {
-        var router = await _routerDataSource.GetByIdAsync(command.RouterId, cancellationToken);
+        var router = await routerDataSource.GetByIdAsync(command.RouterId, cancellationToken);
         if (router is null)
         {
             throw new NotFoundException(
@@ -42,8 +32,8 @@ public class UpdateRouterByIdCommandHandler : ICommandHandler<UpdateRouterByIdCo
         router.Description = command.Router.Description;
         router.LastUpdatedDate = DateTime.UtcNow;
 
-        await _routerRepository.UpdateAsync(router, cancellationToken);
+        await routerRepository.UpdateAsync(router, cancellationToken);
 
-        await _eventBus.PublishAsync(new RouterUpdatedEvent(router.Id, CurrentTransaction.TransactionId));
+        await eventBus.PublishAsync(new RouterUpdatedEvent(router.Id, CurrentTransaction.TransactionId));
     }
 }

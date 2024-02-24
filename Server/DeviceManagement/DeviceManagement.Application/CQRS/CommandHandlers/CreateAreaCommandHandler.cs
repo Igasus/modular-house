@@ -10,17 +10,9 @@ using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
+public class CreateAreaCommandHandler(IAreaRepository areaRepository, IDomainEventBus eventBus)
+    : ICommandHandler<CreateAreaCommand>
 {
-    private readonly IAreaRepository _areaRepository;
-    private readonly IDomainEventBus _eventBus;
-
-    public CreateAreaCommandHandler(IAreaRepository areaRepository, IDomainEventBus eventBus)
-    {
-        _areaRepository = areaRepository;
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(CreateAreaCommand command, CancellationToken cancellationToken)
     {
         //TODO CreatedByUserId and LastUpdatedByUserId must be set by CurrentUserSession
@@ -33,8 +25,8 @@ public class CreateAreaCommandHandler : ICommandHandler<CreateAreaCommand>
             LastUpdatedDate = DateTime.UtcNow
         };
 
-        await _areaRepository.CreateAsync(area, cancellationToken);
+        await areaRepository.CreateAsync(area, cancellationToken);
 
-        await _eventBus.PublishAsync(new AreaCreatedEvent(area.Id, CurrentTransaction.TransactionId));
+        await eventBus.PublishAsync(new AreaCreatedEvent(area.Id, CurrentTransaction.TransactionId));
     }
 }

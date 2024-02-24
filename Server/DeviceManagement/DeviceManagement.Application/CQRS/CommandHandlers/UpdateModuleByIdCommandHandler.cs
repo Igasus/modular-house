@@ -11,25 +11,15 @@ using ModularHouse.Server.DeviceManagement.Domain.ModuleAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class UpdateModuleByIdCommandHandler : ICommandHandler<UpdateModuleByIdCommand>
+public class UpdateModuleByIdCommandHandler(
+    IModuleRepository moduleRepository,
+    IModuleDataSource moduleDataSource,
+    IDomainEventBus domainEventBus)
+    : ICommandHandler<UpdateModuleByIdCommand>
 {
-    private readonly IModuleRepository _moduleRepository;
-    private readonly IModuleDataSource _moduleDataSource;
-    private readonly IDomainEventBus _domainEventBus;
-
-    public UpdateModuleByIdCommandHandler(
-        IModuleRepository moduleRepository,
-        IModuleDataSource moduleDataSource, 
-        IDomainEventBus domainEventBus)
-    {
-        _moduleRepository = moduleRepository;
-        _moduleDataSource = moduleDataSource;
-        _domainEventBus = domainEventBus;
-    }
-
     public async Task Handle(UpdateModuleByIdCommand command, CancellationToken cancellationToken)
     {
-        var module = await _moduleDataSource.GetByIdAsync(command.ModuleId, cancellationToken);
+        var module = await moduleDataSource.GetByIdAsync(command.ModuleId, cancellationToken);
         if (module is null)
         {
             throw new NotFoundException(
@@ -42,8 +32,8 @@ public class UpdateModuleByIdCommandHandler : ICommandHandler<UpdateModuleByIdCo
         module.Description = command.Module.Description;
         module.LastUpdatedDate = DateTime.UtcNow;
 
-        await _moduleRepository.UpdateAsync(module, cancellationToken);
+        await moduleRepository.UpdateAsync(module, cancellationToken);
 
-        await _domainEventBus.PublishAsync(new ModuleUpdatedEvent(module.Id, CurrentTransaction.TransactionId));
+        await domainEventBus.PublishAsync(new ModuleUpdatedEvent(module.Id, CurrentTransaction.TransactionId));
     }
 }

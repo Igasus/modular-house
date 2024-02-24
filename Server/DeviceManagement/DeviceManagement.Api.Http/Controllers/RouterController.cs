@@ -21,17 +21,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 [ApiController]
 [Route("api/routers")]
 [Produces(MediaTypeNames.Application.Json)]
-public class RouterController : ControllerBase
+public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _eventBus;
-
-    public RouterController(IMessageBus messageBus, IDomainEventBus eventBus)
-    {
-        _messageBus = messageBus;
-        _eventBus = eventBus;
-    }
-
     /// <summary>
     /// Get all routers.
     /// </summary>
@@ -41,7 +32,7 @@ public class RouterController : ControllerBase
     public async Task<IActionResult> GetAllAsync()
     {
         var getRoutersQueryResponse = 
-            await _messageBus.Send<GetRoutersQuery, GetRoutersQueryResponse>(new GetRoutersQuery());
+            await messageBus.Send<GetRoutersQuery, GetRoutersQueryResponse>(new GetRoutersQuery());
 
         var routersAsResponseList = getRoutersQueryResponse.Routers.ToResponseList();
         
@@ -62,7 +53,7 @@ public class RouterController : ControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute, Required] Guid id)
     {
         var getRouterByIdQueryResponse =
-            await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(new GetRouterByIdQuery(id));
+            await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(new GetRouterByIdQuery(id));
 
         return Ok(getRouterByIdQueryResponse.Router.ToResponse());
     }
@@ -78,12 +69,12 @@ public class RouterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateAsync([FromBody, Required] RouterCreateRequest input)
     {
-        var routerCreatedTask = _eventBus.WaitAsync<RouterCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new CreateRouterCommand(input.ToDto(), input.AreaId, input.DeviceId));
+        var routerCreatedTask = eventBus.WaitAsync<RouterCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new CreateRouterCommand(input.ToDto(), input.AreaId, input.DeviceId));
 
         var routerCreatedEvent = await routerCreatedTask;
         
-        var getRouterByIdResponse = await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
+        var getRouterByIdResponse = await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
             new GetRouterByIdQuery(routerCreatedEvent.RouterId));
 
         return Ok(getRouterByIdResponse.Router.ToResponse());
@@ -102,12 +93,12 @@ public class RouterController : ControllerBase
         [FromRoute, Required] Guid id,
         [FromBody, Required] RouterUpdateRequest input)
     {
-        var routerUpdatedTask = _eventBus.WaitAsync<RouterUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new UpdateRouterByIdCommand(id, input.ToDto()));
+        var routerUpdatedTask = eventBus.WaitAsync<RouterUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new UpdateRouterByIdCommand(id, input.ToDto()));
         
         var routerUpdatedEvent = await routerUpdatedTask;
         
-        var getRouterByIdResponse = await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
+        var getRouterByIdResponse = await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
             new GetRouterByIdQuery(routerUpdatedEvent.RouterId));
 
         return Ok(getRouterByIdResponse.Router.ToResponse());
@@ -127,13 +118,13 @@ public class RouterController : ControllerBase
         [FromBody, Required] RouterAreaUpdateRequest input)
     {
         var routerAreaUpdateTask = 
-            _eventBus.WaitAsync<RouterAreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
+            eventBus.WaitAsync<RouterAreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
-        await _messageBus.Send(new UpdateRouterAreaByIdCommand(id, input.AreaId));
+        await messageBus.Send(new UpdateRouterAreaByIdCommand(id, input.AreaId));
 
         var routerAreaUpdatedEvent = await routerAreaUpdateTask;
 
-        var getRouterByIdResponse = await _messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
+        var getRouterByIdResponse = await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
             new GetRouterByIdQuery(routerAreaUpdatedEvent.RouterId));
 
         return Ok(getRouterByIdResponse.Router.ToResponse());
@@ -149,8 +140,8 @@ public class RouterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteByIdAsync([FromRoute, Required] Guid id)
     {
-        var routerDeletedTask = _eventBus.WaitAsync<RouterDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
-        await _messageBus.Send(new DeleteRouterByIdCommand(id));
+        var routerDeletedTask = eventBus.WaitAsync<RouterDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+        await messageBus.Send(new DeleteRouterByIdCommand(id));
         
         await routerDeletedTask;
 

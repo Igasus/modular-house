@@ -6,27 +6,20 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(PostgreSqlContext context) : IUserRepository
 {
-    private readonly PostgreSqlContext _context;
-
-    public UserRepository(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task CreateAsync(User user, CancellationToken cancellationToken = default)
     {
-        var userEntry = await _context.Users.AddAsync(user, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        var userEntry = await context.Users.AddAsync(user, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         userEntry.State = EntityState.Detached;
     }
 
     public async Task DeleteAsync(User user, CancellationToken cancellationToken = default)
     {
-        var userEntry = _context.Users.Remove(user);
-        await _context.SaveChangesAsync(cancellationToken);
+        var userEntry = context.Users.Remove(user);
+        await context.SaveChangesAsync(cancellationToken);
 
         userEntry.State = EntityState.Detached;
     }

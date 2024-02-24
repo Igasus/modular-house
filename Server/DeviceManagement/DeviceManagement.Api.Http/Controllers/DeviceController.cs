@@ -19,17 +19,8 @@ namespace ModularHouse.Server.DeviceManagement.Api.Http.Controllers;
 [ApiController]
 [Route("api/devices")]
 [Produces(MediaTypeNames.Application.Json)]
-public class DeviceController : ControllerBase
+public class DeviceController(IMessageBus messageBus, IDomainEventBus eventBus) : ControllerBase
 {
-    private readonly IMessageBus _messageBus;
-    private readonly IDomainEventBus _eventBus;
-
-    public DeviceController(IMessageBus messageBus, IDomainEventBus eventBus)
-    {
-        _messageBus = messageBus;
-        _eventBus = eventBus;
-    }
-
     /// <summary>
     /// Create Device with given Id.
     /// </summary>
@@ -41,12 +32,12 @@ public class DeviceController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromRoute, Required] Guid id)
     {
         var deviceCreatedTask =
-            _eventBus.WaitAsync<DeviceCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
+            eventBus.WaitAsync<DeviceCreatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
-        await _messageBus.Send(new CreateDeviceCommand(id));
+        await messageBus.Send(new CreateDeviceCommand(id));
         var deviceCreatedEvent = await deviceCreatedTask;
 
-        var deviceQueryResponse = await _messageBus.Send<GetDeviceQuery, GetDeviceQueryResponse>(
+        var deviceQueryResponse = await messageBus.Send<GetDeviceQuery, GetDeviceQueryResponse>(
             new GetDeviceQuery(deviceCreatedEvent.DeviceId));
 
         return Ok(deviceQueryResponse.Device.ToResponse());
@@ -63,9 +54,9 @@ public class DeviceController : ControllerBase
     public async Task<IActionResult> DeleteAsync([FromRoute, Required] Guid id)
     {
         var deviceDeletedTask =
-            _eventBus.WaitAsync<DeviceDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
+            eventBus.WaitAsync<DeviceDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
 
-        await _messageBus.Send(new DeleteDeviceCommand(id));
+        await messageBus.Send(new DeleteDeviceCommand(id));
         await deviceDeletedTask;
 
         return Ok();

@@ -8,18 +8,12 @@ using ModularHouse.Server.DeviceManagement.Domain.ModuleAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.QueryHandlers;
 
-public class GetModulesQueryHandler : IQueryHandler<GetModulesQuery, GetModulesQueryResponse>
+public class GetModulesQueryHandler(IModuleDataSource moduleDataSource)
+    : IQueryHandler<GetModulesQuery, GetModulesQueryResponse>
 {
-    private readonly IModuleDataSource _moduleDataSource;
-
-    public GetModulesQueryHandler(IModuleDataSource moduleDataSource)
-    {
-        _moduleDataSource = moduleDataSource;
-    }
-
     public async Task<GetModulesQueryResponse> Handle(GetModulesQuery query, CancellationToken cancellationToken)
     {
-        var modules = await _moduleDataSource.GetAllAsync(cancellationToken);
+        var modules = await moduleDataSource.GetAllAsync(cancellationToken);
 
         return new GetModulesQueryResponse(modules.ToDtoList(), modules.Count);
     }

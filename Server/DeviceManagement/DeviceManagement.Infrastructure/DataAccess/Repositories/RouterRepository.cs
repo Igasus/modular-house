@@ -6,35 +6,28 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
 
-public class RouterRepository : IRouterRepository
+public class RouterRepository(PostgreSqlContext context) : IRouterRepository
 {
-    private readonly PostgreSqlContext _context;
-
-    public RouterRepository(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task CreateAsync(Router router, CancellationToken cancellationToken = default)
     {
-        var routerEntry = await _context.AddAsync(router, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        var routerEntry = await context.AddAsync(router, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         routerEntry.State = EntityState.Detached;
     }
 
     public async Task UpdateAsync(Router router, CancellationToken cancellationToken = default)
     {
-        var routerEntry = _context.Update(router);
-        await _context.SaveChangesAsync(cancellationToken);
+        var routerEntry = context.Update(router);
+        await context.SaveChangesAsync(cancellationToken);
 
         routerEntry.State = EntityState.Detached;
     }
 
     public async Task DeleteAsync(Router router, CancellationToken cancellationToken = default)
     {
-        var routerEntry = _context.Remove(router);
-        await _context.SaveChangesAsync(cancellationToken);
+        var routerEntry = context.Remove(router);
+        await context.SaveChangesAsync(cancellationToken);
 
         routerEntry.State = EntityState.Detached;
     }

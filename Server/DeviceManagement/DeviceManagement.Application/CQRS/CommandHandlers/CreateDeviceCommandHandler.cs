@@ -11,25 +11,15 @@ using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate.Events;
 
 namespace ModularHouse.Server.DeviceManagement.Application.CQRS.CommandHandlers;
 
-public class CreateDeviceCommandHandler : ICommandHandler<CreateDeviceCommand>
+public class CreateDeviceCommandHandler(
+    IDeviceDataSource deviceDataSource,
+    IDeviceRepository deviceRepository,
+    IDomainEventBus eventBus)
+    : ICommandHandler<CreateDeviceCommand>
 {
-    private readonly IDeviceDataSource _deviceDataSource;
-    private readonly IDeviceRepository _deviceRepository;
-    private readonly IDomainEventBus _eventBus;
-
-    public CreateDeviceCommandHandler(
-        IDeviceDataSource deviceDataSource,
-        IDeviceRepository deviceRepository,
-        IDomainEventBus eventBus)
-    {
-        _deviceDataSource = deviceDataSource;
-        _deviceRepository = deviceRepository;
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(CreateDeviceCommand command, CancellationToken cancellationToken)
     {
-        var isDeviceExist = await _deviceDataSource.ExistByIdAsync(command.DeviceId, cancellationToken);
+        var isDeviceExist = await deviceDataSource.ExistByIdAsync(command.DeviceId, cancellationToken);
         if (isDeviceExist)
         {
             throw new BadRequestException(
@@ -38,8 +28,8 @@ public class CreateDeviceCommandHandler : ICommandHandler<CreateDeviceCommand>
         }
 
         var device = new Device { Id = command.DeviceId, AdditionDate = DateTime.UtcNow };
-        await _deviceRepository.CreateAsync(device, cancellationToken);
+        await deviceRepository.CreateAsync(device, cancellationToken);
 
-        await _eventBus.PublishAsync(new DeviceCreatedEvent(device.Id, CurrentTransaction.TransactionId));
+        await eventBus.PublishAsync(new DeviceCreatedEvent(device.Id, CurrentTransaction.TransactionId));
     }
 }

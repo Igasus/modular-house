@@ -8,37 +8,30 @@ using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
 
-public class DeviceDataSource : IDeviceDataSource
+public class DeviceDataSource(PostgreSqlContext context) : IDeviceDataSource
 {
-    private readonly PostgreSqlContext _context;
-
-    public DeviceDataSource(PostgreSqlContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IReadOnlyList<Device>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Devices
+        return await context.Devices
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
     public async Task<Device> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Devices
+        return await context.Devices
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<bool> ExistByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Devices.AnyAsync(x => x.Id == id, cancellationToken);
+        return await context.Devices.AnyAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<bool> IsAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.Devices.AnyAsync(x => (x.Id == id) 
+        return await context.Devices.AnyAsync(x => (x.Id == id) 
                                                     && (x.Router != null || x.Module != null), cancellationToken);
     }
 }
