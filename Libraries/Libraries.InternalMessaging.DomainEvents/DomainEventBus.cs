@@ -8,15 +8,8 @@ using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
 
 namespace ModularHouse.Libraries.InternalMessaging.DomainEvents;
 
-public class DomainEventBus : IDomainEventBus
+public class DomainEventBus(IPublisher publisher) : IDomainEventBus
 {
-    private readonly IPublisher _publisher;
-    
-    public DomainEventBus(IPublisher publisher)
-    {
-        _publisher = publisher;
-    }
-    
     private record SubscribedEventHandler(Type EventType, Action<IDomainEvent> Callback)
     {
         public Guid SubscriptionId { get; } = Guid.NewGuid();
@@ -33,7 +26,7 @@ public class DomainEventBus : IDomainEventBus
         foreach (var eventHandler in handlersToNotify)
             eventHandler.Callback(domainEvent);
 
-        await _publisher.Publish(domainEvent);
+        await publisher.Publish(domainEvent);
     }
 
     public Task<Guid> SubscribeAsync<TEvent>(Action<TEvent> callback) where TEvent : IDomainEvent

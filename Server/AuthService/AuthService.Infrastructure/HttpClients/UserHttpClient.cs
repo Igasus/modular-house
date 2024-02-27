@@ -16,19 +16,13 @@ using ModularHouse.Shared.Models.Responses.UMS;
 
 namespace ModularHouse.Server.AuthService.Infrastructure.HttpClients;
 
-public class UserHttpClient : IUserHttpClient
+public class UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILogger<UserHttpClient> logger)
+    : IUserHttpClient
 {
     private const string BaseUri = "api/users";
     
-    private readonly HttpClient _httpClient;
-    private readonly ILogger<UserHttpClient> _logger;
-    
-    public UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILogger<UserHttpClient> logger)
-    {
-        _httpClient = new HttpClient { BaseAddress = new Uri(httpClientsOptions.Value.UMS.BaseUrl) };
-        _logger = logger;
-    }
-    
+    private readonly HttpClient _httpClient = new() { BaseAddress = new Uri(httpClientsOptions.Value.UMS.BaseUrl) };
+
     public async Task<UserDto> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var requestUri = $"{BaseUri}/{id}";
@@ -42,7 +36,7 @@ public class UserHttpClient : IUserHttpClient
             if (!string.IsNullOrWhiteSpace(responseBody))
                 errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
 
-            _logger.LogError(errorMessage);
+            logger.LogError(errorMessage);
             throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
         
@@ -66,7 +60,7 @@ public class UserHttpClient : IUserHttpClient
             if (!string.IsNullOrWhiteSpace(responseBody))
                 errorDetails.Add(ErrorMessages.HttpResponseBodyDetails(JsonSerializer.Serialize(responseBody)));
 
-            _logger.LogError(errorMessage);
+            logger.LogError(errorMessage);
             throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
         

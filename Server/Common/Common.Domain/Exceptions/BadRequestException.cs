@@ -2,10 +2,5 @@
 
 namespace ModularHouse.Server.Common.Domain.Exceptions;
 
-public class BadRequestException : ExceptionBase
-{
-    public BadRequestException(string message, params string[] errorDetails) 
-        : base(HttpStatusCode.BadRequest, message, errorDetails)
-    {
-    }
-}
+public class BadRequestException(string message, params string[] errorDetails)
+    : ExceptionBase(HttpStatusCode.BadRequest, message, errorDetails);

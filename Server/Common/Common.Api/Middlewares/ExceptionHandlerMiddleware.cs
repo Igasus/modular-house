@@ -15,17 +15,9 @@ using ModularHouse.Shared.Models.Responses;
 
 namespace ModularHouse.Server.Common.Api.Middlewares;
 
-public sealed class ExceptionHandlerMiddleware : IMiddleware
+public sealed class ExceptionHandlerMiddleware(IHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger)
+    : IMiddleware
 {
-    private readonly IHostEnvironment _environment;
-    private readonly ILogger<ExceptionHandlerMiddleware> _logger;
-
-    public ExceptionHandlerMiddleware(IHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger)
-    {
-        _environment = environment;
-        _logger = logger;
-    }
-
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -44,7 +36,7 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
         string[] errorDetails;
         
         if (exception is ExceptionBase customException
-            && (_environment.IsDevelopment()
+            && (environment.IsDevelopment()
                 || customException.ResponseStatusCode is not HttpStatusCode.InternalServerError))
         {
             errorMessage = customException.Message;
@@ -59,14 +51,14 @@ public sealed class ExceptionHandlerMiddleware : IMiddleware
         }
         
         var errorResponse = new ErrorResponse(errorMessage, errorDetails, CurrentTransaction.TransactionId);
-        if (_environment.IsDevelopment())
+        if (environment.IsDevelopment())
             errorResponse = errorResponse.WithErrorStackTrace(exception.StackTrace);
 
         var errorResponseAsJson = JsonSerializer.Serialize(
             errorResponse,
             new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-        _logger.LogError(exception, errorResponseAsJson);
+        logger.LogError(exception, errorResponseAsJson);
 
         context.Response.ContentType = MediaTypeNames.Application.Json;
         await context.Response.WriteAsync(errorResponseAsJson);
