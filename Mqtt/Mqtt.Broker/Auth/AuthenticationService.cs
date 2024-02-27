@@ -3,14 +3,9 @@ using Microsoft.Extensions.Options;
 
 namespace ModularHouse.Mqtt.Broker.Auth;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(IOptions<AuthOptions> authOptions) : IAuthenticationService
 {
-    private readonly AuthOptions _authOptions;
-
-    public AuthenticationService(IOptions<AuthOptions> authOptions)
-    {
-        _authOptions = authOptions.Value;
-    }
+    private readonly AuthOptions _authOptions = authOptions.Value;
 
     public Task<bool> ValidateCredentialsAsync(string username, string password)
     {

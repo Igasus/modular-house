@@ -9,15 +9,8 @@ using MQTTnet.AspNetCore;
 
 namespace ModularHouse.Mqtt.Broker;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-    public Startup(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-    
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddHostedMqttServer(optionsBuilder =>
@@ -26,7 +19,7 @@ public class Startup
         services.AddMqttConnectionHandler();
         services.AddConnections();
 
-        services.Configure<AuthOptions>(_configuration.GetSection(AuthOptions.Section));
+        services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Section));
 
         services.AddTransient<IMqttServerStartedEventHandler, MqttServerStartedEventHandler>();
         services.AddTransient<IMqttServerStoppedEventHandler, MqttServerStoppedEventHandler>();

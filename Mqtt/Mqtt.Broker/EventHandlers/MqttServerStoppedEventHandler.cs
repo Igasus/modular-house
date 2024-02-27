@@ -5,18 +5,12 @@ using ModularHouse.Mqtt.Broker.EventHandlers.Contracts;
 
 namespace ModularHouse.Mqtt.Broker.EventHandlers;
 
-public class MqttServerStoppedEventHandler : IMqttServerStoppedEventHandler
+public class MqttServerStoppedEventHandler(ILogger<MqttServerStoppedEventHandler> logger)
+    : IMqttServerStoppedEventHandler
 {
-    private readonly ILogger<MqttServerStoppedEventHandler> _logger;
-
-    public MqttServerStoppedEventHandler(ILogger<MqttServerStoppedEventHandler> logger)
-    {
-        _logger = logger;
-    }
-
     public Task HandleAsync(EventArgs args)
     {
-        _logger.LogInformation("MQTT Server stopped.");
+        logger.LogInformation("MQTT Server stopped.");
         
         return Task.CompletedTask;
     }

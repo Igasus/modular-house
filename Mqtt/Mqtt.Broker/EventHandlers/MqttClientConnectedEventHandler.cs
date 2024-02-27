@@ -5,18 +5,12 @@ using MQTTnet.Server;
 
 namespace ModularHouse.Mqtt.Broker.EventHandlers;
 
-public class MqttClientConnectedEventHandler : IMqttClientConnectedEventHandler
+public class MqttClientConnectedEventHandler(ILogger<MqttClientConnectedEventHandler> logger)
+    : IMqttClientConnectedEventHandler
 {
-    private readonly ILogger<MqttClientConnectedEventHandler> _logger;
-
-    public MqttClientConnectedEventHandler(ILogger<MqttClientConnectedEventHandler> logger)
-    {
-        _logger = logger;
-    }
-
     public Task HandleAsync(ClientConnectedEventArgs args)
     {
-        _logger.LogInformation($"Client {args.ClientId} just connected.");
+        logger.LogInformation($"Client {args.ClientId} just connected.");
         
         return Task.CompletedTask;
     }
