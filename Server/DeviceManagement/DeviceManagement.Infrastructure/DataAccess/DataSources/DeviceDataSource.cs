@@ -31,7 +31,7 @@ public class DeviceDataSource(PostgreSqlContext context) : IDeviceDataSource
 
     public async Task<bool> IsAlreadyLinkedByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await context.Devices.AnyAsync(x => (x.Id == id) 
+        return await context.Devices.AnyAsync(x => (x.Id == id)
                                                     && (x.Router != null || x.Module != null), cancellationToken);
     }
 }

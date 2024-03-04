@@ -13,10 +13,10 @@ public class MqttInterceptingPublishEventHandler(ILogger<MqttInterceptingPublish
     {
         var payload = args.ApplicationMessage.PayloadSegment.ToArray();
         var payloadAsString = Encoding.UTF8.GetString(payload);
-        
+
         logger.LogInformation(
             $"Client {args.ClientId} just published \"{payloadAsString}\" on topic {args.ApplicationMessage.Topic}");
-        
+
         return Task.CompletedTask;
     }
 }

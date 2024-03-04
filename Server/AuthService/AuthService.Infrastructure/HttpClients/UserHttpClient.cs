@@ -20,7 +20,7 @@ public class UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILo
     : IUserHttpClient
 {
     private const string BaseUri = "api/users";
-    
+
     private readonly HttpClient _httpClient = new() { BaseAddress = new Uri(httpClientsOptions.Value.UMS.BaseUrl) };
 
     public async Task<UserDto> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
@@ -39,7 +39,7 @@ public class UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILo
             logger.LogError(errorMessage);
             throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
-        
+
         var userResponse = JsonSerializer.Deserialize<UserResponse>(responseBody);
         var userResponseAsDto = userResponse.AsDto();
 
@@ -63,10 +63,10 @@ public class UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILo
             logger.LogError(errorMessage);
             throw new InternalServerException(errorMessage, errorDetails.ToArray());
         }
-        
+
         var userResponse = JsonSerializer.Deserialize<UserResponse>(responseBody);
         var userResponseAsDto = userResponse.AsDto();
-        
+
         return userResponseAsDto;
     }
 }

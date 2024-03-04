@@ -15,7 +15,7 @@ public static class AssemblyConfigurator
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        
+
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth Service API", Version = "v1" });
@@ -26,7 +26,7 @@ public static class AssemblyConfigurator
 
         services.AddTransactionMiddleware();
         services.AddExceptionHandlerMiddleware();
-        
+
         return services;
     }
 
@@ -43,7 +43,7 @@ public static class AssemblyConfigurator
 
         app.UseTransactionMiddleware();
         app.UseExceptionHandlerMiddleware();
-        
+
         return app;
     }
 }

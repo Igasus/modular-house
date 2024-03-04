@@ -3,7 +3,7 @@ namespace ModularHouse.Server.UserManagement.Infrastructure.Neo4j;
 public record Neo4JOptions
 {
     public const string Section = "Neo4j";
-    
+
     public string Uri { get; set; }
     public AuthOptions Auth { get; set; }
 

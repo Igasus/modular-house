@@ -31,12 +31,12 @@ public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) 
     [ProducesResponseType(typeof(ListedResponse<RouterResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync()
     {
-        var getRoutersQueryResponse = 
+        var getRoutersQueryResponse =
             await messageBus.Send<GetRoutersQuery, GetRoutersQueryResponse>(new GetRoutersQuery());
 
         var routersAsResponseList = getRoutersQueryResponse.Routers.ToResponseList();
-        
-        var response = 
+
+        var response =
             new ListedResponse<RouterResponse>(routersAsResponseList, getRoutersQueryResponse.TotalRoutersCount);
 
         return Ok(response);
@@ -73,7 +73,7 @@ public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) 
         await messageBus.Send(new CreateRouterCommand(input.ToDto(), input.AreaId, input.DeviceId));
 
         var routerCreatedEvent = await routerCreatedTask;
-        
+
         var getRouterByIdResponse = await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
             new GetRouterByIdQuery(routerCreatedEvent.RouterId));
 
@@ -95,9 +95,9 @@ public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) 
     {
         var routerUpdatedTask = eventBus.WaitAsync<RouterUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
         await messageBus.Send(new UpdateRouterByIdCommand(id, input.ToDto()));
-        
+
         var routerUpdatedEvent = await routerUpdatedTask;
-        
+
         var getRouterByIdResponse = await messageBus.Send<GetRouterByIdQuery, GetRouterByIdQueryResponse>(
             new GetRouterByIdQuery(routerUpdatedEvent.RouterId));
 
@@ -117,7 +117,7 @@ public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) 
         [FromRoute, Required] Guid id,
         [FromBody, Required] RouterAreaUpdateRequest input)
     {
-        var routerAreaUpdateTask = 
+        var routerAreaUpdateTask =
             eventBus.WaitAsync<RouterAreaUpdatedEvent>(transactionId: CurrentTransaction.TransactionId);
 
         await messageBus.Send(new UpdateRouterAreaByIdCommand(id, input.AreaId));
@@ -142,7 +142,7 @@ public class RouterController(IMessageBus messageBus, IDomainEventBus eventBus) 
     {
         var routerDeletedTask = eventBus.WaitAsync<RouterDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
         await messageBus.Send(new DeleteRouterByIdCommand(id));
-        
+
         await routerDeletedTask;
 
         return Ok();

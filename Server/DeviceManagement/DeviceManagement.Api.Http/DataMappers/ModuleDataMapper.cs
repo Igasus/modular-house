@@ -23,7 +23,7 @@ public static class ModuleDataMapper
             LastUpdatedByUserId = module.LastUpdatedByUserId
         };
     }
-    
+
     public static IReadOnlyList<ModuleResponse> ToResponseList(this IReadOnlyList<ModuleDto> modules)
     {
         return modules.Select(ToResponse).ToList();

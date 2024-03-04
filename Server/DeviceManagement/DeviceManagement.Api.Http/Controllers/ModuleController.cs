@@ -33,7 +33,7 @@ public class ModuleController(IMessageBus messageBus, IDomainEventBus eventBus) 
     {
         var getModulesQueryResponse =
             await messageBus.Send<GetModulesQuery, GetModulesQueryResponse>(new GetModulesQuery());
-        
+
         var response = new ListedResponse<ModuleResponse>(
             getModulesQueryResponse.Modules.ToResponseList(), getModulesQueryResponse.TotalModulesCount);
 
@@ -95,7 +95,7 @@ public class ModuleController(IMessageBus messageBus, IDomainEventBus eventBus) 
         await messageBus.Send(new UpdateModuleByIdCommand(id, input.ToDto()));
 
         var moduleUpdatedEvent = await moduleUpdatedTask;
-        
+
         var getModuleByIdQueryResponse = await messageBus.Send<GetModuleByIdQuery, GetModuleByIdQueryResponse>(
             new GetModuleByIdQuery(moduleUpdatedEvent.ModuleId));
 

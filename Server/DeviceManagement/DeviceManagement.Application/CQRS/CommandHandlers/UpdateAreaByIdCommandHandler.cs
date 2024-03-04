@@ -20,7 +20,7 @@ public class UpdateAreaByIdCommandHandler(
     public async Task Handle(UpdateAreaByIdCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfAreaIsNotExistAsync(command.AreaId, cancellationToken);
-        
+
         //TODO area.LastUpdatedByUserId must be set by current UserSession
         var area = await areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
         area.Name = command.Area.Name;
@@ -31,7 +31,7 @@ public class UpdateAreaByIdCommandHandler(
 
         await eventBus.PublishAsync(new AreaUpdatedEvent(area.Id, CurrentTransaction.TransactionId));
     }
-    
+
     private async Task ThrowIfAreaIsNotExistAsync(Guid id, CancellationToken cancellationToken)
     {
         var isAreaExist = await areaDataSource.ExistByIdAsync(id, cancellationToken);

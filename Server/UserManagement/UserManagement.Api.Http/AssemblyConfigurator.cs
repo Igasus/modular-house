@@ -15,7 +15,7 @@ public static class AssemblyConfigurator
 
         services.AddTransactionMiddleware()
             .AddExceptionHandlerMiddleware();
-        
+
         return services;
     }
 
@@ -33,7 +33,7 @@ public static class AssemblyConfigurator
 
         app.UseTransactionMiddleware()
             .UseExceptionHandlerMiddleware();
-        
+
         return app;
     }
 }

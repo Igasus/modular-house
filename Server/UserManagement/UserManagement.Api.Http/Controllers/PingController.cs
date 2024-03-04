@@ -19,7 +19,7 @@ public class PingController : ControllerBase
     public Task<IActionResult> PingAsync()
     {
         IActionResult response = Ok();
-        
+
         return Task.FromResult(response);
     }
 }

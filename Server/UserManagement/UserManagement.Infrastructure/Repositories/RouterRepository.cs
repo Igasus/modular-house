@@ -20,7 +20,7 @@ public class RouterRepository(IDriver driver) : IRouterRepository
 
         if (router.AdditionDate == default)
             router.AdditionDate = DateTime.UtcNow;
-        
+
         var parameters = new
         {
             Id = router.Id.ToString(),
@@ -37,7 +37,7 @@ public class RouterRepository(IDriver driver) : IRouterRepository
         var query =
             $"MATCH (router:{nameof(Router)} {{ {nameof(Router.Id)}: $Id }}) " +
             "DETACH DELETE router ";
-        
+
         var parameters = new
         {
             Id = router.Id.ToString()
