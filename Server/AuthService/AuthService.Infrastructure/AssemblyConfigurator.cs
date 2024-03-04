@@ -12,9 +12,9 @@ public static class AssemblyConfigurator
         IConfiguration configuration)
     {
         services.Configure<HttpClientsOptions>(configuration.GetSection(HttpClientsOptions.Section));
-        
+
         services.AddScoped<IUserHttpClient, UserHttpClient>();
-        
+
         return services;
     }
 }

@@ -20,7 +20,7 @@ public class ModuleRepository(IDriver driver) : IModuleRepository
 
         if (module.AdditionDate == default)
             module.AdditionDate = DateTime.UtcNow;
-        
+
         var parameters = new
         {
             Id = module.Id.ToString(),
@@ -37,7 +37,7 @@ public class ModuleRepository(IDriver driver) : IModuleRepository
         var query =
             $"MATCH (module:{nameof(Module)} {{ {nameof(Module.Id)}: $Id }}) " +
             "DETACH DELETE module ";
-        
+
         var parameters = new
         {
             Id = module.Id.ToString()

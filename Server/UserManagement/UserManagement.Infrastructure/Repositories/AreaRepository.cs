@@ -20,7 +20,7 @@ public class AreaRepository(IDriver driver) : IAreaRepository
 
         if (area.AdditionDate == default)
             area.AdditionDate = DateTime.UtcNow;
-        
+
         var parameters = new
         {
             Id = area.Id.ToString(),
@@ -37,7 +37,7 @@ public class AreaRepository(IDriver driver) : IAreaRepository
         var query =
             $"MATCH (area:{nameof(Area)} {{ {nameof(Area.Id)}: $Id }}) " +
             "DETACH DELETE area ";
-        
+
         var parameters = new
         {
             Id = area.Id.ToString()

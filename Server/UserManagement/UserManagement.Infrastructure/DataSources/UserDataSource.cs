@@ -26,7 +26,7 @@ public class UserDataSource(IDriver driver) : IUserDataSource
 
         var queryResult = await connection.Session.RunAsync(query);
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
-        
+
         foreach (var queryResultItem in queryResultAsList)
         {
             var userAsJson = JsonSerializer.Serialize(queryResultItem.Values);
@@ -52,7 +52,7 @@ public class UserDataSource(IDriver driver) : IUserDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-                    
+
         var userAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var user = JsonSerializer.Deserialize<User>(userAsJson);
 
@@ -74,7 +74,7 @@ public class UserDataSource(IDriver driver) : IUserDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-                    
+
         var userAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var user = JsonSerializer.Deserialize<User>(userAsJson);
 

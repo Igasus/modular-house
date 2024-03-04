@@ -10,7 +10,7 @@ namespace ModularHouse.Server.Common.Api.Middlewares;
 public class TransactionMiddleware : IMiddleware
 {
     private const string TransactionIdHeader = "TransactionId";
-    
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         var transactionIdAsString = context.Request.Headers[TransactionIdHeader].ToString();
@@ -34,7 +34,7 @@ public static class TransactionMiddlewareMiddlewareExtensions
         services.AddScoped<TransactionMiddleware>();
         return services;
     }
-    
+
     public static IApplicationBuilder UseTransactionMiddleware(this IApplicationBuilder app)
     {
         app.UseMiddleware<TransactionMiddleware>();

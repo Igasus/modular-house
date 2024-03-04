@@ -11,7 +11,7 @@ public class MqttClientDisconnectedEventHandler(ILogger<MqttClientDisconnectedEv
     public Task HandleAsync(ClientDisconnectedEventArgs args)
     {
         logger.LogInformation($"Client {args.ClientId} just disconnected.");
-        
+
         return Task.CompletedTask;
     }
 }

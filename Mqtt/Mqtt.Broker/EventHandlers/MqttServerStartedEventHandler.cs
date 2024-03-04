@@ -11,7 +11,7 @@ public class MqttServerStartedEventHandler(ILogger<MqttServerStartedEventHandler
     public Task HandleAsync(EventArgs args)
     {
         logger.LogInformation("MQTT Server started.");
-        
+
         return Task.CompletedTask;
     }
 }

@@ -25,7 +25,7 @@ public class RouterDataSource(IDriver driver) : IRouterDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-                    
+
         var routerAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var router = JsonSerializer.Deserialize<Router>(routerAsJson);
 
@@ -45,7 +45,7 @@ public class RouterDataSource(IDriver driver) : IRouterDataSource
         var queryResult = await connection.Session.RunAsync(query, parameters);
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
-        
+
         return queryResultAsSingleRecord is not null;
     }
 }

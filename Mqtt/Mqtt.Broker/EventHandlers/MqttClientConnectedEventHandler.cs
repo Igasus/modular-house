@@ -11,7 +11,7 @@ public class MqttClientConnectedEventHandler(ILogger<MqttClientConnectedEventHan
     public Task HandleAsync(ClientConnectedEventArgs args)
     {
         logger.LogInformation($"Client {args.ClientId} just connected.");
-        
+
         return Task.CompletedTask;
     }
 }

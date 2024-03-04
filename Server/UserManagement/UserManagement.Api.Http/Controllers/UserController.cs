@@ -115,7 +115,7 @@ public class UserController(IMessageBus messageBus, IDomainEventBus domainEventB
         var userDeletedTask =
             domainEventBus.WaitAsync<UserDeletedEvent>(transactionId: CurrentTransaction.TransactionId);
         await messageBus.Send(new DeleteUserByIdCommand(id));
-        
+
         await userDeletedTask;
         return Ok();
     }

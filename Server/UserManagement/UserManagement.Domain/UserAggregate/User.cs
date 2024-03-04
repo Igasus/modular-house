@@ -19,8 +19,6 @@ public class User
         public const int HashingKeyBytesNumber = 256;
     }
 
-    // TODO: Refactor Obsolete Method
-    [Obsolete("Obsolete")]
     public void SetPassword(string password)
     {
         var bytesCount = Random.Shared.Next() % PasswordHashingConfiguration.MaxSaltBytesCount + 1;
@@ -30,15 +28,14 @@ public class User
         var rfc2898DeriveBytes = new Rfc2898DeriveBytes(
             $"{saltAsString}{PasswordHashingConfiguration.PasswordSaltHashDivider}{password}",
             salt,
-            PasswordHashingConfiguration.HashingIterationsCount);
+            PasswordHashingConfiguration.HashingIterationsCount,
+            HashAlgorithmName.SHA256);
         var hash = rfc2898DeriveBytes.GetBytes(PasswordHashingConfiguration.HashingKeyBytesNumber);
         var hashAsString = Convert.ToBase64String(hash);
 
         PasswordHash = $"{saltAsString}-{hashAsString}";
     }
 
-    // TODO: Refactor Obsolete Method
-    [Obsolete("Obsolete")]
     public bool ValidatePassword(string password)
     {
         if (PasswordHash == default)
@@ -53,14 +50,15 @@ public class User
             throw new InternalServerException("Error while validating password.",
                 "Unable to validate password: invalid PasswordHash.");
         }
-        
+
         var saltAsString = splitPasswordHash.First();
         var salt = Convert.FromBase64String(saltAsString);
-        
+
         var rfc2898DeriveBytes = new Rfc2898DeriveBytes(
             $"{saltAsString}{PasswordHashingConfiguration.PasswordSaltHashDivider}{password}",
             salt,
-            PasswordHashingConfiguration.HashingIterationsCount);
+            PasswordHashingConfiguration.HashingIterationsCount,
+            HashAlgorithmName.SHA256);
         var hash = rfc2898DeriveBytes.GetBytes(PasswordHashingConfiguration.HashingKeyBytesNumber);
         var hashAsString = Convert.ToBase64String(hash);
 

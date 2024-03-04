@@ -11,7 +11,7 @@ public class MqttClientSubscribedTopicEventHandler(ILogger<MqttClientSubscribedT
     public Task HandleAsync(ClientSubscribedTopicEventArgs args)
     {
         logger.LogInformation($"Client {args.ClientId} just subscribed topic {args.TopicFilter.Topic}.");
-        
+
         return Task.CompletedTask;
     }
 }

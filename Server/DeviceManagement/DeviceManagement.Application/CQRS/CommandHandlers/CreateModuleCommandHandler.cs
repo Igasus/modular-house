@@ -25,7 +25,7 @@ public class CreateModuleCommandHandler(
         await ThrowIfRouterIsNotExistByIdAsync(command.RouterId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
         await ThrowIfDeviceAlreadyLinkedByIdAsync(command.DeviceId, cancellationToken);
-        
+
         //TODO CreatedByUserId and LastUpdatedByUserId must be set by CurrentUserSession
         var module = new Module
         {

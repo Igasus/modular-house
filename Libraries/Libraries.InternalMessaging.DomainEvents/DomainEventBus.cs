@@ -16,7 +16,7 @@ public class DomainEventBus(IPublisher publisher) : IDomainEventBus
     }
 
     private readonly IList<SubscribedEventHandler> _subscribedHandlers = new List<SubscribedEventHandler>();
-    
+
     public async Task PublishAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent
     {
         var handlersToNotify = _subscribedHandlers
@@ -35,7 +35,7 @@ public class DomainEventBus(IPublisher publisher) : IDomainEventBus
         _subscribedHandlers.Add(eventHandler);
 
         return Task.FromResult(eventHandler.SubscriptionId);
-        
+
         void AbstractedCallback(IDomainEvent evt) => callback((TEvent)evt);
     }
 
@@ -58,7 +58,7 @@ public class DomainEventBus(IPublisher publisher) : IDomainEventBus
         where TEvent : IDomainEvent
     {
         throwTimeout ??= Constraints.DefaultEventWaitTimeout;
-        
+
         var domainEvent = default(TEvent);
         var cancellationTokenSource = new CancellationTokenSource();
 
@@ -77,7 +77,7 @@ public class DomainEventBus(IPublisher publisher) : IDomainEventBus
 
         if (cancellationTokenSource.IsCancellationRequested)
             return domainEvent;
-        
+
         var exceptionMessage = $"Time out while waiting Event {typeof(TEvent).Name} with " + (transactionId is null
             ? "any TransactionId."
             : $"TransactionId = {transactionId.Value}");

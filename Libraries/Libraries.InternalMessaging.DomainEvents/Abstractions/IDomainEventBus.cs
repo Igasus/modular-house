@@ -13,7 +13,7 @@ public interface IDomainEventBus
     /// <returns>Task</returns>
     Task PublishAsync<TEvent>(TEvent domainEvent)
         where TEvent : IDomainEvent;
-    
+
     /// <summary>
     /// Subscribe to Event
     /// </summary>
@@ -22,7 +22,7 @@ public interface IDomainEventBus
     /// <returns>Task with Id of subscription</returns>
     Task<Guid> SubscribeAsync<TEvent>(Action<TEvent> callback)
         where TEvent : IDomainEvent;
-    
+
     /// <summary>
     /// Unsubscribe from Event
     /// </summary>

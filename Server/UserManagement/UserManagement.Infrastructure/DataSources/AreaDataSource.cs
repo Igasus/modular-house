@@ -25,7 +25,7 @@ public class AreaDataSource(IDriver driver) : IAreaDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-                    
+
         var areaAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var area = JsonSerializer.Deserialize<Area>(areaAsJson);
 

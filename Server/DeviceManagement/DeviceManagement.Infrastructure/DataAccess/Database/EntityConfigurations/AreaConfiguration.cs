@@ -11,7 +11,7 @@ public class AreaConfiguration : IEntityTypeConfiguration<Area>
         builder.HasOne(area => area.CreatedByUser)
             .WithMany(user => user.CreatedAreas)
             .HasForeignKey(area => area.CreatedByUserId);
-        
+
         builder.HasOne(area => area.LastUpdatedByUser)
             .WithMany(user => user.LastUpdatedAreas)
             .HasForeignKey(area => area.LastUpdatedByUserId);

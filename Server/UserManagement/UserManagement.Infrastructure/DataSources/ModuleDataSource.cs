@@ -25,7 +25,7 @@ public class ModuleDataSource(IDriver driver) : IModuleDataSource
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
         if (queryResultAsSingleRecord is null) return null;
-                    
+
         var moduleAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var module = JsonSerializer.Deserialize<Module>(moduleAsJson);
 
@@ -45,7 +45,7 @@ public class ModuleDataSource(IDriver driver) : IModuleDataSource
         var queryResult = await connection.Session.RunAsync(query, parameters);
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
-        
+
         return queryResultAsSingleRecord is not null;
     }
 }

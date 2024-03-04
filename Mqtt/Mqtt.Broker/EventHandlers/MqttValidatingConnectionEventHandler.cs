@@ -14,12 +14,12 @@ public class MqttValidatingConnectionEventHandler(
     public async Task HandleAsync(ValidatingConnectionEventArgs args)
     {
         var authenticationResult = await authenticationService.ValidateCredentialsAsync(args.UserName, args.Password);
-        
+
         if (!authenticationResult)
         {
             args.ReasonCode = MqttConnectReasonCode.BadUserNameOrPassword;
             logger.LogWarning($"Authentication for Client {args.ClientId} failed: Incorrect UserName of Password.");
-            
+
             return;
         }
 

@@ -22,7 +22,7 @@ public class UserRepository(IDriver driver) : IUserRepository
         var userId = user.Id == default
             ? Guid.NewGuid()
             : user.Id;
-        
+
         var parameters = new
         {
             Id = userId.ToString(),
@@ -42,7 +42,7 @@ public class UserRepository(IDriver driver) : IUserRepository
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
             $"SET user.{nameof(User.Email)} = ${nameof(User.Email)}," +
             $"    user.{nameof(User.PasswordHash)} = ${nameof(User.PasswordHash)}";
-        
+
         var parameters = new
         {
             Id = user.Id.ToString(),
@@ -60,7 +60,7 @@ public class UserRepository(IDriver driver) : IUserRepository
         var query =
             $"MATCH (user:{nameof(User)} {{ {nameof(User.Id)}: $Id }}) " +
             "DETACH DELETE user";
-        
+
         var parameters = new
         {
             Id = user.Id.ToString()

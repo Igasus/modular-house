@@ -17,6 +17,6 @@ public class Area
 
     public virtual User CreatedByUser { get; set; }
     public virtual User LastUpdatedByUser { get; set; }
-    
+
     public virtual ICollection<Router> Routers { get; set; }
 }

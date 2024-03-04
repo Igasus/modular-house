@@ -34,7 +34,7 @@ public sealed class ExceptionHandlerMiddleware(IHostEnvironment environment, ILo
     {
         string errorMessage;
         string[] errorDetails;
-        
+
         if (exception is ExceptionBase customException
             && (environment.IsDevelopment()
                 || customException.ResponseStatusCode is not HttpStatusCode.InternalServerError))
@@ -49,7 +49,7 @@ public sealed class ExceptionHandlerMiddleware(IHostEnvironment environment, ILo
             errorDetails = Array.Empty<string>();
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         }
-        
+
         var errorResponse = new ErrorResponse(errorMessage, errorDetails, CurrentTransaction.TransactionId);
         if (environment.IsDevelopment())
             errorResponse = errorResponse.WithErrorStackTrace(exception.StackTrace);
@@ -72,7 +72,7 @@ public static class ExceptionHandlerMiddlewareExtensions
         services.AddScoped<ExceptionHandlerMiddleware>();
         return services;
     }
-    
+
     public static IApplicationBuilder UseExceptionHandlerMiddleware(this IApplicationBuilder app)
     {
         app.UseMiddleware<ExceptionHandlerMiddleware>();

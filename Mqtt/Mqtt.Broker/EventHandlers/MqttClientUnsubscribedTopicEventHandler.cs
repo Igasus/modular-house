@@ -11,7 +11,7 @@ public class MqttClientUnsubscribedTopicEventHandler(ILogger<MqttClientUnsubscri
     public Task HandleAsync(ClientUnsubscribedTopicEventArgs args)
     {
         logger.LogInformation($"Client {args.ClientId} just unsubscribed topic {args.TopicFilter}.");
-        
+
         return Task.CompletedTask;
     }
 }

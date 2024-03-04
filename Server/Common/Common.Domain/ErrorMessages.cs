@@ -32,10 +32,10 @@ public static class ErrorMessages
 
         return message;
     }
-    
+
     public static string AlreadyLinked<TSource>() =>
         $"{typeof(TSource).Name} already linked.";
-    
+
     public static string AlreadyLinkedDetails<TSource, TMember>(
         Expression<Func<TSource, TMember>> memberAccess,
         TMember memberValue)

@@ -15,13 +15,13 @@ public static class AssemblyConfigurator
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
             .AddControllers()
-            .AddJsonOptions(options => 
+            .AddJsonOptions(options =>
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)));
 
         services
             .AddTransactionMiddleware()
             .AddExceptionHandlerMiddleware();
-        
+
         return services;
     }
 
@@ -29,19 +29,16 @@ public static class AssemblyConfigurator
     {
         app.UseTransactionMiddleware();
         app.UseExceptionHandlerMiddleware();
-        
+
         app.UseRouting();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        app.MapControllers();
 
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
+
         app.MapControllers();
         app.UseHttpsRedirection();
         app.UseAuthorization();

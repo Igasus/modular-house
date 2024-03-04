@@ -16,7 +16,7 @@ public class ConnectionContainer : IDisposable, IAsyncDisposable
     public static ConnectionContainer FromDriver(IDriver driver)
     {
         var session = driver.AsyncSession();
-        
+
         return new ConnectionContainer(session);
     }
 
@@ -25,7 +25,7 @@ public class ConnectionContainer : IDisposable, IAsyncDisposable
         Session.CloseAsync().Wait();
         Session.Dispose();
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         await Session.CloseAsync();

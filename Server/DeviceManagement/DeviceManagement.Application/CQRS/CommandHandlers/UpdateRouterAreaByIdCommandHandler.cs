@@ -22,7 +22,7 @@ public class UpdateRouterAreaByIdCommandHandler(
     public async Task Handle(UpdateRouterAreaByIdCommand command, CancellationToken cancellationToken)
     {
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
-        
+
         var router = await routerDataSource.GetByIdAsync(command.RouterId, cancellationToken);
         if (router is null)
         {

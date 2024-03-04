@@ -25,7 +25,7 @@ public class CreateRouterCommandHandler(
         await ThrowIfAreaIsNotExistByIdAsync(command.AreaId, cancellationToken);
         await ThrowIfDeviceIsNotExistByIdAsync(command.DeviceId, cancellationToken);
         await ThrowIfDeviceAlreadyLinkedByIdAsync(command.DeviceId, cancellationToken);
-        
+
         //TODO Add Device security check when DMC is ready.
         //TODO CreatedByUserId and LastUpdatedByUserId must be set by current user session
         var router = new Router
@@ -39,7 +39,7 @@ public class CreateRouterCommandHandler(
         };
 
         await routerRepository.CreateAsync(router, cancellationToken);
-        
+
         await eventBus.PublishAsync(new RouterCreatedEvent(router.Id, CurrentTransaction.TransactionId));
     }
 

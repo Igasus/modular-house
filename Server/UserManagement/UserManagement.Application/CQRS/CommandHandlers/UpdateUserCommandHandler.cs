@@ -24,7 +24,7 @@ public class UpdateUserCommandHandler(
             throw new NotFoundException(ErrorMessages.NotFound<User>(),
                 ErrorMessages.NotFoundDetails((User u) => u.Id, command.UserId));
         }
-        
+
         user.Email = command.Input.Email;
         user.SetPassword(command.Input.Password);
 

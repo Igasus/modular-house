@@ -11,7 +11,7 @@ public class MqttServerStoppedEventHandler(ILogger<MqttServerStoppedEventHandler
     public Task HandleAsync(EventArgs args)
     {
         logger.LogInformation("MQTT Server stopped.");
-        
+
         return Task.CompletedTask;
     }
 }
