@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>ModularHouse.Server.Auth.Domain</RootNamespace>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Libraries\Libraries.InternalMessaging.DomainEvents\Libraries.InternalMessaging.DomainEvents.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
