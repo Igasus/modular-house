@@ -4,12 +4,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:33241",
-      "sslPort": 44389
+      "applicationUrl": "http://localhost:44331",
+      "sslPort": 44330
     }
   },
   "profiles": {
-    "Server.DeviceControl.Api": {
+    "Device Control System": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:3300;http://localhost:3301",
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
+    "Device Control System - IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
