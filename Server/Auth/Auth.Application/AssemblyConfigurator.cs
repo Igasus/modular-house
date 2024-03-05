@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ModularHouse.Server.AuthService.Application;
+namespace ModularHouse.Server.Auth.Application;
 
 public static class AssemblyConfigurator
 {

@@ -7,14 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ModularHouse.Server.AuthService.Application.Dto;
-using ModularHouse.Server.AuthService.Application.HttpClients.UMS;
-using ModularHouse.Server.AuthService.Infrastructure.MappingExtensions;
+using ModularHouse.Server.Auth.Application.Dto;
+using ModularHouse.Server.Auth.Application.HttpClients.UMS;
+using ModularHouse.Server.Auth.Infrastructure.MappingExtensions;
 using ModularHouse.Server.Common.Domain;
 using ModularHouse.Server.Common.Domain.Exceptions;
 using ModularHouse.Shared.Models.Responses.UMS;
 
-namespace ModularHouse.Server.AuthService.Infrastructure.HttpClients;
+namespace ModularHouse.Server.Auth.Infrastructure.HttpClients;
 
 public class UserHttpClient(IOptions<HttpClientsOptions> httpClientsOptions, ILogger<UserHttpClient> logger)
     : IUserHttpClient

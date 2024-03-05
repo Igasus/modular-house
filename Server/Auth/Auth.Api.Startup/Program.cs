@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
-using ModularHouse.Server.AuthService.Api.Http;
-using ModularHouse.Server.AuthService.Application;
-using ModularHouse.Server.AuthService.Infrastructure;
+using ModularHouse.Server.Auth.Api.Http;
+using ModularHouse.Server.Auth.Application;
+using ModularHouse.Server.Auth.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

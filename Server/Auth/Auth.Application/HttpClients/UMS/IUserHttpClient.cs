@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ModularHouse.Server.AuthService.Application.Dto;
+using ModularHouse.Server.Auth.Application.Dto;
 
-namespace ModularHouse.Server.AuthService.Application.HttpClients.UMS;
+namespace ModularHouse.Server.Auth.Application.HttpClients.UMS;
 
 public interface IUserHttpClient
 {

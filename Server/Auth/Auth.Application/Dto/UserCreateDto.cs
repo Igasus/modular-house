@@ -1,4 +1,4 @@
-namespace ModularHouse.Server.AuthService.Application.Dto;
+namespace ModularHouse.Server.Auth.Application.Dto;
 
 public record UserCreateDto
 {

@@ -1,4 +1,4 @@
-namespace ModularHouse.Server.AuthService.Infrastructure.HttpClients;
+namespace ModularHouse.Server.Auth.Infrastructure.HttpClients;
 
 public record HttpClientsOptions
 {

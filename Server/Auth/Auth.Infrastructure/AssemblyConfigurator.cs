@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ModularHouse.Server.AuthService.Application.HttpClients.UMS;
-using ModularHouse.Server.AuthService.Infrastructure.HttpClients;
+using ModularHouse.Server.Auth.Application.HttpClients.UMS;
+using ModularHouse.Server.Auth.Infrastructure.HttpClients;
 
-namespace ModularHouse.Server.AuthService.Infrastructure;
+namespace ModularHouse.Server.Auth.Infrastructure;
 
 public static class AssemblyConfigurator
 {

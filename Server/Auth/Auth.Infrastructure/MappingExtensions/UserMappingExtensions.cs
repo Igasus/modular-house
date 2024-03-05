@@ -1,8 +1,8 @@
-using ModularHouse.Server.AuthService.Application.Dto;
+using ModularHouse.Server.Auth.Application.Dto;
 using ModularHouse.Shared.Models.Requests.UMS;
 using ModularHouse.Shared.Models.Responses.UMS;
 
-namespace ModularHouse.Server.AuthService.Infrastructure.MappingExtensions;
+namespace ModularHouse.Server.Auth.Infrastructure.MappingExtensions;
 
 public static class UserMappingExtensions
 {

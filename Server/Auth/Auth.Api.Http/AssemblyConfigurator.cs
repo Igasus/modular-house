@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ModularHouse.Server.Common.Api.Middlewares;
 
-namespace ModularHouse.Server.AuthService.Api.Http;
+namespace ModularHouse.Server.Auth.Api.Http;
 
 public static class AssemblyConfigurator
 {

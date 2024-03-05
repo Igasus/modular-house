@@ -5,7 +5,8 @@
         <Nullable>disable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <RootNamespace>ModularHouse.Server.AuthService.Api.Startup</RootNamespace>
+        <RootNamespace>ModularHouse.Server.Auth.Api.Startup</RootNamespace>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,8 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AuthService.Api.Http\AuthService.Api.Http.csproj" />
-      <ProjectReference Include="..\AuthService.Infrastructure\AuthService.Infrastructure.csproj" />
+      <ProjectReference Include="..\Auth.Api.Http\Auth.Api.Http.csproj" />
+      <ProjectReference Include="..\Auth.Infrastructure\Auth.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

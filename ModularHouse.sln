@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mqtt", "Mqtt", "{C890CA65-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{1C91427F-0B50-43AA-BF5B-7B6575F956C4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{EAB67356-6D0C-481D-AE55-49CE0F7C3791}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{EAB67356-6D0C-481D-AE55-49CE0F7C3791}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F5FF06EC-52BD-4B20-9932-F870C561BBD1}"
 EndProject
@@ -35,13 +35,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.Broker", "Mqtt\Mqtt.Broker\Mqtt.Broker.csproj", "{C00753E6-835A-4456-AA14-E7E8A9AF92D4}"
 EndProject
 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Api.Http", "Server\AuthService\AuthService.Api.Http\AuthService.Api.Http.csproj", "{8C39BF50-38EE-418A-953E-C4B837130EE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Api.Http", "Server\Auth\Auth.Api.Http\Auth.Api.Http.csproj", "{8C39BF50-38EE-418A-953E-C4B837130EE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Api.Startup", "Server\AuthService\AuthService.Api.Startup\AuthService.Api.Startup.csproj", "{FE59F05A-E14F-47CB-B6DA-35CAB4BD1575}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Api.Startup", "Server\Auth\Auth.Api.Startup\Auth.Api.Startup.csproj", "{FE59F05A-E14F-47CB-B6DA-35CAB4BD1575}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Application", "Server\AuthService\AuthService.Application\AuthService.Application.csproj", "{18447BDD-6DAF-49A0-A386-1C39E9971A24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Application", "Server\Auth\Auth.Application\Auth.Application.csproj", "{18447BDD-6DAF-49A0-A386-1C39E9971A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure", "Server\AuthService\AuthService.Infrastructure\AuthService.Infrastructure.csproj", "{5B1F7F39-B41E-4B20-B26F-B135767BC006}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Infrastructure", "Server\Auth\Auth.Infrastructure\Auth.Infrastructure.csproj", "{5B1F7F39-B41E-4B20-B26F-B135767BC006}"
 EndProject
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Server\Common\Common.Api\Common.Api.csproj", "{86395B70-646D-4854-8688-4B45BE569EC9}"
@@ -225,7 +225,7 @@ Global
 		{D4524F12-1922-4892-92EE-5B822F4DA341} = {4E17E0FD-E98C-4460-949B-A7A310BF943A}
 		{D3FE6F0D-1791-4EA4-9096-78240E5736CD} = {4E17E0FD-E98C-4460-949B-A7A310BF943A}
 		{684F30DC-F48E-48AF-95BA-FAA0595FBC7D} = {4E17E0FD-E98C-4460-949B-A7A310BF943A}
-		{AC931D11-948A-4D30-9E30-B64D33ED2DA4} = {4E17E0FD-E98C-4460-949B-A7A310BF943A}	
+		{AC931D11-948A-4D30-9E30-B64D33ED2DA4} = {4E17E0FD-E98C-4460-949B-A7A310BF943A}
 		{21E4EDD3-FDB4-413C-A795-A28F751D5BE8} = {CBB6AFC6-721E-4D77-9F99-4F9B17860AF4}
 	EndGlobalSection
 EndGlobal
