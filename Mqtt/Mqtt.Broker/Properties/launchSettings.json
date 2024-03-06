@@ -1,21 +1,17 @@
 ﻿{
   "iisSettings": {
     "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:33916",
-      "sslPort": 44377
-    }
+    "anonymousAuthentication": true
   },
   "profiles": {
-    "ModularHouse.Mqtt.Broker": {
+    "Mqtt Broker": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
+    "Mqtt Broker - IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {

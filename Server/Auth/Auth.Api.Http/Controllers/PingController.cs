@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ModularHouse.Server.AuthService.Api.Http.Controllers;
+namespace ModularHouse.Server.Auth.Api.Http.Controllers;
 
 /// <summary>
 /// Represents the Ping API controller.
