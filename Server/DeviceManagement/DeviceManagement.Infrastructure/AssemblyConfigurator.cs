@@ -6,7 +6,6 @@ using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.ModuleAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
-using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.DataSources;
 using ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Repositories;
@@ -32,7 +31,6 @@ public static class AssemblyConfigurator
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IDeviceRepository, DeviceRepository>();
         services.AddTransient<IAreaRepository, AreaRepository>();
         services.AddTransient<IRouterRepository, RouterRepository>();
@@ -43,7 +41,6 @@ public static class AssemblyConfigurator
 
     private static IServiceCollection AddDataSources(this IServiceCollection services)
     {
-        services.AddTransient<IUserDataSource, UserDataSource>();
         services.AddTransient<IDeviceDataSource, DeviceDataSource>();
         services.AddTransient<IAreaDataSource, AreaDataSource>();
         services.AddTransient<IRouterDataSource, RouterDataSource>();

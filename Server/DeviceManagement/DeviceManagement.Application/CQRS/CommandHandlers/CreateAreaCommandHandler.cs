@@ -15,14 +15,11 @@ public class CreateAreaCommandHandler(IAreaRepository areaRepository, IDomainEve
 {
     public async Task Handle(CreateAreaCommand command, CancellationToken cancellationToken)
     {
-        //TODO CreatedByUserId and LastUpdatedByUserId must be set by CurrentUserSession
-
         var area = new Area
         {
             Name = command.Area.Name,
             Description = command.Area.Description,
-            CreationDate = DateTime.UtcNow,
-            LastUpdatedDate = DateTime.UtcNow
+            AdditionDate = DateTime.UtcNow
         };
 
         await areaRepository.CreateAsync(area, cancellationToken);

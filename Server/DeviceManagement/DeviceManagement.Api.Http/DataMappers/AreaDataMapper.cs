@@ -15,10 +15,7 @@ public static class AreaDataMapper
             Id = area.Id,
             Name = area.Name,
             Description = area.Description,
-            CreationDate = area.CreationDate,
-            CreatedByUserId = area.CreatedByUserId,
-            LastUpdatedDate = area.LastUpdatedDate,
-            LastUpdatedByUserId = area.LastUpdatedByUserId
+            AdditionDate = area.AdditionDate
         };
     }
 

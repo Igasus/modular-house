@@ -15,13 +15,5 @@ public class ModuleConfiguration : IEntityTypeConfiguration<Module>
         builder.HasOne(module => module.Device)
             .WithOne(device => device.Module)
             .HasForeignKey<Module>(module => module.DeviceId);
-
-        builder.HasOne(module => module.CreatedByUser)
-            .WithMany(user => user.CreatedModules)
-            .HasForeignKey(module => module.CreatedByUserId);
-
-        builder.HasOne(module => module.LastUpdatedByUser)
-            .WithMany(user => user.LastUpdatedModules)
-            .HasForeignKey(module => module.LastUpdatedByUserId);
     }
 }

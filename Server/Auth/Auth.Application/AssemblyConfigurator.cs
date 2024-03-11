@@ -10,7 +10,7 @@ public static class AssemblyConfigurator
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(typeof(AssemblyConfigurator).Assembly));
         services.AddCQRS();
-        
+
         return services;
     }
 }
