@@ -3,13 +3,11 @@ using ModularHouse.Server.DeviceManagement.Domain.AreaAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.DeviceAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.ModuleAggregate;
 using ModularHouse.Server.DeviceManagement.Domain.RouterAggregate;
-using ModularHouse.Server.DeviceManagement.Domain.UserAggregate;
 
 namespace ModularHouse.Server.DeviceManagement.Infrastructure.DataAccess.Database;
 
 public sealed class PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Area> Areas { get; set; }
     public DbSet<Router> Routers { get; set; }

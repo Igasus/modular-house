@@ -21,11 +21,9 @@ public class UpdateAreaByIdCommandHandler(
     {
         await ThrowIfAreaIsNotExistAsync(command.AreaId, cancellationToken);
 
-        //TODO area.LastUpdatedByUserId must be set by current UserSession
         var area = await areaDataSource.GetByIdAsync(command.AreaId, cancellationToken);
         area.Name = command.Area.Name;
         area.Description = command.Area.Description;
-        area.LastUpdatedDate = DateTime.UtcNow;
 
         await areaRepository.UpdateAsync(area, cancellationToken);
 
