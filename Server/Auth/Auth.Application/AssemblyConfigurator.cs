@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ModularHouse.Libraries.InternalMessaging.CQRS;
 
@@ -10,6 +11,7 @@ public static class AssemblyConfigurator
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(typeof(AssemblyConfigurator).Assembly));
         services.AddCQRS();
+        services.AddValidatorsFromAssembly(typeof(AssemblyConfigurator).Assembly);
 
         return services;
     }
