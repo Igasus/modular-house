@@ -56,4 +56,6 @@ public static class ErrorMessages
 
     public static string HttpResponseBodyDetails(string bodyAsString) =>
         $"HTTP Response Body: {bodyAsString}";
+
+    public static string ValidationFailed = "Validation failed.";
 }

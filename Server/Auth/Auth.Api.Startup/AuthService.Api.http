@@ -1,5 +1,22 @@
-@HostAddress = http://localhost:3401
+@HostAddress = https://localhost:3400
 
-###
+### Ping
 GET {{HostAddress}}/api/ping
-###
+
+### Sign Up
+POST {{HostAddress}}/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "email": "test@email.com",
+  "password": "Initial123!"
+}
+
+### Sign In
+POST {{HostAddress}}/api/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "test@email.com",
+  "password": "Initial123!"
+}

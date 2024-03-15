@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .ConfigureHttpWebAppServices()
     .ConfigureInfrastructureServices(builder.Configuration)
-    .ConfigureApplicationServices()
+    .ConfigureApplicationServices(builder.Configuration)
     .ConfigureDomainServices();
 
 var app = builder.Build();
