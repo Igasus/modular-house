@@ -16,10 +16,7 @@ public static class RouterDataMapper
             DeviceId = router.DeviceId,
             Name = router.Name,
             Description = router.Description,
-            CreationDate = router.CreationDate,
-            CreatedByUserId = router.CreatedByUserId,
-            LastUpdatedDate = router.LastUpdatedDate,
-            LastUpdatedByUserId = router.LastUpdatedByUserId
+            AdditionDate = router.AdditionDate
         };
     }
 

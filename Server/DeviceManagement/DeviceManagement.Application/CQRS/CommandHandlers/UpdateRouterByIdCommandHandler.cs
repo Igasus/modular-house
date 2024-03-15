@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Command;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
@@ -27,10 +26,8 @@ public class UpdateRouterByIdCommandHandler(
                 ErrorMessages.NotFoundDetails((Router r) => r.Id, command.RouterId));
         }
 
-        //TODO router.LastUpdatedByUserId must be set by current user session
         router.Name = command.Router.Name;
         router.Description = command.Router.Description;
-        router.LastUpdatedDate = DateTime.UtcNow;
 
         await routerRepository.UpdateAsync(router, cancellationToken);
 

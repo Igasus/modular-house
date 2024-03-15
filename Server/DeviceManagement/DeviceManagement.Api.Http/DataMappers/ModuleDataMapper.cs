@@ -17,10 +17,7 @@ public static class ModuleDataMapper
             DeviceId = module.DeviceId,
             Name = module.Name,
             Description = module.Description,
-            CreationDate = module.CreationDate,
-            CreatedByUserId = module.CreatedByUserId,
-            LastUpdatedDate = module.LastUpdatedDate,
-            LastUpdatedByUserId = module.LastUpdatedByUserId
+            AdditionDate = module.AdditionDate
         };
     }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using ModularHouse.Libraries.InternalMessaging.CQRS.Abstractions.Command;
 using ModularHouse.Libraries.InternalMessaging.DomainEvents.Abstractions;
@@ -27,10 +26,8 @@ public class UpdateModuleByIdCommandHandler(
                 ErrorMessages.NotFoundDetails((Module m) => m.Id, command.ModuleId));
         }
 
-        //TODO LastUpdatedByUserId must be set by CurrentUserSession
         module.Name = command.Module.Name;
         module.Description = command.Module.Description;
-        module.LastUpdatedDate = DateTime.UtcNow;
 
         await moduleRepository.UpdateAsync(module, cancellationToken);
 

@@ -27,15 +27,13 @@ public class CreateRouterCommandHandler(
         await ThrowIfDeviceAlreadyLinkedByIdAsync(command.DeviceId, cancellationToken);
 
         //TODO Add Device security check when DMC is ready.
-        //TODO CreatedByUserId and LastUpdatedByUserId must be set by current user session
         var router = new Router
         {
             AreaId = command.AreaId,
             DeviceId = command.DeviceId,
             Name = command.Router.Name,
             Description = command.Router.Description,
-            CreationDate = DateTime.UtcNow,
-            LastUpdatedDate = DateTime.UtcNow
+            AdditionDate = DateTime.UtcNow
         };
 
         await routerRepository.CreateAsync(router, cancellationToken);
