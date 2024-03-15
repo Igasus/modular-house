@@ -18,15 +18,15 @@ public class GetAccessTokenQueryHandler(IUserDataSource dataSource, IAccessToken
         GetAccessTokenQuery query,
         CancellationToken cancellationToken)
     {
-        var user = await dataSource.GetByEmailAsync(query.Credentials.Email, cancellationToken);
+        var user = await dataSource.GetByEmailAsync(query.CredentialsDto.Email, cancellationToken);
         if (user is null)
         {
             throw new BadRequestException(
                 LocalErrorMessages.InvalidCredentials,
-                ErrorMessages.NotFoundDetails((User u) => u.Email, query.Credentials.Email));
+                ErrorMessages.NotFoundDetails((User u) => u.Email, query.CredentialsDto.Email));
         }
 
-        var isPasswordValid = user.ValidatePassword(query.Credentials.Password);
+        var isPasswordValid = user.ValidatePassword(query.CredentialsDto.Password);
         if (!isPasswordValid)
             throw new BadRequestException(LocalErrorMessages.InvalidCredentials, LocalErrorMessages.IncorrectPassword);
 

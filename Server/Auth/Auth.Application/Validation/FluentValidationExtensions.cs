@@ -3,61 +3,73 @@ using System.Linq;
 using System.Text;
 using FluentValidation;
 using FluentValidation.Results;
+using ModularHouse.Server.Auth.Application.Validation.Options;
 
 namespace ModularHouse.Server.Auth.Application.Validation;
 
 public static class FluentValidationExtensions
 {
-    public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder)
-    {
-        var options = ruleBuilder
+    public static IRuleBuilderOptions<T, string> Password<T>(
+        this IRuleBuilder<T, string> rule,
+        PasswordValidationOptions passwordOptions)
+    { 
+        var options = rule
             .NotEmpty()
-            .MinimumLength(8)
-            .MaximumLength(32)
-            .ContainsUppercaseEnglishLetter()
-            .ContainsLowercaseEnglishLetter()
-            .ContainsDigit()
-            .ContainsSpecialCharacter();
-
-        return options;
-    }
-
-    private static IRuleBuilder<T, string> ContainsUppercaseEnglishLetter<T>(this IRuleBuilder<T, string> ruleBuilder)
-    {
-        var options = ruleBuilder
-            .Must(password => password.Any(char.IsUpper))
-            .WithMessage("'Password' must contain at least one uppercase letter");
-
-        return options;
-    }
-    
-    private static IRuleBuilder<T, string> ContainsLowercaseEnglishLetter<T>(this IRuleBuilder<T, string> ruleBuilder)
-    {
-        var options = ruleBuilder
-            .Must(password => password.Any(char.IsLower))
-            .WithMessage("'Password' must contain at least one lowercase letter");
-
-        return options;
-    }
-    
-    private static IRuleBuilder<T, string> ContainsDigit<T>(this IRuleBuilder<T, string> ruleBuilder)
-    {
-        var options = ruleBuilder
-            .Must(password => password.Any(char.IsDigit))
-            .WithMessage("'Password' must contain at least one digit");
+            .MinimumLength(passwordOptions.MinimumLength)
+            .MaximumLength(passwordOptions.MaximumLength);
         
+        if (passwordOptions.MustContainUppercaseEnglishLetter)
+        {
+            options = options
+                .ContainsUppercaseEnglishLetter()
+                .WithMessage("'Password' must contain at least one uppercase letter");
+        }
+        
+        if (passwordOptions.MustContainLowercaseEnglishLetter)
+        {
+            options = options
+                .ContainsLowercaseEnglishLetter()
+                .WithMessage("'Password' must contain at least one lowercase letter");
+        }
+        
+        if (passwordOptions.MustContainDigit)
+        {
+            options = options
+                .ContainsDigit()
+                .WithMessage("'Password' must contain at least one digit");
+        }
+
+        if (passwordOptions.MustContainSpecialCharacter)
+        {
+            options = options
+                .ContainsAnyCharacterOf(passwordOptions.AllowedSpecialCharacters)
+                .WithMessage("'Password' must contain at least one special character: " +
+                             $"{passwordOptions.AllowedSpecialCharacters}");
+        }
+
         return options;
     }
-    
-    private static IRuleBuilder<T, string> ContainsSpecialCharacter<T>(this IRuleBuilder<T, string> ruleBuilder)
+
+    public static IRuleBuilderOptions<T, string> ContainsUppercaseEnglishLetter<T>(this IRuleBuilder<T, string> rule)
     {
-        const string allowedSpecialCharacters = "!@#$%^&*()-_=+,./\\|;:'\"`~<>[]{}";
-
-        var options = ruleBuilder
-            .Must(password => allowedSpecialCharacters.Any(password.Contains))
-            .WithMessage($"'Password' must contain at least one special character - {allowedSpecialCharacters}");
-
-        return options;
+        return rule.Must(password => password.Any(char.IsUpper));
+    }
+    
+    public static IRuleBuilderOptions<T, string> ContainsLowercaseEnglishLetter<T>(this IRuleBuilder<T, string> rule)
+    {
+        return rule.Must(password => password.Any(char.IsLower));
+    }
+    
+    public static IRuleBuilderOptions<T, string> ContainsDigit<T>(this IRuleBuilder<T, string> rule)
+    {
+        return rule.Must(password => password.Any(char.IsDigit));
+    }
+    
+    public static IRuleBuilderOptions<T, string> ContainsAnyCharacterOf<T>(
+        this IRuleBuilder<T, string> rule,
+        string characters)
+    {
+        return rule.Must(password => characters.Any(password.Contains));
     }
 
     public static string AsErrorMessageDetails<TSource>(this List<ValidationFailure> errors)

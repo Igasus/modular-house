@@ -17,28 +17,28 @@ public class SignUpUserCommandHandler(
     IUserDataSource dataSource,
     IUserRepository repository,
     IDomainEventBus domainEventBus,
-    IValidator<UserCredentials> credentialsValidator) : ICommandHandler<SignUpUserCommand>
+    IValidator<UserCredentialsDto> credentialsValidator) : ICommandHandler<SignUpUserCommand>
 {
     public async Task Handle(SignUpUserCommand command, CancellationToken cancellationToken)
     {
-        var isEmailTaken = await dataSource.IsExistWithEmail(command.Credentials.Email, cancellationToken);
+        var isEmailTaken = await dataSource.IsExistWithEmail(command.CredentialsDto.Email, cancellationToken);
         if (isEmailTaken)
         {
             throw new BadRequestException(
                 ErrorMessages.AlreadyExist<User>(),
-                ErrorMessages.AlreadyExistDetails((User u) => u.Email, command.Credentials.Email));
+                ErrorMessages.AlreadyExistDetails((User u) => u.Email, command.CredentialsDto.Email));
         }
 
-        var validationResult = await credentialsValidator.ValidateAsync(command.Credentials, cancellationToken);
+        var validationResult = await credentialsValidator.ValidateAsync(command.CredentialsDto, cancellationToken);
         if (!validationResult.IsValid)
         {
             throw new BadRequestException(
                 ErrorMessages.ValidationFailed,
-                validationResult.Errors.AsErrorMessageDetails<UserCredentials>());
+                validationResult.Errors.AsErrorMessageDetails<UserCredentialsDto>());
         }
 
-        var user = new User { Email = command.Credentials.Email };
-        user.SetPassword(command.Credentials.Password);
+        var user = new User { Email = command.CredentialsDto.Email };
+        user.SetPassword(command.CredentialsDto.Password);
 
         await repository.CreateAsync(user, cancellationToken);
 

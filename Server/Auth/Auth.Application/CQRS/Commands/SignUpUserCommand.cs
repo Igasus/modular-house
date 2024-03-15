@@ -3,4 +3,4 @@ using ModularHouse.Server.Auth.Application.Dto;
 
 namespace ModularHouse.Server.Auth.Application.CQRS.Commands;
 
-public record SignUpUserCommand(UserCredentials Credentials) : ICommand;
+public record SignUpUserCommand(UserCredentialsDto CredentialsDto) : ICommand;

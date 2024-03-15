@@ -5,13 +5,13 @@ namespace ModularHouse.Server.Auth.Api.Http.MappingExtensions;
 
 public static class UserMappingExtensions
 {
-    public static UserCredentials AsUserCredentials(this SignUpRequest signUpRequest)
+    public static UserCredentialsDto AsUserCredentials(this SignUpRequest signUpRequest)
     {
-        return new UserCredentials(signUpRequest.Email, signUpRequest.Password);
+        return new UserCredentialsDto(signUpRequest.Email, signUpRequest.Password);
     }
 
-    public static UserCredentials AsUserCredentials(this SignInRequest signInRequest)
+    public static UserCredentialsDto AsUserCredentials(this SignInRequest signInRequest)
     {
-        return new UserCredentials(signInRequest.Email, signInRequest.Password);
+        return new UserCredentialsDto(signInRequest.Email, signInRequest.Password);
     }
 }
