@@ -16,21 +16,25 @@ public class UserRepository(IDriver driver) : IUserRepository
             CREATE (user:User {
                 Id: $Id,
                 Email: $Email,
-                PasswordHash: $PasswordHash });
+                PasswordHash: $PasswordHash,
+                AdditionDate: $AdditionDate });
         """;
 
         var userId = user.Id == default
             ? Guid.NewGuid()
             : user.Id;
+        var additionDate = DateTime.UtcNow;
 
         var parameters = new
         {
             Id = userId.ToString(),
             user.Email,
-            user.PasswordHash
+            user.PasswordHash,
+            AdditionDate = additionDate.ToString("s")
         };
 
         await session.RunAsync(query, parameters);
         user.Id = userId;
+        user.AdditionDate = additionDate;
     }
 }

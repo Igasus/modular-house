@@ -17,7 +17,8 @@ public class UserDataSource(IDriver driver) : IUserDataSource
             MATCH (user:User {Email: $Email})
             RETURN user.Id AS Id,
                 user.Email AS Email,
-                user.PasswordHash AS PasswordHash;
+                user.PasswordHash AS PasswordHash,
+                user.AdditionDate AS AdditionDate;
         """;
 
         var parameters = new { Email = email };
@@ -25,7 +26,8 @@ public class UserDataSource(IDriver driver) : IUserDataSource
         var queryResult = await session.RunAsync(query, parameters);
         var queryResultAsList = await queryResult.ToListAsync(cancellationToken);
         var queryResultAsSingleRecord = queryResultAsList.FirstOrDefault();
-        if (queryResultAsSingleRecord is null) return null;
+        if (queryResultAsSingleRecord is null)
+            return null;
 
         var userAsJson = JsonSerializer.Serialize(queryResultAsSingleRecord.Values);
         var user = JsonSerializer.Deserialize<User>(userAsJson);
